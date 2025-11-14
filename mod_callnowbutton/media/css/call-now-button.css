@@ -1,0 +1,899 @@
+/**
+ * Call Now Button Module CSS
+ * Compatible with Joomla 5 and 6
+ */
+
+/* Base button styles */
+.cnb-button {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    z-index: 9999;
+    border: none;
+    outline: none;
+}
+
+.cnb-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cnb-button:active {
+    transform: scale(0.95);
+}
+
+.cnb-button svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+/* Position classes */
+.cnb-bottom-left {
+    bottom: 20px;
+    left: 20px;
+}
+
+.cnb-bottom-center {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cnb-bottom-right {
+    bottom: 20px;
+    right: 20px;
+}
+
+.cnb-top-left {
+    top: 20px;
+    left: 20px;
+}
+
+.cnb-top-center {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cnb-top-right {
+    top: 20px;
+    right: 20px;
+}
+
+.cnb-middle-left {
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+}
+
+.cnb-middle-right {
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+/* Position classes with animation - preserve position */
+.cnb-animation-pulse.cnb-bottom-left,
+.cnb-animation-pulse.cnb-bottom-center,
+.cnb-animation-pulse.cnb-bottom-right,
+.cnb-animation-pulse.cnb-top-left,
+.cnb-animation-pulse.cnb-top-center,
+.cnb-animation-pulse.cnb-top-right,
+.cnb-animation-pulse.cnb-middle-left,
+.cnb-animation-pulse.cnb-middle-right {
+    position: fixed;
+}
+
+.cnb-animation-pulse.cnb-bottom-left {
+    bottom: 20px;
+    left: 20px;
+    transform: scale(var(--cnb-scale, 1));
+}
+
+.cnb-animation-pulse.cnb-bottom-center {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) scale(var(--cnb-scale, 1));
+}
+
+.cnb-animation-pulse.cnb-bottom-right {
+    bottom: 20px;
+    right: 20px;
+    transform: scale(var(--cnb-scale, 1));
+}
+
+.cnb-animation-pulse.cnb-top-left {
+    top: 20px;
+    left: 20px;
+    transform: scale(var(--cnb-scale, 1));
+}
+
+.cnb-animation-pulse.cnb-top-center {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) scale(var(--cnb-scale, 1));
+}
+
+.cnb-animation-pulse.cnb-top-right {
+    top: 20px;
+    right: 20px;
+    transform: scale(var(--cnb-scale, 1));
+}
+
+.cnb-animation-pulse.cnb-middle-left {
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%) scale(var(--cnb-scale, 1));
+}
+
+.cnb-animation-pulse.cnb-middle-right {
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%) scale(var(--cnb-scale, 1));
+}
+
+/* Bounce and Shake animations with position */
+.cnb-animation-bounce.cnb-bottom-left,
+.cnb-animation-bounce.cnb-bottom-center,
+.cnb-animation-bounce.cnb-bottom-right,
+.cnb-animation-bounce.cnb-top-left,
+.cnb-animation-bounce.cnb-top-center,
+.cnb-animation-bounce.cnb-top-right,
+.cnb-animation-bounce.cnb-middle-left,
+.cnb-animation-bounce.cnb-middle-right {
+    position: fixed;
+}
+
+.cnb-animation-bounce.cnb-bottom-left { bottom: 20px; left: 20px; }
+.cnb-animation-bounce.cnb-bottom-right { bottom: 20px; right: 20px; }
+.cnb-animation-bounce.cnb-top-left { top: 20px; left: 20px; }
+.cnb-animation-bounce.cnb-top-right { top: 20px; right: 20px; }
+
+.cnb-animation-shake.cnb-bottom-left,
+.cnb-animation-shake.cnb-bottom-center,
+.cnb-animation-shake.cnb-bottom-right,
+.cnb-animation-shake.cnb-top-left,
+.cnb-animation-shake.cnb-top-center,
+.cnb-animation-shake.cnb-top-right,
+.cnb-animation-shake.cnb-middle-left,
+.cnb-animation-shake.cnb-middle-right {
+    position: fixed;
+}
+
+.cnb-animation-shake.cnb-bottom-left { bottom: 20px; left: 20px; }
+.cnb-animation-shake.cnb-bottom-right { bottom: 20px; right: 20px; }
+.cnb-animation-shake.cnb-top-left { top: 20px; left: 20px; }
+.cnb-animation-shake.cnb-top-right { top: 20px; right: 20px; }
+
+/* Full width button styles */
+.cnb-full,
+.cnb-tfull {
+    position: fixed !important;
+    width: 100% !important;
+    height: 60px !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #FFFFFF !important;
+    text-align: center !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
+    /* Reset position classes */
+    top: auto !important;
+    bottom: auto !important;
+    left: 0 !important;
+    right: auto !important;
+    transform: none !important;
+}
+
+.cnb-full {
+    bottom: 0 !important;
+    top: auto !important;
+}
+
+.cnb-tfull {
+    top: 0 !important;
+    bottom: auto !important;
+}
+
+.cnb-full:hover,
+.cnb-tfull:hover {
+    transform: none !important;
+}
+
+/* Full width buttons should show text, not icon */
+.cnb-full svg,
+.cnb-tfull svg {
+    display: none !important;
+}
+
+.cnb-full .cnb-button-text,
+.cnb-tfull .cnb-button-text {
+    display: inline-block !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .cnb-button {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .cnb-bottom-left,
+    .cnb-bottom-right,
+    .cnb-bottom-center {
+        bottom: 15px;
+    }
+    
+    .cnb-top-left,
+    .cnb-top-right,
+    .cnb-top-center {
+        top: 15px;
+    }
+    
+    .cnb-middle-left,
+    .cnb-middle-right {
+        display: none; /* Hide middle positions on mobile */
+    }
+}
+
+/* Hide on print */
+@media print {
+    .cnb-button,
+    .cnb-full,
+    .cnb-tfull {
+        display: none !important;
+    }
+}
+
+/* Accessibility */
+.cnb-button:focus {
+    outline: 3px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+
+/* Animation for button appearance */
+@keyframes cnb-fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.cnb-button {
+    animation: cnb-fade-in 0.3s ease-out;
+}
+
+/* Pulse Animation */
+@keyframes cnb-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.4;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.cnb-animation-pulse {
+    position: relative;
+    overflow: visible !important;
+}
+
+.cnb-animation-pulse::before,
+.cnb-animation-pulse::after {
+    content: "";
+    position: absolute;
+    border: 3px solid;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    margin-top: -25px;
+    margin-left: -25px;
+    animation: cnb-pulse 2s ease-out infinite;
+    pointer-events: none;
+    box-sizing: border-box;
+    z-index: -1;
+}
+
+.cnb-animation-pulse::after {
+    animation-delay: 0.7s;
+}
+
+/* Bounce Animation */
+@keyframes cnb-bounce {
+    0%, 100% {
+        transform: translateY(0) scale(var(--cnb-scale, 1));
+    }
+    50% {
+        transform: translateY(-15px) scale(var(--cnb-scale, 1));
+    }
+}
+
+/* Bounce with position - need to preserve position transform */
+.cnb-animation-bounce.cnb-bottom-center {
+    animation: cnb-bounce-bottom-center 1s ease-in-out infinite;
+}
+
+@keyframes cnb-bounce-bottom-center {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0) scale(var(--cnb-scale, 1));
+    }
+    50% {
+        transform: translateX(-50%) translateY(-15px) scale(var(--cnb-scale, 1));
+    }
+}
+
+.cnb-animation-bounce.cnb-top-center {
+    animation: cnb-bounce-top-center 1s ease-in-out infinite;
+}
+
+@keyframes cnb-bounce-top-center {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0) scale(var(--cnb-scale, 1));
+    }
+    50% {
+        transform: translateX(-50%) translateY(-15px) scale(var(--cnb-scale, 1));
+    }
+}
+
+.cnb-animation-bounce.cnb-middle-left {
+    animation: cnb-bounce-middle-left 1s ease-in-out infinite;
+}
+
+@keyframes cnb-bounce-middle-left {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0) scale(var(--cnb-scale, 1));
+    }
+    50% {
+        transform: translateY(-50%) translateX(-10px) scale(var(--cnb-scale, 1));
+    }
+}
+
+.cnb-animation-bounce.cnb-middle-right {
+    animation: cnb-bounce-middle-right 1s ease-in-out infinite;
+}
+
+@keyframes cnb-bounce-middle-right {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0) scale(var(--cnb-scale, 1));
+    }
+    50% {
+        transform: translateY(-50%) translateX(10px) scale(var(--cnb-scale, 1));
+    }
+}
+
+.cnb-animation-bounce.cnb-bottom-left,
+.cnb-animation-bounce.cnb-bottom-right,
+.cnb-animation-bounce.cnb-top-left,
+.cnb-animation-bounce.cnb-top-right {
+    animation: cnb-bounce 1s ease-in-out infinite;
+}
+
+/* Shake Animation */
+@keyframes cnb-shake {
+    0%, 100% {
+        transform: translateX(0) translateY(0) rotate(0deg) scale(var(--cnb-scale, 1));
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-2px) translateY(0) rotate(-1deg) scale(var(--cnb-scale, 1));
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(2px) translateY(0) rotate(1deg) scale(var(--cnb-scale, 1));
+    }
+}
+
+/* Shake with position - need to preserve position transform */
+.cnb-animation-shake.cnb-bottom-center {
+    animation: cnb-shake-bottom-center 0.6s ease-in-out infinite;
+}
+
+@keyframes cnb-shake-bottom-center {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0) rotate(0deg) scale(var(--cnb-scale, 1));
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(calc(-50% - 2px)) translateY(0) rotate(-1deg) scale(var(--cnb-scale, 1));
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(calc(-50% + 2px)) translateY(0) rotate(1deg) scale(var(--cnb-scale, 1));
+    }
+}
+
+.cnb-animation-shake.cnb-top-center {
+    animation: cnb-shake-top-center 0.6s ease-in-out infinite;
+}
+
+@keyframes cnb-shake-top-center {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0) rotate(0deg) scale(var(--cnb-scale, 1));
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(calc(-50% - 2px)) translateY(0) rotate(-1deg) scale(var(--cnb-scale, 1));
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(calc(-50% + 2px)) translateY(0) rotate(1deg) scale(var(--cnb-scale, 1));
+    }
+}
+
+.cnb-animation-shake.cnb-middle-left {
+    animation: cnb-shake-middle-left 0.6s ease-in-out infinite;
+}
+
+@keyframes cnb-shake-middle-left {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0) rotate(0deg) scale(var(--cnb-scale, 1));
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateY(calc(-50% - 1px)) translateX(-2px) rotate(-1deg) scale(var(--cnb-scale, 1));
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateY(calc(-50% + 1px)) translateX(2px) rotate(1deg) scale(var(--cnb-scale, 1));
+    }
+}
+
+.cnb-animation-shake.cnb-middle-right {
+    animation: cnb-shake-middle-right 0.6s ease-in-out infinite;
+}
+
+@keyframes cnb-shake-middle-right {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0) rotate(0deg) scale(var(--cnb-scale, 1));
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateY(calc(-50% - 1px)) translateX(-2px) rotate(-1deg) scale(var(--cnb-scale, 1));
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateY(calc(-50% + 1px)) translateX(2px) rotate(1deg) scale(var(--cnb-scale, 1));
+    }
+}
+
+.cnb-animation-shake.cnb-bottom-left,
+.cnb-animation-shake.cnb-bottom-right,
+.cnb-animation-shake.cnb-top-left,
+.cnb-animation-shake.cnb-top-right {
+    animation: cnb-shake 0.6s ease-in-out infinite;
+}
+
+/* Text bubble for single button (optional feature) */
+.cnb-button-text-bubble {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: #FFFFFF;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cnb-button:hover .cnb-button-text-bubble {
+    opacity: 1;
+}
+
+.cnb-bottom-left .cnb-button-text-bubble,
+.cnb-bottom-right .cnb-button-text-bubble {
+    bottom: 70px;
+}
+
+.cnb-top-left .cnb-button-text-bubble,
+.cnb-top-right .cnb-button-text-bubble {
+    top: 70px;
+}
+
+/* Multibutton Styles */
+.cnb-multibutton-container {
+    position: fixed;
+    z-index: 9999;
+}
+
+.cnb-multibutton-main {
+    position: relative;
+}
+
+.cnb-multibutton-options {
+    position: absolute;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none !important;
+    opacity: 0;
+    transition: opacity 0.3s ease, display 0s 0.3s;
+    z-index: 10000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    width: auto;
+}
+
+.cnb-multibutton-options.active {
+    display: flex !important;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.cnb-multibutton-options li {
+    margin-bottom: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.cnb-multibutton-options li:last-child {
+    margin-bottom: 0;
+}
+
+.cnb-multibutton-options li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-decoration: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    position: relative;
+    flex-shrink: 0;
+    flex-direction: row;
+}
+
+.cnb-multibutton-options li a:hover {
+    transform: scale(1.1);
+}
+
+.cnb-multibutton-options li a svg,
+.cnb-multibutton-options li a img {
+    width: 24px;
+    height: 24px;
+    display: block;
+    flex-shrink: 0;
+}
+
+.cnb-multibutton-options li a svg {
+    fill: currentColor !important;
+    color: currentColor;
+}
+
+.cnb-multibutton-options li a svg path {
+    fill: currentColor !important;
+}
+
+.cnb-multibutton-options li a svg * {
+    fill: currentColor !important;
+}
+
+/* Tooltip for multibutton items (hover mode) */
+.cnb-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    color: #FFFFFF;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease, margin 0.3s ease;
+    z-index: 10001;
+    font-weight: 500;
+}
+
+/* Title text for multibutton items (always visible mode) */
+.cnb-title-text {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.85);
+    color: #FFFFFF;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 1;
+    z-index: 10001;
+    font-weight: 500;
+    display: inline-block;
+}
+
+/* Positioning for bottom positions - tooltip/title next to icon (right side) */
+.cnb-multibutton-container.cnb-bottom-right .cnb-tooltip,
+.cnb-multibutton-container.cnb-bottom-left .cnb-tooltip,
+.cnb-multibutton-container.cnb-bottom-center .cnb-tooltip {
+    /* Hover tooltips stay above for bottom positions */
+    bottom: 100%;
+    margin-bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cnb-multibutton-container.cnb-bottom-right .cnb-tooltip {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
+.cnb-multibutton-container.cnb-bottom-left .cnb-tooltip {
+    left: 0;
+    right: auto;
+    transform: none;
+}
+
+/* Title text for always visible mode - position next to icon */
+.cnb-multibutton-container.cnb-bottom-right .cnb-title-text,
+.cnb-multibutton-container.cnb-bottom-left .cnb-title-text,
+.cnb-multibutton-container.cnb-bottom-center .cnb-title-text {
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0;
+    margin-bottom: 0;
+}
+
+.cnb-multibutton-container.cnb-bottom-right .cnb-title-text {
+    left: auto;
+    right: calc(100% + 12px);
+    transform: translateY(-50%);
+}
+
+/* Positioning for top positions - tooltip/title next to icon */
+.cnb-multibutton-container.cnb-top-right .cnb-tooltip,
+.cnb-multibutton-container.cnb-top-left .cnb-tooltip,
+.cnb-multibutton-container.cnb-top-center .cnb-tooltip {
+    /* Hover tooltips stay below for top positions */
+    top: 100%;
+    margin-top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cnb-multibutton-container.cnb-top-right .cnb-tooltip {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
+.cnb-multibutton-container.cnb-top-left .cnb-tooltip {
+    left: 0;
+    right: auto;
+    transform: none;
+}
+
+/* Title text for always visible mode - position next to icon */
+.cnb-multibutton-container.cnb-top-right .cnb-title-text,
+.cnb-multibutton-container.cnb-top-left .cnb-title-text,
+.cnb-multibutton-container.cnb-top-center .cnb-title-text {
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0;
+    margin-left: 0;
+}
+
+.cnb-multibutton-container.cnb-top-right .cnb-title-text {
+    left: auto;
+    right: calc(100% + 12px);
+    transform: translateY(-50%);
+}
+
+/* Positioning for middle positions - tooltip/title to the side */
+.cnb-multibutton-container.cnb-middle-left .cnb-tooltip {
+    left: 100%;
+    margin-left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.cnb-multibutton-container.cnb-middle-right .cnb-tooltip {
+    right: 100%;
+    margin-right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Title text for middle positions - already positioned correctly */
+.cnb-multibutton-container.cnb-middle-left .cnb-title-text {
+    left: calc(100% + 12px);
+    margin-left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.cnb-multibutton-container.cnb-middle-right .cnb-title-text {
+    right: calc(100% + 12px);
+    margin-right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Show tooltip on hover */
+.cnb-multibutton-options li a.cnb-title-hover:hover .cnb-tooltip {
+    opacity: 1;
+}
+
+/* Always show title text */
+.cnb-multibutton-options li a.cnb-title-always .cnb-title-text {
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Multibutton positions - icons should be stacked vertically above/below main button */
+.cnb-multibutton-container.cnb-bottom-right .cnb-multibutton-options,
+.cnb-multibutton-container.cnb-bottom-left .cnb-multibutton-options,
+.cnb-multibutton-container.cnb-bottom-center .cnb-multibutton-options {
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+.cnb-multibutton-container.cnb-bottom-right .cnb-multibutton-options {
+    left: auto;
+    right: 0;
+    transform: none;
+    align-items: flex-end;
+}
+
+.cnb-multibutton-container.cnb-bottom-left .cnb-multibutton-options {
+    left: 0;
+    right: auto;
+    transform: none;
+    align-items: flex-start;
+}
+
+.cnb-multibutton-container.cnb-top-right .cnb-multibutton-options,
+.cnb-multibutton-container.cnb-top-left .cnb-multibutton-options,
+.cnb-multibutton-container.cnb-top-center .cnb-multibutton-options {
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column;
+    align-items: center;
+}
+
+.cnb-multibutton-container.cnb-top-right .cnb-multibutton-options {
+    left: auto;
+    right: 0;
+    transform: none;
+    align-items: flex-end;
+}
+
+.cnb-multibutton-container.cnb-top-left .cnb-multibutton-options {
+    left: 0;
+    right: auto;
+    transform: none;
+    align-items: flex-start;
+}
+
+.cnb-multibutton-container.cnb-middle-left .cnb-multibutton-options {
+    left: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: row;
+}
+
+.cnb-multibutton-container.cnb-middle-right .cnb-multibutton-options {
+    right: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: row-reverse;
+}
+
+.cnb-multibutton-container.cnb-middle-left .cnb-multibutton-options li,
+.cnb-multibutton-container.cnb-middle-right .cnb-multibutton-options li {
+    margin-bottom: 0;
+    margin-right: 15px;
+    margin-left: 15px;
+    gap: 12px;
+}
+
+.cnb-multibutton-container.cnb-middle-left .cnb-multibutton-options li:last-child,
+.cnb-multibutton-container.cnb-middle-right .cnb-multibutton-options li:last-child {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+/* Animation for multibutton items - smooth slide up */
+@keyframes cnb-slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Different animations for different positions */
+@keyframes cnb-slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes cnb-slide-left {
+    from {
+        opacity: 0;
+        transform: translateX(30px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes cnb-slide-right {
+    from {
+        opacity: 0;
+        transform: translateX(-30px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Apply animations based on position */
+.cnb-multibutton-container.cnb-bottom-right .cnb-multibutton-options.active li,
+.cnb-multibutton-container.cnb-bottom-left .cnb-multibutton-options.active li,
+.cnb-multibutton-container.cnb-bottom-center .cnb-multibutton-options.active li {
+    animation: cnb-slide-up 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    margin-bottom: 10px;
+}
+
+.cnb-multibutton-container.cnb-top-right .cnb-multibutton-options.active li,
+.cnb-multibutton-container.cnb-top-left .cnb-multibutton-options.active li,
+.cnb-multibutton-container.cnb-top-center .cnb-multibutton-options.active li {
+    animation: cnb-slide-down 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.cnb-multibutton-container.cnb-middle-left .cnb-multibutton-options.active li {
+    animation: cnb-slide-right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.cnb-multibutton-container.cnb-middle-right .cnb-multibutton-options.active li {
+    animation: cnb-slide-left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Staggered animation delays for smooth cascade effect */
+.cnb-multibutton-options.active li:nth-child(1) { animation-delay: 0.06s; }
+.cnb-multibutton-options.active li:nth-child(2) { animation-delay: 0.12s; }
+.cnb-multibutton-options.active li:nth-child(3) { animation-delay: 0.18s; }
+.cnb-multibutton-options.active li:nth-child(4) { animation-delay: 0.24s; }
+.cnb-multibutton-options.active li:nth-child(5) { animation-delay: 0.30s; }
+.cnb-multibutton-options.active li:nth-child(6) { animation-delay: 0.36s; }
+.cnb-multibutton-options.active li:nth-child(7) { animation-delay: 0.42s; }
+.cnb-multibutton-options.active li:nth-child(8) { animation-delay: 0.48s; }
+

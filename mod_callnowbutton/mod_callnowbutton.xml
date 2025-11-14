@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="5.0" method="upgrade" client="site">
+    <name>MOD_CALLNOWBUTTON</name>
+    <author>Call Now Button</author>
+    <creationDate>2024-01-01</creationDate>
+    <copyright>Copyright (C) 2024 Call Now Button. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <authorEmail>support@callnowbutton.com</authorEmail>
+    <authorUrl>https://callnowbutton.com</authorUrl>
+    <version>1.0.0</version>
+    <description>MOD_CALLNOWBUTTON_XML_DESCRIPTION</description>
+    
+    <namespace path="src">Joomla\Module\CallNowButton</namespace>
+    
+    <files>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+        <folder>media</folder>
+        <folder>language</folder>
+        <folder>admin</folder>
+        <filename module="mod_callnowbutton">mod_callnowbutton.php</filename>
+        <filename>helper.php</filename>
+        <filename>services/provider.php</filename>
+        <filename>items.xml</filename>
+    </files>
+    
+    <languages folder="language">
+        <language tag="en-GB">en-GB/mod_callnowbutton.ini</language>
+        <language tag="en-GB">en-GB/mod_callnowbutton.sys.ini</language>
+        <language tag="fa-IR">fa-IR/mod_callnowbutton.ini</language>
+        <language tag="fa-IR">fa-IR/mod_callnowbutton.sys.ini</language>
+    </languages>
+    
+    <administration>
+        <languages folder="language">
+            <language tag="en-GB">en-GB/mod_callnowbutton.ini</language>
+            <language tag="en-GB">en-GB/mod_callnowbutton.sys.ini</language>
+            <language tag="fa-IR">fa-IR/mod_callnowbutton.ini</language>
+            <language tag="fa-IR">fa-IR/mod_callnowbutton.sys.ini</language>
+        </languages>
+    </administration>
+    
+    <media destination="mod_callnowbutton" folder="media">
+        <folder>css</folder>
+        <folder>js</folder>
+    </media>
+    
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="MOD_CALLNOWBUTTON_BASIC_FIELDSET_LABEL" addfieldpath="/modules/mod_callnowbutton/admin/fields">
+                <field
+                    name="active"
+                    type="radio"
+                    label="MOD_CALLNOWBUTTON_ACTIVE_LABEL"
+                    description="MOD_CALLNOWBUTTON_ACTIVE_DESC"
+                    default="1"
+                    class="btn-group btn-group-yesno">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                
+                <field
+                    name="button_type"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_BUTTON_TYPE_LABEL"
+                    description="MOD_CALLNOWBUTTON_BUTTON_TYPE_DESC"
+                    default="single">
+                    <option value="single">MOD_CALLNOWBUTTON_BUTTON_TYPE_SINGLE</option>
+                    <option value="multibutton">MOD_CALLNOWBUTTON_BUTTON_TYPE_MULTIBUTTON</option>
+                </field>
+                
+                <field
+                    name="link_type"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_LINK_TYPE_LABEL"
+                    description="MOD_CALLNOWBUTTON_LINK_TYPE_DESC"
+                    default="phone"
+                    showon="button_type:single">
+                    <option value="phone">MOD_CALLNOWBUTTON_LINK_TYPE_PHONE</option>
+                    <option value="whatsapp">MOD_CALLNOWBUTTON_LINK_TYPE_WHATSAPP</option>
+                    <option value="custom">MOD_CALLNOWBUTTON_LINK_TYPE_CUSTOM</option>
+                </field>
+                
+                <field
+                    name="phone_number"
+                    type="text"
+                    label="MOD_CALLNOWBUTTON_PHONE_NUMBER_LABEL"
+                    description="MOD_CALLNOWBUTTON_PHONE_NUMBER_DESC"
+                    default=""
+                    hint="989123456789"
+                    showon="button_type:single;link_type:whatsapp,phone"
+                />
+                
+                <field
+                    name="custom_url"
+                    type="url"
+                    label="MOD_CALLNOWBUTTON_CUSTOM_URL_LABEL"
+                    description="MOD_CALLNOWBUTTON_CUSTOM_URL_DESC"
+                    default=""
+                    hint="https://example.com or tel:+1234567890"
+                    showon="button_type:single;link_type:custom"
+                />
+                
+                <field
+                    name="button_icon"
+                    type="iconselector"
+                    label="MOD_CALLNOWBUTTON_BUTTON_ICON_LABEL"
+                    description="MOD_CALLNOWBUTTON_BUTTON_ICON_DESC"
+                    default="phone"
+                    showon="button_type:single"
+                />
+                
+                <field
+                    name="button_icon_custom"
+                    type="media"
+                    directory=""
+                    label="MOD_CALLNOWBUTTON_BUTTON_ICON_CUSTOM_LABEL"
+                    description="MOD_CALLNOWBUTTON_BUTTON_ICON_CUSTOM_DESC"
+                    showon="button_type:single"
+                />
+                
+                <field
+                    name="button_text"
+                    type="text"
+                    label="MOD_CALLNOWBUTTON_BUTTON_TEXT_LABEL"
+                    description="MOD_CALLNOWBUTTON_BUTTON_TEXT_DESC"
+                    default=""
+                    hint="Call Now"
+                    showon="button_type:single"
+                />
+                
+                <field
+                    name="main_button_icon"
+                    type="iconselector"
+                    label="MOD_CALLNOWBUTTON_MAIN_BUTTON_ICON_LABEL"
+                    description="MOD_CALLNOWBUTTON_MAIN_BUTTON_ICON_DESC"
+                    default="phone"
+                    showon="button_type:multibutton"
+                />
+                
+                <field
+                    name="main_button_icon_custom"
+                    type="media"
+                    directory=""
+                    label="MOD_CALLNOWBUTTON_MAIN_BUTTON_ICON_CUSTOM_LABEL"
+                    description="MOD_CALLNOWBUTTON_MAIN_BUTTON_ICON_CUSTOM_DESC"
+                    showon="button_type:multibutton"
+                />
+                
+                <field
+                    name="multibutton_title_display"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_MULTIBUTTON_TITLE_DISPLAY_LABEL"
+                    description="MOD_CALLNOWBUTTON_MULTIBUTTON_TITLE_DISPLAY_DESC"
+                    default="hover"
+                    showon="button_type:multibutton">
+                    <option value="none">MOD_CALLNOWBUTTON_TITLE_DISPLAY_NONE</option>
+                    <option value="hover">MOD_CALLNOWBUTTON_TITLE_DISPLAY_HOVER</option>
+                    <option value="always">MOD_CALLNOWBUTTON_TITLE_DISPLAY_ALWAYS</option>
+                </field>
+                
+                <field
+                    name="multibutton_items"
+                    type="subform"
+                    formsource="modules/mod_callnowbutton/items.xml"
+                    multiple="true"
+                    label="MOD_CALLNOWBUTTON_MULTIBUTTON_ITEMS_LABEL"
+                    description="MOD_CALLNOWBUTTON_MULTIBUTTON_ITEMS_DESC"
+                    showon="button_type:multibutton"
+                />
+            </fieldset>
+            
+            <fieldset name="presentation" label="MOD_CALLNOWBUTTON_PRESENTATION_FIELDSET_LABEL">
+                <field
+                    name="appearance"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_APPEARANCE_LABEL"
+                    description="MOD_CALLNOWBUTTON_APPEARANCE_DESC"
+                    default="single">
+                    <option value="single">MOD_CALLNOWBUTTON_APPEARANCE_SINGLE</option>
+                    <option value="full">MOD_CALLNOWBUTTON_APPEARANCE_FULL</option>
+                    <option value="tfull">MOD_CALLNOWBUTTON_APPEARANCE_FULL_TOP</option>
+                </field>
+                
+                <field
+                    name="position"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_POSITION_LABEL"
+                    description="MOD_CALLNOWBUTTON_POSITION_DESC"
+                    default="bottom-right"
+                    showon="appearance:single">
+                    <option value="bottom-left">MOD_CALLNOWBUTTON_POSITION_BOTTOM_LEFT</option>
+                    <option value="bottom-center">MOD_CALLNOWBUTTON_POSITION_BOTTOM_CENTER</option>
+                    <option value="bottom-right">MOD_CALLNOWBUTTON_POSITION_BOTTOM_RIGHT</option>
+                    <option value="top-left">MOD_CALLNOWBUTTON_POSITION_TOP_LEFT</option>
+                    <option value="top-center">MOD_CALLNOWBUTTON_POSITION_TOP_CENTER</option>
+                    <option value="top-right">MOD_CALLNOWBUTTON_POSITION_TOP_RIGHT</option>
+                    <option value="middle-left">MOD_CALLNOWBUTTON_POSITION_MIDDLE_LEFT</option>
+                    <option value="middle-right">MOD_CALLNOWBUTTON_POSITION_MIDDLE_RIGHT</option>
+                </field>
+                
+                <field
+                    name="button_color"
+                    type="color"
+                    label="MOD_CALLNOWBUTTON_BUTTON_COLOR_LABEL"
+                    description="MOD_CALLNOWBUTTON_BUTTON_COLOR_DESC"
+                    default="#25D366"
+                />
+                
+                <field
+                    name="icon_color"
+                    type="color"
+                    label="MOD_CALLNOWBUTTON_ICON_COLOR_LABEL"
+                    description="MOD_CALLNOWBUTTON_ICON_COLOR_DESC"
+                    default="#FFFFFF"
+                />
+                
+                <field
+                    name="button_size"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_BUTTON_SIZE_LABEL"
+                    description="MOD_CALLNOWBUTTON_BUTTON_SIZE_DESC"
+                    default="1"
+                    min="0.7"
+                    max="1.3"
+                    step="0.1"
+                    showon="appearance:single"
+                />
+                
+                <field
+                    name="animation"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_ANIMATION_LABEL"
+                    description="MOD_CALLNOWBUTTON_ANIMATION_DESC"
+                    default="none"
+                    showon="appearance:single">
+                    <option value="none">MOD_CALLNOWBUTTON_ANIMATION_NONE</option>
+                    <option value="pulse">MOD_CALLNOWBUTTON_ANIMATION_PULSE</option>
+                    <option value="bounce">MOD_CALLNOWBUTTON_ANIMATION_BOUNCE</option>
+                    <option value="shake">MOD_CALLNOWBUTTON_ANIMATION_SHAKE</option>
+                </field>
+                
+                <field
+                    name="z_index"
+                    type="number"
+                    label="MOD_CALLNOWBUTTON_Z_INDEX_LABEL"
+                    description="MOD_CALLNOWBUTTON_Z_INDEX_DESC"
+                    default="9999"
+                    min="1"
+                    max="99999"
+                />
+            </fieldset>
+            
+            <fieldset name="visibility" label="MOD_CALLNOWBUTTON_VISIBILITY_FIELDSET_LABEL">
+                <field
+                    name="display_mode"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_DISPLAY_MODE_LABEL"
+                    description="MOD_CALLNOWBUTTON_DISPLAY_MODE_DESC"
+                    default="mobile_only">
+                    <option value="all">MOD_CALLNOWBUTTON_DISPLAY_MODE_ALL</option>
+                    <option value="mobile_only">MOD_CALLNOWBUTTON_DISPLAY_MODE_MOBILE_ONLY</option>
+                    <option value="desktop_only">MOD_CALLNOWBUTTON_DISPLAY_MODE_DESKTOP_ONLY</option>
+                </field>
+                
+                <field
+                    name="hide_frontpage"
+                    type="radio"
+                    label="MOD_CALLNOWBUTTON_HIDE_FRONTPAGE_LABEL"
+                    description="MOD_CALLNOWBUTTON_HIDE_FRONTPAGE_DESC"
+                    default="0"
+                    class="btn-group btn-group-yesno">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+            </fieldset>
+            
+            <fieldset name="tracking" label="MOD_CALLNOWBUTTON_TRACKING_FIELDSET_LABEL">
+                <field
+                    name="tracking_enabled"
+                    type="radio"
+                    label="MOD_CALLNOWBUTTON_TRACKING_ENABLED_LABEL"
+                    description="MOD_CALLNOWBUTTON_TRACKING_ENABLED_DESC"
+                    default="0"
+                    class="btn-group btn-group-yesno">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                
+                <field
+                    name="tracking_type"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_TRACKING_TYPE_LABEL"
+                    description="MOD_CALLNOWBUTTON_TRACKING_TYPE_DESC"
+                    default="gtag"
+                    showon="tracking_enabled:1">
+                    <option value="gtag">MOD_CALLNOWBUTTON_TRACKING_TYPE_GTAG</option>
+                    <option value="analytics">MOD_CALLNOWBUTTON_TRACKING_TYPE_ANALYTICS</option>
+                    <option value="classic">MOD_CALLNOWBUTTON_TRACKING_TYPE_CLASSIC</option>
+                </field>
+                
+                <field
+                    name="ga_id"
+                    type="text"
+                    label="MOD_CALLNOWBUTTON_GA_ID_LABEL"
+                    description="MOD_CALLNOWBUTTON_GA_ID_DESC"
+                    default=""
+                    showon="tracking_enabled:1"
+                    hint="G-XXXXXXXXXX or UA-XXXXXXXXX-X"
+                />
+                
+                <field
+                    name="conversion_tracking"
+                    type="radio"
+                    label="MOD_CALLNOWBUTTON_CONVERSION_TRACKING_LABEL"
+                    description="MOD_CALLNOWBUTTON_CONVERSION_TRACKING_DESC"
+                    default="0"
+                    class="btn-group btn-group-yesno">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                
+                <field
+                    name="conversion_type"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_CONVERSION_TYPE_LABEL"
+                    description="MOD_CALLNOWBUTTON_CONVERSION_TYPE_DESC"
+                    default="gtag"
+                    showon="conversion_tracking:1">
+                    <option value="gtag">MOD_CALLNOWBUTTON_CONVERSION_TYPE_GTAG</option>
+                    <option value="js">MOD_CALLNOWBUTTON_CONVERSION_TYPE_JS</option>
+                </field>
+                
+                <field
+                    name="conversion_id"
+                    type="text"
+                    label="MOD_CALLNOWBUTTON_CONVERSION_ID_LABEL"
+                    description="MOD_CALLNOWBUTTON_CONVERSION_ID_DESC"
+                    default=""
+                    showon="conversion_tracking:1"
+                    hint="AW-XXXXXXXXX/XXXXXXXXXX"
+                />
+            </fieldset>
+        </fields>
+    </config>
+</extension>
+

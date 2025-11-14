@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form addfieldpath="/modules/mod_callnowbutton/admin/fields">
+    <field 
+        name="button_title" 
+        type="text" 
+        label="MOD_CALLNOWBUTTON_BUTTON_TITLE_LABEL"
+        description="MOD_CALLNOWBUTTON_BUTTON_TITLE_DESC"
+        required="true"
+    />
+    
+    <field 
+        name="button_url" 
+        type="url" 
+        label="MOD_CALLNOWBUTTON_BUTTON_URL_LABEL"
+        description="MOD_CALLNOWBUTTON_BUTTON_URL_DESC"
+        required="true"
+        hint="tel:+1234567890 or https://wa.me/1234567890"
+    />
+    
+    <field 
+        name="button_url_target" 
+        type="list" 
+        default="0" 
+        label="MOD_CALLNOWBUTTON_BUTTON_TARGET_LABEL"
+        description="MOD_CALLNOWBUTTON_BUTTON_TARGET_DESC">
+        <option value="0">MOD_CALLNOWBUTTON_TARGET_SAME</option>
+        <option value="1">MOD_CALLNOWBUTTON_TARGET_BLANK</option>
+    </field>
+    
+    <field 
+        name="button_bgcolor" 
+        type="color" 
+        default="#4285F4" 
+        label="MOD_CALLNOWBUTTON_BUTTON_BGCOLOR_LABEL"
+        description="MOD_CALLNOWBUTTON_BUTTON_BGCOLOR_DESC"
+    />
+    
+    <field 
+        name="button_color" 
+        type="color" 
+        default="#FFFFFF" 
+        label="MOD_CALLNOWBUTTON_BUTTON_ICON_COLOR_LABEL"
+        description="MOD_CALLNOWBUTTON_BUTTON_ICON_COLOR_DESC"
+    />
+    
+    <field 
+        name="button_icon" 
+        type="iconselector" 
+        default="phone" 
+        label="MOD_CALLNOWBUTTON_BUTTON_ICON_LABEL"
+        description="MOD_CALLNOWBUTTON_BUTTON_ICON_DESC"
+    />
+    
+    <field 
+        name="button_icon_custom" 
+        type="media" 
+        directory="" 
+        label="MOD_CALLNOWBUTTON_BUTTON_ICON_CUSTOM_LABEL"
+        description="MOD_CALLNOWBUTTON_BUTTON_ICON_CUSTOM_DESC"
+    />
+    
+    <field 
+        name="access" 
+        type="accesslevel"
+        label="JFIELD_ACCESS_LABEL"
+        description="JFIELD_ACCESS_DESC"
+        class="span12 small"
+    />
+</form>
+
