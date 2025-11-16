@@ -36,49 +36,171 @@
     display: block;
 }
 
+/* Icon + Text appearance */
+.cnb-button.cnb-icontext {
+    position: fixed;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row-reverse;
+    width: auto !important;           /* default: fit content */
+    height: 50px;
+    min-width: 0;
+    padding: 0 14px;
+    border-radius: 999px;
+    gap: 10px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+/* Override width for full-width variants immediately after base rule (wins in cascade) */
+.cnb-button.cnb-icontext.cnb-full,
+.cnb-button.cnb-icontext.cnb-tfull {
+    width: 100% !important;
+}
+.cnb-button.cnb-icontext:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+    filter: brightness(0.95);
+}
+.cnb-button.cnb-icontext .cnb-button-text {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    letter-spacing: .2px;
+}
+
+/* Reference-like compact style for icon+text when placed at bottom */
+.cnb-button.cnb-icontext.cnb-bottom-right,
+.cnb-button.cnb-icontext.cnb-bottom-left,
+.cnb-button.cnb-icontext.cnb-bottom-center {
+    height: 46px;                      /* compact height */
+    padding: 0 16px;                   /* equal horizontal padding */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    gap: 8px;
+}
+.cnb-button.cnb-icontext.cnb-bottom-center {
+    transform: translateX(-50%);
+}
+.cnb-button.cnb-icontext.cnb-bottom-right:hover,
+.cnb-button.cnb-icontext.cnb-bottom-left:hover,
+.cnb-button.cnb-icontext.cnb-bottom-center:hover {
+    animation-name: wa-glow;
+    animation-duration: 0.8s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+/* Make icon circle match 26px reference look */
+.cnb-button.cnb-icontext .cnb-icon-circle {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 0;                  /* remove white ring */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    background: transparent;    /* no background halo */
+    box-shadow: none;           /* no extra outline */
+}
+.cnb-button.cnb-icontext .cnb-icon {
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* Glow animation (inspired) */
+@keyframes wa-glow {
+    from { background-color: inherit; }
+    50%  { background-color: rgba(255,255,255,0.06); transform: translateY(-1px); }
+    to   { background-color: inherit; }
+}
+.cnb-button.cnb-icontext.cnb-bottom-center:hover { transform: translateX(-50%) translateY(-1px); }
+.cnb-button.cnb-icontext.cnb-top-center:hover { transform: translateX(-50%) translateY(-1px); }
+.cnb-button.cnb-icontext.cnb-middle-left:hover { transform: translateY(calc(-50% - 1px)); }
+.cnb-button.cnb-icontext.cnb-middle-right:hover { transform: translateY(calc(-50% - 1px)); }
+.cnb-button.cnb-icontext .cnb-icon-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 0;  
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+.cnb-button.cnb-icontext .cnb-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    flex-shrink: 0;
+}
+.cnb-button.cnb-icontext .cnb-button-text {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    letter-spacing: .2px;
+}
+
 /* Position classes */
 .cnb-bottom-left {
     bottom: 20px;
     left: 20px;
+    transform-origin: left center;
 }
 
 .cnb-bottom-center {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
+    transform-origin: center center;
 }
 
 .cnb-bottom-right {
     bottom: 20px;
     right: 20px;
+    transform-origin: right center;
 }
 
 .cnb-top-left {
     top: 20px;
     left: 20px;
+    transform-origin: left center;
 }
 
 .cnb-top-center {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
+    transform-origin: center center;
 }
 
 .cnb-top-right {
     top: 20px;
     right: 20px;
+    transform-origin: right center;
 }
 
 .cnb-middle-left {
     top: 50%;
     left: 20px;
     transform: translateY(-50%);
+    transform-origin: left center;
 }
 
 .cnb-middle-right {
     top: 50%;
     right: 20px;
     transform: translateY(-50%);
+    transform-origin: right center;
 }
 
 /* Position classes with animation - preserve position */
@@ -212,10 +334,28 @@
     transform: none !important;
 }
 
-/* Full width buttons should show text, not icon */
+/* Full width buttons: by default hide icon (circle), but not for Icon + Text */
 .cnb-full svg,
 .cnb-tfull svg {
     display: none !important;
+}
+.cnb-button.cnb-icontext.cnb-full svg,
+.cnb-button.cnb-icontext.cnb-tfull svg,
+.cnb-button.cnb-icontext.cnb-full .cnb-icon,
+.cnb-button.cnb-icontext.cnb-tfull .cnb-icon {
+    display: inline-block !important;
+}
+/* Ensure icon+text truly spans full width when using full/tfull */
+.cnb-button.cnb-icontext.cnb-full,
+.cnb-button.cnb-icontext.cnb-tfull {
+    width: 100% !important;
+    left: 0 !important;
+    right: auto !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    height: 50px !important;          /* keep compact pill height for icon+text */
+    justify-content: center !important;
+    gap: 10px !important;
 }
 
 .cnb-full .cnb-button-text,
@@ -230,11 +370,7 @@
         height: 56px;
     }
     
-    .cnb-bottom-left,
-    .cnb-bottom-right,
-    .cnb-bottom-center {
-        bottom: 15px;
-    }
+ 
     
     .cnb-top-left,
     .cnb-top-right,
@@ -277,6 +413,12 @@
 
 .cnb-button {
     animation: cnb-fade-in 0.3s ease-out;
+}
+
+/* Do not upscale icontext on base hover (handled above) */
+.cnb-button.cnb-icontext:hover {
+    /* override base .cnb-button:hover scale */
+    transform: translateY(-1px);
 }
 
 /* Pulse Animation */
@@ -322,6 +464,33 @@
     animation-delay: 0.7s;
 }
 
+/* Pulse variant for Icon + Text (pill shape) */
+@keyframes cnb-pulse-pill {
+    0%   { transform: scale(1); opacity: 0.8; }
+    50%  { transform: scale(1.25); opacity: 0.4; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Make pulse outline follow pill dimensions instead of a circle */
+.cnb-animation-pulse.cnb-icontext::before,
+.cnb-animation-pulse.cnb-icontext::after {
+    content: "";
+    position: absolute;
+    /* reset base circular pulse geometry */
+    top: auto; left: auto; right: auto; bottom: auto;
+    width: auto; height: auto; margin: 0;
+    inset: -6px;                 /* expand a bit outside the button */
+    border: 3px solid;           /* color set dynamically in inline CSS */
+    border-radius: inherit;      /* match pill rounding */
+    animation: cnb-pulse-pill 2s ease-out infinite;
+    pointer-events: none;
+    box-sizing: border-box;
+    z-index: -1;
+}
+.cnb-animation-pulse.cnb-icontext::after {
+    animation-delay: 0.7s;
+}
+
 /* Bounce Animation */
 @keyframes cnb-bounce {
     0%, 100% {
@@ -332,10 +501,26 @@
     }
 }
 
+/* Bounce for pill (icontext) */
+@keyframes cnb-bounce-pill {
+    0%, 100% { transform: translateY(0) scale(var(--cnb-scale, 1)); }
+    50%      { transform: translateY(-8px) scale(var(--cnb-scale, 1)); }
+}
+@keyframes cnb-bounce-pill-bottom-center {
+    0%, 100% { transform: translateX(-50%) translateY(0) scale(var(--cnb-scale, 1)); }
+    50%      { transform: translateX(-50%) translateY(-8px) scale(var(--cnb-scale, 1)); }
+}
+@keyframes cnb-bounce-pill-top-center {
+    0%, 100% { transform: translateX(-50%) translateY(0) scale(var(--cnb-scale, 1)); }
+    50%      { transform: translateX(-50%) translateY(-8px) scale(var(--cnb-scale, 1)); }
+}
+
 /* Bounce with position - need to preserve position transform */
 .cnb-animation-bounce.cnb-bottom-center {
     animation: cnb-bounce-bottom-center 1s ease-in-out infinite;
 }
+/* Use pill animation when icontext */
+.cnb-animation-bounce.cnb-icontext.cnb-bottom-center { animation: cnb-bounce-pill-bottom-center 0.9s ease-in-out infinite; }
 
 @keyframes cnb-bounce-bottom-center {
     0%, 100% {
@@ -349,6 +534,8 @@
 .cnb-animation-bounce.cnb-top-center {
     animation: cnb-bounce-top-center 1s ease-in-out infinite;
 }
+/* Use pill animation when icontext */
+.cnb-animation-bounce.cnb-icontext.cnb-top-center { animation: cnb-bounce-pill-top-center 0.9s ease-in-out infinite; }
 
 @keyframes cnb-bounce-top-center {
     0%, 100% {
@@ -391,6 +578,11 @@
 .cnb-animation-bounce.cnb-top-right {
     animation: cnb-bounce 1s ease-in-out infinite;
 }
+/* pill variant */
+.cnb-animation-bounce.cnb-icontext.cnb-bottom-left,
+.cnb-animation-bounce.cnb-icontext.cnb-bottom-right,
+.cnb-animation-bounce.cnb-icontext.cnb-top-left,
+.cnb-animation-bounce.cnb-icontext.cnb-top-right { animation: cnb-bounce-pill 0.9s ease-in-out infinite; }
 
 /* Shake Animation */
 @keyframes cnb-shake {
@@ -405,10 +597,28 @@
     }
 }
 
+/* Shake for pill (icontext) - smaller swing */
+@keyframes cnb-shake-pill {
+    0%, 100% { transform: translateX(0) translateY(0) rotate(0deg) scale(var(--cnb-scale, 1)); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-1px) translateY(0) rotate(-0.5deg) scale(var(--cnb-scale, 1)); }
+    20%, 40%, 60%, 80%     { transform: translateX(1px) translateY(0) rotate(0.5deg) scale(var(--cnb-scale, 1)); }
+}
+@keyframes cnb-shake-pill-bottom-center {
+    0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg) scale(var(--cnb-scale, 1)); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(calc(-50% - 1px)) translateY(0) rotate(-0.5deg) scale(var(--cnb-scale, 1)); }
+    20%, 40%, 60%, 80%     { transform: translateX(calc(-50% + 1px)) translateY(0) rotate(0.5deg) scale(var(--cnb-scale, 1)); }
+}
+@keyframes cnb-shake-pill-top-center {
+    0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg) scale(var(--cnb-scale, 1)); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(calc(-50% - 1px)) translateY(0) rotate(-0.5deg) scale(var(--cnb-scale, 1)); }
+    20%, 40%, 60%, 80%     { transform: translateX(calc(-50% + 1px)) translateY(0) rotate(0.5deg) scale(var(--cnb-scale, 1)); }
+}
 /* Shake with position - need to preserve position transform */
 .cnb-animation-shake.cnb-bottom-center {
     animation: cnb-shake-bottom-center 0.6s ease-in-out infinite;
 }
+/* Use pill shake when icontext */
+.cnb-animation-shake.cnb-icontext.cnb-bottom-center { animation: cnb-shake-pill-bottom-center 0.6s ease-in-out infinite; }
 
 @keyframes cnb-shake-bottom-center {
     0%, 100% {
@@ -425,6 +635,8 @@
 .cnb-animation-shake.cnb-top-center {
     animation: cnb-shake-top-center 0.6s ease-in-out infinite;
 }
+/* Use pill shake when icontext */
+.cnb-animation-shake.cnb-icontext.cnb-top-center { animation: cnb-shake-pill-top-center 0.6s ease-in-out infinite; }
 
 @keyframes cnb-shake-top-center {
     0%, 100% {
@@ -476,6 +688,11 @@
 .cnb-animation-shake.cnb-top-right {
     animation: cnb-shake 0.6s ease-in-out infinite;
 }
+/* pill variant */
+.cnb-animation-shake.cnb-icontext.cnb-bottom-left,
+.cnb-animation-shake.cnb-icontext.cnb-bottom-right,
+.cnb-animation-shake.cnb-icontext.cnb-top-left,
+.cnb-animation-shake.cnb-icontext.cnb-top-right { animation: cnb-shake-pill 0.6s ease-in-out infinite; }
 
 /* Text bubble for single button (optional feature) */
 .cnb-button-text-bubble {
@@ -512,7 +729,7 @@
 }
 
 .cnb-multibutton-main {
-    position: relative;
+    position: fixed;
 }
 
 .cnb-multibutton-options {
@@ -621,27 +838,20 @@
     display: inline-block;
 }
 
-/* Positioning for bottom positions - tooltip/title next to icon (right side) */
+/* Positioning for bottom positions - show tooltip next to icon (like always mode) */
 .cnb-multibutton-container.cnb-bottom-right .cnb-tooltip,
 .cnb-multibutton-container.cnb-bottom-left .cnb-tooltip,
 .cnb-multibutton-container.cnb-bottom-center .cnb-tooltip {
-    /* Hover tooltips stay above for bottom positions */
-    bottom: 100%;
-    margin-bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0;
+    margin-bottom: 0;
 }
-
 .cnb-multibutton-container.cnb-bottom-right .cnb-tooltip {
     left: auto;
-    right: 0;
-    transform: none;
-}
-
-.cnb-multibutton-container.cnb-bottom-left .cnb-tooltip {
-    left: 0;
-    right: auto;
-    transform: none;
+    right: calc(100% + 12px);
+    transform: translateY(-50%);
 }
 
 /* Title text for always visible mode - position next to icon */
@@ -661,27 +871,20 @@
     transform: translateY(-50%);
 }
 
-/* Positioning for top positions - tooltip/title next to icon */
+/* Positioning for top positions - also next to icon */
 .cnb-multibutton-container.cnb-top-right .cnb-tooltip,
 .cnb-multibutton-container.cnb-top-left .cnb-tooltip,
 .cnb-multibutton-container.cnb-top-center .cnb-tooltip {
-    /* Hover tooltips stay below for top positions */
-    top: 100%;
-    margin-top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0;
+    margin-left: 0;
 }
-
 .cnb-multibutton-container.cnb-top-right .cnb-tooltip {
     left: auto;
-    right: 0;
-    transform: none;
-}
-
-.cnb-multibutton-container.cnb-top-left .cnb-tooltip {
-    left: 0;
-    right: auto;
-    transform: none;
+    right: calc(100% + 12px);
+    transform: translateY(-50%);
 }
 
 /* Title text for always visible mode - position next to icon */

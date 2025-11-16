@@ -130,6 +130,16 @@
                 />
                 
                 <field
+                    name="main_button_text"
+                    type="text"
+                    label="MOD_CALLNOWBUTTON_MAIN_BUTTON_TEXT_LABEL"
+                    description="MOD_CALLNOWBUTTON_MAIN_BUTTON_TEXT_DESC"
+                    default=""
+                    hint="WhatsApp"
+                    showon="button_type:multibutton"
+                />
+                
+                <field
                     name="main_button_icon"
                     type="iconselector"
                     label="MOD_CALLNOWBUTTON_MAIN_BUTTON_ICON_LABEL"
@@ -146,6 +156,8 @@
                     description="MOD_CALLNOWBUTTON_MAIN_BUTTON_ICON_CUSTOM_DESC"
                     showon="button_type:multibutton"
                 />
+
+
                 
                 <field
                     name="multibutton_title_display"
@@ -171,6 +183,18 @@
             </fieldset>
             
             <fieldset name="presentation" label="MOD_CALLNOWBUTTON_PRESENTATION_FIELDSET_LABEL">
+                <!-- Moved from Visibility: Display Mode -->
+                <field
+                    name="display_mode"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_DISPLAY_MODE_LABEL"
+                    description="MOD_CALLNOWBUTTON_DISPLAY_MODE_DESC"
+                    default="mobile_only">
+                    <option value="all">MOD_CALLNOWBUTTON_DISPLAY_MODE_ALL</option>
+                    <option value="mobile_only">MOD_CALLNOWBUTTON_DISPLAY_MODE_MOBILE_ONLY</option>
+                    <option value="desktop_only">MOD_CALLNOWBUTTON_DISPLAY_MODE_DESKTOP_ONLY</option>
+                </field>
+
                 <field
                     name="appearance"
                     type="list"
@@ -178,9 +202,10 @@
                     description="MOD_CALLNOWBUTTON_APPEARANCE_DESC"
                     default="single">
                     <option value="single">MOD_CALLNOWBUTTON_APPEARANCE_SINGLE</option>
-                    <option value="full">MOD_CALLNOWBUTTON_APPEARANCE_FULL</option>
-                    <option value="tfull">MOD_CALLNOWBUTTON_APPEARANCE_FULL_TOP</option>
+                    <option value="icontext">MOD_CALLNOWBUTTON_APPEARANCE_ICON_TEXT</option>
                 </field>
+
+                
                 
                 <field
                     name="position"
@@ -188,7 +213,7 @@
                     label="MOD_CALLNOWBUTTON_POSITION_LABEL"
                     description="MOD_CALLNOWBUTTON_POSITION_DESC"
                     default="bottom-right"
-                    showon="appearance:single">
+                    showon="appearance:single,icontext">
                     <option value="bottom-left">MOD_CALLNOWBUTTON_POSITION_BOTTOM_LEFT</option>
                     <option value="bottom-center">MOD_CALLNOWBUTTON_POSITION_BOTTOM_CENTER</option>
                     <option value="bottom-right">MOD_CALLNOWBUTTON_POSITION_BOTTOM_RIGHT</option>
@@ -197,6 +222,9 @@
                     <option value="top-right">MOD_CALLNOWBUTTON_POSITION_TOP_RIGHT</option>
                     <option value="middle-left">MOD_CALLNOWBUTTON_POSITION_MIDDLE_LEFT</option>
                     <option value="middle-right">MOD_CALLNOWBUTTON_POSITION_MIDDLE_RIGHT</option>
+                    <!-- Full width positions available when using Icon with Text -->
+                    <option value="full-bottom">MOD_CALLNOWBUTTON_POSITION_FULL_BOTTOM</option>
+                    <option value="full-top">MOD_CALLNOWBUTTON_POSITION_FULL_TOP</option>
                 </field>
                 
                 <field
@@ -221,10 +249,10 @@
                     label="MOD_CALLNOWBUTTON_BUTTON_SIZE_LABEL"
                     description="MOD_CALLNOWBUTTON_BUTTON_SIZE_DESC"
                     default="1"
-                    min="0.7"
-                    max="1.3"
-                    step="0.1"
-                    showon="appearance:single"
+                    min="0.85"
+                    max="1.25"
+                    step="0.05"
+                    showon="appearance:single,icontext"
                 />
                 
                 <field
@@ -233,12 +261,147 @@
                     label="MOD_CALLNOWBUTTON_ANIMATION_LABEL"
                     description="MOD_CALLNOWBUTTON_ANIMATION_DESC"
                     default="none"
-                    showon="appearance:single">
+                    showon="appearance:single,icontext">
                     <option value="none">MOD_CALLNOWBUTTON_ANIMATION_NONE</option>
                     <option value="pulse">MOD_CALLNOWBUTTON_ANIMATION_PULSE</option>
                     <option value="bounce">MOD_CALLNOWBUTTON_ANIMATION_BOUNCE</option>
                     <option value="shake">MOD_CALLNOWBUTTON_ANIMATION_SHAKE</option>
                 </field>
+
+                <!-- Icon with Text typography -->
+                <field
+                    name="icontext_font_size"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_ICONTEXT_FONT_SIZE_LABEL"
+                    description="MOD_CALLNOWBUTTON_ICONTEXT_FONT_SIZE_DESC"
+                    default="14"
+                    min="10"
+                    max="20"
+                    step="1"
+                    showon="appearance:icontext"
+                />
+
+                <field
+                    name="icontext_font_color"
+                    type="color"
+                    label="MOD_CALLNOWBUTTON_ICONTEXT_FONT_COLOR_LABEL"
+                    description="MOD_CALLNOWBUTTON_ICONTEXT_FONT_COLOR_DESC"
+                    default="#FFFFFF"
+                    showon="appearance:icontext"
+                />
+
+                <field
+                    name="icontext_font_weight"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_ICONTEXT_FONT_WEIGHT_LABEL"
+                    description="MOD_CALLNOWBUTTON_ICONTEXT_FONT_WEIGHT_DESC"
+                    default="600"
+                    showon="appearance:icontext">
+                    <option value="400">400 - Normal</option>
+                    <option value="500">500 - Medium</option>
+                    <option value="600">600 - Semibold</option>
+                    <option value="700">700 - Bold</option>
+                    <option value="800">800 - Extra Bold</option>
+                    <option value="900">900 - Black</option>
+                </field>
+
+                <!-- Icon with Text - icon sizing -->
+                <field
+                    name="icontext_icon_size"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_ICONTEXT_ICON_SIZE_LABEL"
+                    description="MOD_CALLNOWBUTTON_ICONTEXT_ICON_SIZE_DESC"
+                    default="20"
+                    min="14"
+                    max="32"
+                    step="1"
+                    showon="appearance:icontext"
+                />
+
+                <field
+                    name="icontext_icon_circle"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_ICONTEXT_ICON_CIRCLE_LABEL"
+                    description="MOD_CALLNOWBUTTON_ICONTEXT_ICON_CIRCLE_DESC"
+                    default="26"
+                    min="18"
+                    max="40"
+                    step="1"
+                    showon="appearance:icontext"
+                />
+
+                <!-- Responsive sizing -->
+                <field
+                    name="responsive_size_enabled"
+                    type="radio"
+                    label="MOD_CALLNOWBUTTON_RESPONSIVE_SIZE_ENABLED_LABEL"
+                    description="MOD_CALLNOWBUTTON_RESPONSIVE_SIZE_ENABLED_DESC"
+                    default="0"
+                    class="btn-group btn-group-yesno"
+                    showon="appearance:single,icontext">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+
+                <field
+                    name="size_desktop"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_SIZE_DESKTOP_LABEL"
+                    description="MOD_CALLNOWBUTTON_SIZE_DESKTOP_DESC"
+                    default="1"
+                    min="0.9"
+                    max="2"
+                    step="0.05"
+                    showon="responsive_size_enabled:1"
+                />
+
+                <field
+                    name="size_tablet"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_SIZE_TABLET_LABEL"
+                    description="MOD_CALLNOWBUTTON_SIZE_TABLET_DESC"
+                    default="1"
+                    min="0.9"
+                    max="1.2"
+                    step="0.05"
+                    showon="responsive_size_enabled:1"
+                />
+
+                <field
+                    name="size_tablet_landscape"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_SIZE_TABLET_LANDSCAPE_LABEL"
+                    description="MOD_CALLNOWBUTTON_SIZE_TABLET_LANDSCAPE_DESC"
+                    default="1"
+                    min="0.9"
+                    max="1.2"
+                    step="0.05"
+                    showon="responsive_size_enabled:1"
+                />
+
+                <field
+                    name="size_mobile"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_SIZE_MOBILE_LABEL"
+                    description="MOD_CALLNOWBUTTON_SIZE_MOBILE_DESC"
+                    default="0.95"
+                    min="0.85"
+                    max="1.15"
+                    step="0.05"
+                    showon="responsive_size_enabled:1"
+                />
+
+                <field
+                    name="size_mobile_landscape"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_SIZE_MOBILE_LANDSCAPE_LABEL"
+                    description="MOD_CALLNOWBUTTON_SIZE_MOBILE_LANDSCAPE_DESC"
+                    default="1"
+                    min="0.85"
+                    max="1.15"
+                    step="0.05"
+                    showon="responsive_size_enabled:1"
+                />
                 
                 <field
                     name="z_index"
@@ -251,96 +414,8 @@
                 />
             </fieldset>
             
-            <fieldset name="visibility" label="MOD_CALLNOWBUTTON_VISIBILITY_FIELDSET_LABEL">
-                <field
-                    name="display_mode"
-                    type="list"
-                    label="MOD_CALLNOWBUTTON_DISPLAY_MODE_LABEL"
-                    description="MOD_CALLNOWBUTTON_DISPLAY_MODE_DESC"
-                    default="mobile_only">
-                    <option value="all">MOD_CALLNOWBUTTON_DISPLAY_MODE_ALL</option>
-                    <option value="mobile_only">MOD_CALLNOWBUTTON_DISPLAY_MODE_MOBILE_ONLY</option>
-                    <option value="desktop_only">MOD_CALLNOWBUTTON_DISPLAY_MODE_DESKTOP_ONLY</option>
-                </field>
-                
-                <field
-                    name="hide_frontpage"
-                    type="radio"
-                    label="MOD_CALLNOWBUTTON_HIDE_FRONTPAGE_LABEL"
-                    description="MOD_CALLNOWBUTTON_HIDE_FRONTPAGE_DESC"
-                    default="0"
-                    class="btn-group btn-group-yesno">
-                    <option value="1">JYES</option>
-                    <option value="0">JNO</option>
-                </field>
-            </fieldset>
+            <!-- Visibility fieldset removed -->
             
-            <fieldset name="tracking" label="MOD_CALLNOWBUTTON_TRACKING_FIELDSET_LABEL">
-                <field
-                    name="tracking_enabled"
-                    type="radio"
-                    label="MOD_CALLNOWBUTTON_TRACKING_ENABLED_LABEL"
-                    description="MOD_CALLNOWBUTTON_TRACKING_ENABLED_DESC"
-                    default="0"
-                    class="btn-group btn-group-yesno">
-                    <option value="1">JYES</option>
-                    <option value="0">JNO</option>
-                </field>
-                
-                <field
-                    name="tracking_type"
-                    type="list"
-                    label="MOD_CALLNOWBUTTON_TRACKING_TYPE_LABEL"
-                    description="MOD_CALLNOWBUTTON_TRACKING_TYPE_DESC"
-                    default="gtag"
-                    showon="tracking_enabled:1">
-                    <option value="gtag">MOD_CALLNOWBUTTON_TRACKING_TYPE_GTAG</option>
-                    <option value="analytics">MOD_CALLNOWBUTTON_TRACKING_TYPE_ANALYTICS</option>
-                    <option value="classic">MOD_CALLNOWBUTTON_TRACKING_TYPE_CLASSIC</option>
-                </field>
-                
-                <field
-                    name="ga_id"
-                    type="text"
-                    label="MOD_CALLNOWBUTTON_GA_ID_LABEL"
-                    description="MOD_CALLNOWBUTTON_GA_ID_DESC"
-                    default=""
-                    showon="tracking_enabled:1"
-                    hint="G-XXXXXXXXXX or UA-XXXXXXXXX-X"
-                />
-                
-                <field
-                    name="conversion_tracking"
-                    type="radio"
-                    label="MOD_CALLNOWBUTTON_CONVERSION_TRACKING_LABEL"
-                    description="MOD_CALLNOWBUTTON_CONVERSION_TRACKING_DESC"
-                    default="0"
-                    class="btn-group btn-group-yesno">
-                    <option value="1">JYES</option>
-                    <option value="0">JNO</option>
-                </field>
-                
-                <field
-                    name="conversion_type"
-                    type="list"
-                    label="MOD_CALLNOWBUTTON_CONVERSION_TYPE_LABEL"
-                    description="MOD_CALLNOWBUTTON_CONVERSION_TYPE_DESC"
-                    default="gtag"
-                    showon="conversion_tracking:1">
-                    <option value="gtag">MOD_CALLNOWBUTTON_CONVERSION_TYPE_GTAG</option>
-                    <option value="js">MOD_CALLNOWBUTTON_CONVERSION_TYPE_JS</option>
-                </field>
-                
-                <field
-                    name="conversion_id"
-                    type="text"
-                    label="MOD_CALLNOWBUTTON_CONVERSION_ID_LABEL"
-                    description="MOD_CALLNOWBUTTON_CONVERSION_ID_DESC"
-                    default=""
-                    showon="conversion_tracking:1"
-                    hint="AW-XXXXXXXXX/XXXXXXXXXX"
-                />
-            </fieldset>
         </fields>
     </config>
 </extension>

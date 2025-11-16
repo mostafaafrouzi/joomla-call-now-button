@@ -180,15 +180,6 @@ class CallNowButtonHelper
             }
         }
 
-        // Check if frontpage should be hidden
-        $hideFrontpage = $this->params->get('hide_frontpage', 0);
-        $menu = $this->app->getMenu();
-        $active = $menu->getActive();
-        
-        if ($hideFrontpage && ($active === null || ($active && $active->home))) {
-            return false;
-        }
-
         return true;
     }
 
@@ -240,6 +231,17 @@ class CallNowButtonHelper
         $zIndex = $this->params->get('z_index', 9999);
         $animation = $this->params->get('animation', 'none');
         $appearance = $this->params->get('appearance', 'single');
+        $responsiveEnabled = (int)$this->params->get('responsive_size_enabled', 0) === 1;
+        $sizeDesktop = (float)$this->params->get('size_desktop', 1.0);
+        $sizeTablet = (float)$this->params->get('size_tablet', 1.0);
+        $sizeTabletLandscape = (float)$this->params->get('size_tablet_landscape', 1.0);
+        $sizeMobile = (float)$this->params->get('size_mobile', 0.95);
+        $sizeMobileLandscape = (float)$this->params->get('size_mobile_landscape', 1.0);
+        $iconTextFontSize = (int)$this->params->get('icontext_font_size', 14);
+        $iconTextFontColor = $this->params->get('icontext_font_color', '#FFFFFF');
+        $iconTextFontWeight = (int)$this->params->get('icontext_font_weight', 600);
+        $iconTextIconSize = (int)$this->params->get('icontext_icon_size', 20);
+        $iconTextIconCircle = (int)$this->params->get('icontext_icon_circle', 26);
         
         $css = "
         .cnb-button {
@@ -262,11 +264,12 @@ class CallNowButtonHelper
             ";
         }
         
-        // Apply scale to button only for single appearance
+        // Apply scale to button for single and icontext appearances
         // Use CSS variable for scale so it can be combined with animation transforms
-        if ($appearance === 'single') {
+        if ($appearance === 'single' || $appearance === 'icontext') {
             $css .= "
-            .cnb-button.cnb-single {
+            .cnb-button.cnb-single,
+            .cnb-button.cnb-icontext {
                 --cnb-scale: {$buttonSize};
             }
             ";
@@ -274,14 +277,75 @@ class CallNowButtonHelper
             // For buttons without animation, apply scale directly
             if ($animation === 'none') {
                 $css .= "
-                .cnb-button.cnb-single:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake) {
+                .cnb-button.cnb-single:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake),
+                .cnb-button.cnb-icontext:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake) {
                     transform: scale({$buttonSize}) !important;
                 }
                 ";
             }
         }
+
+        // Responsive overrides using media queries (when enabled)
+        if ($responsiveEnabled && ($appearance === 'single' || $appearance === 'icontext')) {
+            $css .= "
+            /* Desktop (>= 1025px) */
+            @media (min-width: 1025px) {
+                .cnb-button.cnb-single,
+                .cnb-button.cnb-icontext { --cnb-scale: {$sizeDesktop}; }
+                .cnb-button.cnb-single:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake),
+                .cnb-button.cnb-icontext:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake) { transform: scale({$sizeDesktop}) !important; }
+            }
+            /* Tablet Portrait (768px - 1024px) */
+            @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+                .cnb-button.cnb-single,
+                .cnb-button.cnb-icontext { --cnb-scale: {$sizeTablet}; }
+                .cnb-button.cnb-single:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake),
+                .cnb-button.cnb-icontext:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake) { transform: scale({$sizeTablet}) !important; }
+            }
+            /* Tablet Landscape (768px - 1024px) */
+            @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+                .cnb-button.cnb-single,
+                .cnb-button.cnb-icontext { --cnb-scale: {$sizeTabletLandscape}; }
+                .cnb-button.cnb-single:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake),
+                .cnb-button.cnb-icontext:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake) { transform: scale({$sizeTabletLandscape}) !important; }
+            }
+            /* Mobile Portrait (<= 767px) */
+            @media (max-width: 767px) and (orientation: portrait) {
+                .cnb-button.cnb-single,
+                .cnb-button.cnb-icontext { --cnb-scale: {$sizeMobile}; }
+                .cnb-button.cnb-single:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake),
+                .cnb-button.cnb-icontext:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake) { transform: scale({$sizeMobile}) !important; }
+            }
+            /* Mobile Landscape (<= 767px) */
+            @media (max-width: 767px) and (orientation: landscape) {
+                .cnb-button.cnb-single,
+                .cnb-button.cnb-icontext { --cnb-scale: {$sizeMobileLandscape}; }
+                .cnb-button.cnb-single:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake),
+                .cnb-button.cnb-icontext:not(.cnb-animation-pulse):not(.cnb-animation-bounce):not(.cnb-animation-shake) { transform: scale({$sizeMobileLandscape}) !important; }
+            }
+            ";
+        }
         
         $document->addStyleDeclaration($css);
+
+        // Additional typography CSS for Icon + Text
+        if ($appearance === 'icontext') {
+            $typoCss = "
+            .cnb-button.cnb-icontext .cnb-button-text {
+                font-size: {$iconTextFontSize}px !important;
+                font-weight: {$iconTextFontWeight} !important;
+                color: {$iconTextFontColor} !important;
+            }
+            .cnb-button.cnb-icontext .cnb-icon {
+                width: {$iconTextIconSize}px !important;
+                height: {$iconTextIconSize}px !important;
+            }
+            .cnb-button.cnb-icontext .cnb-icon-circle {
+                width: {$iconTextIconCircle}px !important;
+                height: {$iconTextIconCircle}px !important;
+            }";
+            $document->addStyleDeclaration($typoCss);
+        }
     }
 
     /**
@@ -298,12 +362,8 @@ class CallNowButtonHelper
         $position = $this->params->get('position', 'bottom-right');
         $buttonType = $this->params->get('button_type', 'single');
         
-        // Check if multibutton - multibutton only works with single appearance
+        // Check if multibutton - respect icontext for main button, otherwise treat as single
         if ($buttonType === 'multibutton') {
-            // Force appearance to single for multibutton
-            if ($appearance !== 'single') {
-                $appearance = 'single';
-            }
             return $this->renderMultibutton('', $position);
         }
         
@@ -323,19 +383,24 @@ class CallNowButtonHelper
         // Build CSS classes
         $classes = ['cnb-button', 'cnb-' . $appearance];
         
-        // Add position class only for single button
-        if ($appearance === 'single') {
+        // Add position class for single-like appearances
+        if ($appearance === 'single' || $appearance === 'icontext') {
             // Add animation class first, then position (so position overrides animation position)
             $animation = $this->params->get('animation', 'none');
             if ($animation !== 'none') {
                 $classes[] = 'cnb-animation-' . $animation;
             }
-            // Position class must come after animation for proper CSS specificity
-            $classes[] = 'cnb-' . $position;
+            // Handle full width mapped via position when using icontext
+            if ($appearance === 'icontext' && ($position === 'full-bottom' || $position === 'full-top')) {
+                $classes[] = ($position === 'full-bottom') ? 'cnb-full' : 'cnb-tfull';
+            } else {
+                // Position class must come after animation for proper CSS specificity
+                $classes[] = 'cnb-' . $position;
+            }
         }
         
-        // Build onclick tracking code
-        $onclick = $this->getTrackingCode();
+        // Tracking removed
+        $onclick = '';
         
         // Build aria-label
         $lang = Factory::getLanguage();
@@ -348,10 +413,10 @@ class CallNowButtonHelper
         $html .= ' href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '"';
         $html .= ' id="callnowbutton"';
         $html .= ' class="' . htmlspecialchars(implode(' ', $classes), ENT_QUOTES, 'UTF-8') . '"';
+        // Add data-appearance for CSS hooks
+        $html .= ' data-appearance="' . htmlspecialchars($appearance, ENT_QUOTES, 'UTF-8') . '"';
         
-        if (!empty($onclick)) {
-            $html .= ' onclick="' . htmlspecialchars($onclick, ENT_QUOTES, 'UTF-8') . '"';
-        }
+        // No onclick tracking
         
         $html .= '>';
         
@@ -362,6 +427,23 @@ class CallNowButtonHelper
                 Factory::getLanguage()->_('MOD_CALLNOWBUTTON_CALL_NOW');
             $html .= '<span class="cnb-button-text">' . 
                 htmlspecialchars($displayText, ENT_QUOTES, 'UTF-8') . '</span>';
+        } elseif ($appearance === 'icontext') {
+            // Icon + Text combo
+            // Icon first
+            if (!empty($buttonIconCustom)) {
+                $iconPath = Uri::root() . ltrim($buttonIconCustom, '/');
+                $html .= '<span class="cnb-icon-circle"><img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="" width="20" height="20" class="cnb-icon" /></span>';
+            } else {
+                $iconSvg = $this->getIcon($buttonIcon, $iconColor);
+                // ensure svg has class for styling
+                if (preg_match('/<svg\s+/i', $iconSvg)) {
+                    $iconSvg = preg_replace('/<svg\s+/i', '<svg class="cnb-icon" width="20" height="20" ', $iconSvg, 1);
+                }
+                $html .= '<span class="cnb-icon-circle">' . $iconSvg . '</span>';
+            }
+            // Then text
+            $displayText = !empty($buttonText) ? $buttonText : Factory::getLanguage()->_('MOD_CALLNOWBUTTON_CALL_NOW');
+            $html .= '<span class="cnb-button-text">' . htmlspecialchars($displayText, ENT_QUOTES, 'UTF-8') . '</span>';
         } elseif ($appearance === 'single' || empty($buttonText)) {
             // Show icon for single button
             if (!empty($buttonIconCustom)) {
@@ -553,7 +635,10 @@ class CallNowButtonHelper
         $html = '<div class="cnb-multibutton-container cnb-' . htmlspecialchars($position, ENT_QUOTES, 'UTF-8') . '">';
         
         // Main button
-        $classes = ['cnb-button', 'cnb-single', 'cnb-' . $position, 'cnb-multibutton-main'];
+        // Determine appearance for main button from global appearance (only icontext is special)
+        $globalAppearance = $this->params->get('appearance', 'single');
+        $multimainAppearance = ($globalAppearance === 'icontext') ? 'icontext' : 'single';
+        $classes = ['cnb-button', 'cnb-' . $multimainAppearance, 'cnb-' . $position, 'cnb-multibutton-main'];
         $animation = $this->params->get('animation', 'none');
         if ($animation !== 'none') {
             $classes[] = 'cnb-animation-' . $animation;
@@ -569,14 +654,32 @@ class CallNowButtonHelper
         $html .= ' id="callnowbutton"';
         $html .= ' class="' . htmlspecialchars(implode(' ', $classes), ENT_QUOTES, 'UTF-8') . '"';
         $html .= ' aria-label="' . htmlspecialchars($lang->_('MOD_CALLNOWBUTTON_CALL_NOW'), ENT_QUOTES, 'UTF-8') . '"';
-        $html .= '>';
+        $html .= ' data-appearance="' . htmlspecialchars($multimainAppearance, ENT_QUOTES, 'UTF-8') . '">';
         
-        // Add main button icon
-        if (!empty($mainButtonIconCustom)) {
-            $iconPath = Uri::root() . ltrim($mainButtonIconCustom, '/');
-            $html .= '<img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="" width="24" height="24" />';
+        // Add main button icon (+ optional text if icontext)
+        if ($multimainAppearance === 'icontext') {
+            if (!empty($mainButtonIconCustom)) {
+                $iconPath = Uri::root() . ltrim($mainButtonIconCustom, '/');
+                $html .= '<span class="cnb-icon-circle"><img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="" width="20" height="20" class="cnb-icon" /></span>';
+            } else {
+                $iconSvg = $this->getIcon($mainButtonIcon, $iconColor);
+                if (preg_match('/<svg\s+/i', $iconSvg)) {
+                    $iconSvg = preg_replace('/<svg\s+/i', '<svg class="cnb-icon" width="20" height="20" ', $iconSvg, 1);
+                }
+                $html .= '<span class="cnb-icon-circle">' . $iconSvg . '</span>';
+            }
+            $mainButtonText = trim((string)$this->params->get('main_button_text', ''));
+            if ($mainButtonText === '') {
+                $mainButtonText = $lang->_('MOD_CALLNOWBUTTON_CALL_NOW');
+            }
+            $html .= '<span class="cnb-button-text">' . htmlspecialchars($mainButtonText, ENT_QUOTES, 'UTF-8') . '</span>';
         } else {
-            $html .= $this->getIcon($mainButtonIcon, $iconColor);
+            if (!empty($mainButtonIconCustom)) {
+                $iconPath = Uri::root() . ltrim($mainButtonIconCustom, '/');
+                $html .= '<img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="" width="24" height="24" />';
+            } else {
+                $html .= $this->getIcon($mainButtonIcon, $iconColor);
+            }
         }
         
         $html .= '</a>';
@@ -730,6 +833,8 @@ class CallNowButtonHelper
      */
     protected function getIcon($iconType, $color = '#FFFFFF')
     {
+        // SVG icons are stored as inline HTML code in PHP arrays (not as separate files)
+        // This allows dynamic color changes and easy customization
         $icons = [
             'phone' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24"><path d="M27.01355,23.48859l-1.753,1.75305a5.001,5.001,0,0,1-5.19928,1.18243c-1.97193-.69372-4.87335-2.36438-8.43848-5.9295S6.387,14.028,5.6933,12.05615A5.00078,5.00078,0,0,1,6.87573,6.85687L8.62878,5.10376a1,1,0,0,1,1.41431.00012l2.828,2.8288A1,1,0,0,1,12.871,9.3468L11.0647,11.153a1.0038,1.0038,0,0,0-.0821,1.32171,40.74278,40.74278,0,0,0,4.07624,4.58374,40.74143,40.74143,0,0,0,4.58374,4.07623,1.00379,1.00379,0,0,0,1.32171-.08209l1.80622-1.80627a1,1,0,0,1,1.41412-.00012l2.8288,2.828A1.00007,1.00007,0,0,1,27.01355,23.48859Z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
             'whatsapp' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
@@ -739,6 +844,17 @@ class CallNowButtonHelper
             'messenger' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.577 4.123 1.585 5.837L0 24l6.35-1.756C7.951 23.344 9.91 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.5c-1.784 0-3.46-.49-4.896-1.34L2.5 22.5l2.206-4.66C3.5 16.5 2.5 14.4 2.5 12 2.5 6.201 6.701 1.5 12 1.5S21.5 6.201 21.5 12 17.299 21.5 12 21.5z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
             'skype' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.577 4.123 1.585 5.837L0 24l6.35-1.756C7.951 23.344 9.91 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm5.568 16.655c-.192.545-.48 1.04-.86 1.48-.38.44-.84.81-1.38 1.11-.54.3-1.13.45-1.77.45-.9 0-1.68-.24-2.34-.72-.66-.48-1.17-1.14-1.53-1.98l1.71-1.05c.24.54.57.96.99 1.26.42.3.9.45 1.44.45.36 0 .69-.06.99-.18.3-.12.56-.3.78-.54.22-.24.39-.54.51-.9.12-.36.18-.75.18-1.17 0-.42-.06-.81-.18-1.17-.12-.36-.29-.66-.51-.9-.22-.24-.48-.42-.78-.54-.3-.12-.63-.18-.99-.18-.54 0-1.02.15-1.44.45-.42.3-.75.72-.99 1.26l-1.71-1.05c.36-.84.87-1.5 1.53-1.98.66-.48 1.44-.72 2.34-.72.64 0 1.23.15 1.77.45.54.3 1 .68 1.38 1.11.38.44.668.935.86 1.48.192.545.288 1.12.288 1.73 0 .61-.096 1.185-.288 1.73z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
             'viber' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 2.079.549 4.027 1.507 5.713L.028 24l6.305-1.506c1.625.892 3.418 1.393 5.352 1.393 6.624 0 11.99-5.367 11.99-11.987C23.675 5.367 18.308.001 12.017.001zm.162 18.292c-1.787 0-3.48-.49-4.93-1.344l-.352-.209-3.675.877.877-3.672-.21-.353a8.26 8.26 0 01-1.342-4.914c0-4.625 3.768-8.393 8.393-8.393s8.393 3.768 8.393 8.393-3.768 8.393-8.393 8.393zm4.508-5.334l-1.844-.928c-.144-.073-.3-.11-.456-.11-.24 0-.48.072-.696.216l-.84.528c-.168.096-.384.096-.552 0l-1.68-.84c-1.68-.84-2.784-2.928-2.784-4.848 0-.24.048-.48.144-.696l.528-.84c.144-.216.216-.456.216-.696 0-.156-.037-.312-.11-.456l-.928-1.844c-.192-.384-.576-.576-.96-.576-.24 0-.48.072-.696.216l-1.2.6c-.48.24-.816.696-.96 1.2-.144.504-.072 1.032.216 1.488 1.44 2.88 3.84 5.28 6.72 6.72.456.288.984.36 1.488.216.504-.144.96-.48 1.2-.96l.6-1.2c.144-.216.216-.456.216-.696 0-.384-.192-.768-.576-.96z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
+            'instagram' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
+            'facebook' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
+            'twitter' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
+            'linkedin' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
+            'youtube' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
+            'tiktok' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
+            'snapchat' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12.206 0C8.912 0 5.844 1.099 3.193 3.074c-.126.096-.252.19-.376.286-.403.31-.81.617-1.2.944C.816 4.867.278 5.94.085 7.124c-.018.106-.034.215-.048.323C-.01 8.3-.051 9.147.062 9.994c.032.236.072.47.119.702.262 1.326 1.08 2.38 2.226 3.063.267.16.538.31.82.447.086.042.175.078.262.118.01.004.02.006.03.01-.004.01-.01.02-.015.03-.093.327-.17.657-.23.99-.053.3-.08.604-.082.91 0 .032.003.064.004.096.008.204.02.407.044.607.117.99.41 1.9.87 2.75.46.85 1.02 1.64 1.68 2.35.19.21.39.41.6.6.47.42.98.79 1.52 1.11.54.32 1.12.59 1.72.81.6.22 1.23.38 1.88.49.15.02.3.04.45.06.31.03.63.05.94.05.31 0 .63-.02.94-.05.15-.02.3-.04.45-.06.65-.11 1.28-.27 1.88-.49.6-.22 1.18-.49 1.72-.81.54-.32 1.05-.69 1.52-1.11.21-.19.41-.39.6-.6.66-.71 1.22-1.5 1.68-2.35.46-.85.75-1.76.87-2.75.02-.2.04-.403.04-.607 0-.032 0-.064.004-.096 0-.306-.03-.61-.082-.91-.06-.333-.137-.663-.23-.99-.01-.004-.02-.006-.03-.01.087-.04.176-.076.262-.118.282-.137.553-.287.82-.447 1.146-.683 1.964-1.737 2.226-3.063.047-.232.087-.466.119-.702.113-.847.072-1.694-.002-2.547-.014-.108-.03-.217-.048-.323C23.722 5.94 23.184 4.867 22.38 4.304c-.39-.327-.797-.634-1.2-.944-.124-.096-.25-.19-.376-.286C18.156 1.099 15.088 0 12.206 0zm.027 5.55c.325-.001.641.042.944.127.305.085.597.212.87.38.544.337 1.017.811 1.35 1.355.168.273.295.565.38.87.085.303.127.619.127.944 0 .325-.042.641-.127.944-.085.305-.212.597-.38.87-.333.544-.806 1.018-1.35 1.355-.273.168-.565.295-.87.38-.303.085-.619.127-.944.127-.325 0-.641-.042-.944-.127-.305-.085-.597-.212-.87-.38-.544-.337-1.017-.811-1.35-1.355-.168-.273-.295-.565-.38-.87-.085-.303-.127-.619-.127-.944 0-.325.042-.641.127-.944.085-.305.212-.597.38-.87.333-.544.806-1.018 1.35-1.355.273-.168.565-.295.87-.38.303-.085.619-.127.944-.127z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
+            'discord' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
+            'signal' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.577 4.123 1.585 5.837L0 24l6.35-1.756C7.951 23.344 9.91 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm-.29 5.71c1.85 0 3.35 1.5 3.35 3.35s-1.5 3.35-3.35 3.35-3.35-1.5-3.35-3.35S9.86 5.71 11.71 5.71zm4.54 11.71l-9.07-5.82c1.44-1.05 3.24-1.68 5.21-1.68 1.97 0 3.77.63 5.21 1.68l-9.07 5.82z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
+            'line' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.028 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
+            'wechat' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.597-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm6.595.31c2.092 0 3.786 1.726 3.786 3.853 0 2.128-1.694 3.855-3.786 3.855a4.1 4.1 0 0 1-1.771-.392.628.628 0 0 0-.525.038l-1.335.782a.22.22 0 0 1-.302-.099.244.244 0 0 1-.027-.146l.195-1.477a.471.471 0 0 0-.163-.537 3.826 3.826 0 0 1-1.384-2.637c0-2.127 1.693-3.854 3.785-3.854zm-1.395 2.31a.95.95 0 0 0-.949.958.95.95 0 0 0 .949.957.95.95 0 0 0 .95-.957.95.95 0 0 0-.95-.958zm2.79 0a.95.95 0 0 0-.95.958.95.95 0 0 0 .95.957.95.95 0 0 0 .95-.957.95.95 0 0 0-.95-.958z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
             'location' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
             'link' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z" fill="' . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . '"/></svg>',
         ];
@@ -764,57 +880,5 @@ class CallNowButtonHelper
         return $svg;
     }
 
-    /**
-     * Get tracking code for onclick
-     *
-     * @return  string
-     *
-     * @since   1.0.0
-     */
-    protected function getTrackingCode()
-    {
-        $trackingEnabled = $this->params->get('tracking_enabled', 0);
-        $trackingType = $this->params->get('tracking_type', 'gtag');
-        $gaId = $this->params->get('ga_id', '');
-        $conversionTracking = $this->params->get('conversion_tracking', 0);
-        $conversionType = $this->params->get('conversion_type', 'gtag');
-        $conversionId = $this->params->get('conversion_id', '');
-        
-        $code = '';
-        
-        if ($trackingEnabled) {
-            switch ($trackingType) {
-                case 'gtag':
-                    if (!empty($gaId)) {
-                        $code .= "if(typeof gtag !== 'undefined'){gtag('event', 'call', {'event_category': 'Call Now Button', 'event_label': 'Button Click', 'value': 1});}";
-                    } else {
-                        $code .= "if(typeof gtag !== 'undefined'){gtag('event', 'call', {'event_category': 'Call Now Button', 'event_label': 'Button Click'});}";
-                    }
-                    break;
-                case 'analytics':
-                    if (!empty($gaId)) {
-                        $code .= "if(typeof ga !== 'undefined'){ga('send', 'event', 'Call Now Button', 'Button Click', 'Call', 1);}";
-                    } else {
-                        $code .= "if(typeof ga !== 'undefined'){ga('send', 'event', 'Call Now Button', 'Button Click', 'Call');}";
-                    }
-                    break;
-                case 'classic':
-                    $code .= "if(typeof _gaq !== 'undefined'){_gaq.push(['_trackEvent', 'Call Now Button', 'Button Click', 'Call']);}";
-                    break;
-            }
-        }
-        
-        if ($conversionTracking && !empty($conversionId)) {
-            switch ($conversionType) {
-                case 'gtag':
-                    $code .= "if(typeof gtag !== 'undefined'){gtag('event', 'conversion', {'send_to': '" . htmlspecialchars($conversionId, ENT_QUOTES, 'UTF-8') . "'});}";
-                    break;
-                case 'js':
-                    $code .= "if(typeof dataLayer !== 'undefined'){dataLayer.push({'event': 'call_conversion', 'conversion_id': '" . htmlspecialchars($conversionId, ENT_QUOTES, 'UTF-8') . "'});}";
-                    break;
-            }
-        }
-        
-        return $code;
-    }
+    // Tracking helpers removed
 }
