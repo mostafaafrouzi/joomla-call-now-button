@@ -19,10 +19,11 @@
     
     <field 
         name="button_url_target" 
-        type="list" 
+        type="radio" 
         default="0" 
         label="MOD_CALLNOWBUTTON_BUTTON_TARGET_LABEL"
-        description="MOD_CALLNOWBUTTON_BUTTON_TARGET_DESC">
+        description="MOD_CALLNOWBUTTON_BUTTON_TARGET_DESC"
+        class="btn-group">
         <option value="0">MOD_CALLNOWBUTTON_TARGET_SAME</option>
         <option value="1">MOD_CALLNOWBUTTON_TARGET_BLANK</option>
     </field>

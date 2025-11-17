@@ -111,10 +111,12 @@
                 
                 <field
                     name="custom_url_target"
-                    type="list"
+                    type="radio"
                     label="MOD_CALLNOWBUTTON_CUSTOM_URL_TARGET_LABEL"
                     description="MOD_CALLNOWBUTTON_CUSTOM_URL_TARGET_DESC"
-                    default="0">
+                    default="0"
+                    class="btn-group"
+                    showon="button_type:single;link_type:custom">
                     <option value="0">MOD_CALLNOWBUTTON_TARGET_SAME</option>
                     <option value="1">MOD_CALLNOWBUTTON_TARGET_BLANK</option>
                 </field>
@@ -124,7 +126,8 @@
                     type="list"
                     label="MOD_CALLNOWBUTTON_CUSTOM_URL_REL_LABEL"
                     description="MOD_CALLNOWBUTTON_CUSTOM_URL_REL_DESC"
-                    default="">
+                    default=""
+                    showon="button_type:single;link_type:custom">
                     <option value="">MOD_CALLNOWBUTTON_REL_NONE</option>
                     <option value="nofollow">MOD_CALLNOWBUTTON_REL_NOFOLLOW</option>
                     <option value="noopener">MOD_CALLNOWBUTTON_REL_NOOPENER</option>
@@ -195,14 +198,27 @@
                 
                 <field
                     name="multibutton_title_display"
-                    type="list"
+                    type="radio"
                     label="MOD_CALLNOWBUTTON_MULTIBUTTON_TITLE_DISPLAY_LABEL"
                     description="MOD_CALLNOWBUTTON_MULTIBUTTON_TITLE_DISPLAY_DESC"
                     default="hover"
+                    class="btn-group"
                     showon="button_type:multibutton">
                     <option value="none">MOD_CALLNOWBUTTON_TITLE_DISPLAY_NONE</option>
                     <option value="hover">MOD_CALLNOWBUTTON_TITLE_DISPLAY_HOVER</option>
                     <option value="always">MOD_CALLNOWBUTTON_TITLE_DISPLAY_ALWAYS</option>
+                </field>
+                
+                <field
+                    name="multibutton_tooltip_theme"
+                    type="radio"
+                    label="MOD_CALLNOWBUTTON_MULTIBUTTON_TOOLTIP_THEME_LABEL"
+                    description="MOD_CALLNOWBUTTON_MULTIBUTTON_TOOLTIP_THEME_DESC"
+                    default="dark"
+                    class="btn-group"
+                    showon="button_type:multibutton">
+                    <option value="light">MOD_CALLNOWBUTTON_TOOLTIP_THEME_LIGHT</option>
+                    <option value="dark">MOD_CALLNOWBUTTON_TOOLTIP_THEME_DARK</option>
                 </field>
                 
                 <field
@@ -220,10 +236,11 @@
                 <!-- Moved from Visibility: Display Mode -->
                 <field
                     name="display_mode"
-                    type="list"
+                    type="radio"
                     label="MOD_CALLNOWBUTTON_DISPLAY_MODE_LABEL"
                     description="MOD_CALLNOWBUTTON_DISPLAY_MODE_DESC"
-                    default="mobile_only">
+                    default="mobile_only"
+                    class="btn-group">
                     <option value="all">MOD_CALLNOWBUTTON_DISPLAY_MODE_ALL</option>
                     <option value="mobile_only">MOD_CALLNOWBUTTON_DISPLAY_MODE_MOBILE_ONLY</option>
                     <option value="desktop_only">MOD_CALLNOWBUTTON_DISPLAY_MODE_DESKTOP_ONLY</option>
@@ -231,10 +248,11 @@
 
                 <field
                     name="appearance"
-                    type="list"
+                    type="radio"
                     label="MOD_CALLNOWBUTTON_APPEARANCE_LABEL"
                     description="MOD_CALLNOWBUTTON_APPEARANCE_DESC"
-                    default="single">
+                    default="single"
+                    class="btn-group">
                     <option value="single">MOD_CALLNOWBUTTON_APPEARANCE_SINGLE</option>
                     <option value="icontext">MOD_CALLNOWBUTTON_APPEARANCE_ICON_TEXT</option>
                 </field>
@@ -287,6 +305,78 @@
                     max="1.25"
                     step="0.05"
                     showon="appearance:single,icontext"
+                />
+                
+                <field
+                    name="responsive_size_enabled"
+                    type="radio"
+                    label="MOD_CALLNOWBUTTON_RESPONSIVE_SIZE_ENABLED_LABEL"
+                    description="MOD_CALLNOWBUTTON_RESPONSIVE_SIZE_ENABLED_DESC"
+                    default="0"
+                    class="btn-group btn-group-yesno"
+                    showon="appearance:single,icontext">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                
+                <field
+                    name="size_desktop"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_SIZE_DESKTOP_LABEL"
+                    description="MOD_CALLNOWBUTTON_SIZE_DESKTOP_DESC"
+                    default="1"
+                    min="0.9"
+                    max="2"
+                    step="0.05"
+                    showon="responsive_size_enabled:1"
+                />
+
+                <field
+                    name="size_tablet"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_SIZE_TABLET_LABEL"
+                    description="MOD_CALLNOWBUTTON_SIZE_TABLET_DESC"
+                    default="1"
+                    min="0.9"
+                    max="1.2"
+                    step="0.05"
+                    showon="responsive_size_enabled:1"
+                />
+
+                <field
+                    name="size_tablet_landscape"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_SIZE_TABLET_LANDSCAPE_LABEL"
+                    description="MOD_CALLNOWBUTTON_SIZE_TABLET_LANDSCAPE_DESC"
+                    default="1"
+                    min="0.9"
+                    max="1.2"
+                    step="0.05"
+                    showon="responsive_size_enabled:1"
+                />
+
+                <field
+                    name="size_mobile"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_SIZE_MOBILE_LABEL"
+                    description="MOD_CALLNOWBUTTON_SIZE_MOBILE_DESC"
+                    default="0.95"
+                    min="0.85"
+                    max="1.15"
+                    step="0.05"
+                    showon="responsive_size_enabled:1"
+                />
+
+                <field
+                    name="size_mobile_landscape"
+                    type="slider"
+                    label="MOD_CALLNOWBUTTON_SIZE_MOBILE_LANDSCAPE_LABEL"
+                    description="MOD_CALLNOWBUTTON_SIZE_MOBILE_LANDSCAPE_DESC"
+                    default="1"
+                    min="0.85"
+                    max="1.15"
+                    step="0.05"
+                    showon="responsive_size_enabled:1"
                 />
                 
                 <field
@@ -375,79 +465,6 @@
                     max="40"
                     step="1"
                     showon="appearance:icontext"
-                />
-
-                <!-- Responsive sizing -->
-                <field
-                    name="responsive_size_enabled"
-                    type="radio"
-                    label="MOD_CALLNOWBUTTON_RESPONSIVE_SIZE_ENABLED_LABEL"
-                    description="MOD_CALLNOWBUTTON_RESPONSIVE_SIZE_ENABLED_DESC"
-                    default="0"
-                    class="btn-group btn-group-yesno"
-                    showon="appearance:single,icontext">
-                    <option value="1">JYES</option>
-                    <option value="0">JNO</option>
-                </field>
-
-                <field
-                    name="size_desktop"
-                    type="slider"
-                    label="MOD_CALLNOWBUTTON_SIZE_DESKTOP_LABEL"
-                    description="MOD_CALLNOWBUTTON_SIZE_DESKTOP_DESC"
-                    default="1"
-                    min="0.9"
-                    max="2"
-                    step="0.05"
-                    showon="responsive_size_enabled:1"
-                />
-
-                <field
-                    name="size_tablet"
-                    type="slider"
-                    label="MOD_CALLNOWBUTTON_SIZE_TABLET_LABEL"
-                    description="MOD_CALLNOWBUTTON_SIZE_TABLET_DESC"
-                    default="1"
-                    min="0.9"
-                    max="1.2"
-                    step="0.05"
-                    showon="responsive_size_enabled:1"
-                />
-
-                <field
-                    name="size_tablet_landscape"
-                    type="slider"
-                    label="MOD_CALLNOWBUTTON_SIZE_TABLET_LANDSCAPE_LABEL"
-                    description="MOD_CALLNOWBUTTON_SIZE_TABLET_LANDSCAPE_DESC"
-                    default="1"
-                    min="0.9"
-                    max="1.2"
-                    step="0.05"
-                    showon="responsive_size_enabled:1"
-                />
-
-                <field
-                    name="size_mobile"
-                    type="slider"
-                    label="MOD_CALLNOWBUTTON_SIZE_MOBILE_LABEL"
-                    description="MOD_CALLNOWBUTTON_SIZE_MOBILE_DESC"
-                    default="0.95"
-                    min="0.85"
-                    max="1.15"
-                    step="0.05"
-                    showon="responsive_size_enabled:1"
-                />
-
-                <field
-                    name="size_mobile_landscape"
-                    type="slider"
-                    label="MOD_CALLNOWBUTTON_SIZE_MOBILE_LANDSCAPE_LABEL"
-                    description="MOD_CALLNOWBUTTON_SIZE_MOBILE_LANDSCAPE_DESC"
-                    default="1"
-                    min="0.85"
-                    max="1.15"
-                    step="0.05"
-                    showon="responsive_size_enabled:1"
                 />
                 
                 <field

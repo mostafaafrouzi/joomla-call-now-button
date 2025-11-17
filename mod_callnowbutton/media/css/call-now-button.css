@@ -57,11 +57,7 @@
 .cnb-button.cnb-icontext.cnb-tfull {
     width: 100% !important;
 }
-.cnb-button.cnb-icontext:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
-    filter: brightness(0.95);
-}
+/* No hover effects for icontext - handled by more specific rules below */
 .cnb-button.cnb-icontext .cnb-button-text {
     color: #FFFFFF;
     font-size: 14px;
@@ -86,14 +82,7 @@
 .cnb-button.cnb-icontext.cnb-bottom-center {
     transform: translateX(-50%);
 }
-.cnb-button.cnb-icontext.cnb-bottom-right:hover,
-.cnb-button.cnb-icontext.cnb-bottom-left:hover,
-.cnb-button.cnb-icontext.cnb-bottom-center:hover {
-    animation-name: wa-glow;
-    animation-duration: 0.8s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-}
+/* No hover effects for icontext bottom positions - handled by general .cnb-button.cnb-icontext:hover rule */
 
 /* Make icon circle match 26px reference look */
 .cnb-button.cnb-icontext .cnb-icon-circle {
@@ -121,10 +110,7 @@
     50%  { background-color: rgba(255,255,255,0.06); transform: translateY(-1px); }
     to   { background-color: inherit; }
 }
-.cnb-button.cnb-icontext.cnb-bottom-center:hover { transform: translateX(-50%) translateY(-1px); }
-.cnb-button.cnb-icontext.cnb-top-center:hover { transform: translateX(-50%) translateY(-1px); }
-.cnb-button.cnb-icontext.cnb-middle-left:hover { transform: translateY(calc(-50% - 1px)); }
-.cnb-button.cnb-icontext.cnb-middle-right:hover { transform: translateY(calc(-50% - 1px)); }
+/* No hover effects for icontext center and middle positions - handled by general .cnb-button.cnb-icontext:hover rule */
 .cnb-button.cnb-icontext .cnb-icon-circle {
     width: 28px;
     height: 28px;
@@ -415,11 +401,7 @@
     animation: cnb-fade-in 0.3s ease-out;
 }
 
-/* Do not upscale icontext on base hover (handled above) */
-.cnb-button.cnb-icontext:hover {
-    /* override base .cnb-button:hover scale */
-    transform: translateY(-1px);
-}
+
 
 /* Pulse Animation */
 @keyframes cnb-pulse {

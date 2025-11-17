@@ -337,78 +337,8 @@
                 }
             }
             
-            // Show/hide custom_url_target and custom_url_rel fields based on link_type
-            var customUrlTargetElement = form.querySelector('[id*="custom_url_target"]') || 
-                                        form.querySelector('[name*="custom_url_target"]');
-            var customUrlTargetField = null;
-            if (customUrlTargetElement) {
-                var parent = customUrlTargetElement.parentElement;
-                while (parent && parent !== form) {
-                    if (parent.classList && (parent.classList.contains('control-group') || 
-                                             parent.classList.contains('form-group') ||
-                                             parent.classList.contains('control-wrapper'))) {
-                        customUrlTargetField = parent;
-                        break;
-                    }
-                    parent = parent.parentElement;
-                }
-            }
-            
-            var customUrlRelElement = form.querySelector('[id*="custom_url_rel"]') || 
-                                     form.querySelector('[name*="custom_url_rel"]');
-            var customUrlRelField = null;
-            if (customUrlRelElement) {
-                var parent = customUrlRelElement.parentElement;
-                while (parent && parent !== form) {
-                    if (parent.classList && (parent.classList.contains('control-group') || 
-                                             parent.classList.contains('form-group') ||
-                                             parent.classList.contains('control-wrapper'))) {
-                        customUrlRelField = parent;
-                        break;
-                    }
-                    parent = parent.parentElement;
-                }
-            }
-            
-            // Show/hide custom_url_target field
-            if (customUrlTargetField) {
-                if (buttonTypeValue === 'single' && linkTypeValue === 'custom') {
-                    customUrlTargetField.style.display = '';
-                    customUrlTargetField.style.visibility = '';
-                    customUrlTargetField.classList.remove('hidden');
-                    customUrlTargetField.classList.remove('hide');
-                    customUrlTargetField.removeAttribute('hidden');
-                    if (customUrlTargetElement) {
-                        customUrlTargetElement.removeAttribute('hidden');
-                        customUrlTargetElement.removeAttribute('disabled');
-                        customUrlTargetElement.style.display = '';
-                    }
-                } else {
-                    customUrlTargetField.style.display = 'none';
-                    customUrlTargetField.classList.add('hidden');
-                }
-            }
-            
-            // Show/hide custom_url_rel field
-            if (customUrlRelField) {
-                if (buttonTypeValue === 'single' && linkTypeValue === 'custom') {
-                    customUrlRelField.style.display = '';
-                    customUrlRelField.style.visibility = '';
-                    customUrlRelField.classList.remove('hidden');
-                    customUrlRelField.classList.remove('hide');
-                    customUrlRelField.removeAttribute('hidden');
-                    if (customUrlRelElement) {
-                        customUrlRelElement.removeAttribute('hidden');
-                        customUrlRelElement.removeAttribute('disabled');
-                        customUrlRelElement.style.display = '';
-                    }
-                } else {
-                    customUrlRelField.style.display = 'none';
-                    customUrlRelField.classList.add('hidden');
-                }
-            }
-            
             // Show/hide WhatsApp hint note field
+            // Note: custom_url_target and custom_url_rel are now handled by showon in XML
             // Try multiple selectors to find the note field
             var whatsappHintField = form.querySelector('[id*="phone_number_whatsapp_hint"]') || 
                                    form.querySelector('[name*="phone_number_whatsapp_hint"]') ||
@@ -515,15 +445,116 @@
             }
         }
         
+        // Function to toggle Full Width position options based on appearance
+        function toggleFullWidthOptions() {
+            var appearanceField = form.querySelector('[name="jform[params][appearance]"]') || 
+                                form.querySelector('[name="params[appearance]"]') ||
+                                form.querySelector('[id*="appearance"]');
+            var positionField = form.querySelector('[name="jform[params][position]"]') || 
+                               form.querySelector('[name="params[position]"]') ||
+                               form.querySelector('[id*="position"]');
+            
+            if (!appearanceField || !positionField) {
+                return;
+            }
+            
+            var appearanceValue = appearanceField.value;
+            var fullBottomOption = null;
+            var fullTopOption = null;
+            
+            // Find full-bottom and full-top options
+            if (positionField.options) {
+                for (var i = 0; i < positionField.options.length; i++) {
+                    if (positionField.options[i].value === 'full-bottom') {
+                        fullBottomOption = positionField.options[i];
+                    }
+                    if (positionField.options[i].value === 'full-top') {
+                        fullTopOption = positionField.options[i];
+                    }
+                }
+            }
+            
+            // Show/hide full width options based on appearance
+            if (appearanceValue === 'icontext') {
+                // Show full width options
+                if (fullBottomOption) {
+                    fullBottomOption.style.display = '';
+                    fullBottomOption.removeAttribute('disabled');
+                }
+                if (fullTopOption) {
+                    fullTopOption.style.display = '';
+                    fullTopOption.removeAttribute('disabled');
+                }
+            } else {
+                // Hide full width options
+                if (fullBottomOption) {
+                    fullBottomOption.style.display = 'none';
+                    fullBottomOption.setAttribute('disabled', 'disabled');
+                    // If current selection is full-bottom, reset to default
+                    if (positionField.value === 'full-bottom') {
+                        positionField.value = 'bottom-right';
+                    }
+                }
+                if (fullTopOption) {
+                    fullTopOption.style.display = 'none';
+                    fullTopOption.setAttribute('disabled', 'disabled');
+                    // If current selection is full-top, reset to default
+                    if (positionField.value === 'full-top') {
+                        positionField.value = 'bottom-right';
+                    }
+                }
+            }
+        }
+        
         // Function to ensure proper initialization
         function initializeFields() {
             toggleFieldVisibility();
             updateRequiredFields();
+            toggleFullWidthOptions();
         }
         
         // Track previous values to only trigger on actual changes
         var previousButtonType = buttonTypeField ? buttonTypeField.value : null;
         var previousLinkType = linkTypeField ? linkTypeField.value : null;
+        
+        // Get appearance field for Full Width options
+        var appearanceField = form.querySelector('[name="jform[params][appearance]"]') || 
+                            form.querySelector('[name="params[appearance]"]') ||
+                            form.querySelector('[id*="appearance"]');
+        var previousAppearance = appearanceField ? appearanceField.value : null;
+        
+        // Toggle Full Width options when appearance changes
+        if (appearanceField) {
+            appearanceField.addEventListener('focus', function() {
+                previousAppearance = this.value;
+            });
+            
+            appearanceField.addEventListener('change', function() {
+                var currentValue = this.value;
+                
+                // Only proceed if value actually changed
+                if (currentValue !== previousAppearance) {
+                    previousAppearance = currentValue;
+                    
+                    setTimeout(function() {
+                        toggleFullWidthOptions();
+                    }, 100);
+                    setTimeout(function() {
+                        toggleFullWidthOptions();
+                    }, 300);
+                }
+            });
+            
+            appearanceField.addEventListener('blur', function() {
+                var currentValue = this.value;
+                if (currentValue !== previousAppearance) {
+                    previousAppearance = currentValue;
+                    setTimeout(function() {
+                        toggleFullWidthOptions();
+                    }, 200);
+                }
+            });
+        }
         
         // Toggle visibility on field change with proper timing
         // Only trigger when value actually changes, not on dropdown open/close
@@ -640,6 +671,26 @@
                         setTimeout(function() {
                             initializeFields();
                         }, 150);
+                    }
+                });
+                
+                // Track appearance value for Full Width options
+                var jqAppearance = jQuery('[name*="appearance"]', form);
+                var jqPrevAppearance = jqAppearance.length ? jqAppearance.val() : null;
+                
+                jQuery(form).on('change', '[name*="appearance"]', function() {
+                    var currentValue = jQuery(this).val();
+                    
+                    // Only proceed if value actually changed
+                    if (currentValue !== jqPrevAppearance) {
+                        jqPrevAppearance = currentValue;
+                        
+                        setTimeout(function() {
+                            toggleFullWidthOptions();
+                        }, 100);
+                        setTimeout(function() {
+                            toggleFullWidthOptions();
+                        }, 300);
                     }
                 });
                 

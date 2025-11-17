@@ -243,6 +243,7 @@ class CallNowButtonHelper
         $iconTextFontWeight = (int)$this->params->get('icontext_font_weight', 600);
         $iconTextIconSize = (int)$this->params->get('icontext_icon_size', 20);
         $iconTextIconCircle = (int)$this->params->get('icontext_icon_circle', 26);
+        $tooltipTheme = $this->params->get('multibutton_tooltip_theme', 'dark');
         
         $css = "
         .cnb-button {
@@ -398,6 +399,89 @@ class CallNowButtonHelper
         }
         
         $document->addStyleDeclaration($css);
+        
+        // Apply margin to multibutton container and options
+        $buttonType = $this->params->get('button_type', 'single');
+        if ($buttonType === 'multibutton') {
+            // Calculate options offset based on margin
+            // In default CSS: main button bottom: 20px, options bottom: 70px (50px gap)
+            // So options should be: margin + 50px to maintain the same gap
+            $optionsOffsetBottom = $buttonMargin + 50; // 50px gap from main button
+            $optionsOffsetTop = $buttonMargin + 50; // Same gap for top positions
+            $optionsOffsetMiddle = $buttonMargin + 50; // Same gap for middle positions
+            
+            $multibuttonMarginCss = "
+            /* Multibutton main button margins */
+            .cnb-multibutton-container.cnb-bottom-left,
+            .cnb-multibutton-container.cnb-bottom-right,
+            .cnb-multibutton-container.cnb-bottom-center {
+                bottom: {$buttonMargin}px !important;
+            }
+            .cnb-multibutton-container.cnb-bottom-left {
+                left: {$buttonMargin}px !important;
+            }
+            .cnb-multibutton-container.cnb-bottom-right {
+                right: {$buttonMargin}px !important;
+            }
+            .cnb-multibutton-container.cnb-top-left,
+            .cnb-multibutton-container.cnb-top-right,
+            .cnb-multibutton-container.cnb-top-center {
+                top: {$buttonMargin}px !important;
+            }
+            .cnb-multibutton-container.cnb-top-left {
+                left: {$buttonMargin}px !important;
+            }
+            .cnb-multibutton-container.cnb-top-right {
+                right: {$buttonMargin}px !important;
+            }
+            .cnb-multibutton-container.cnb-middle-left {
+                left: {$buttonMargin}px !important;
+            }
+            .cnb-multibutton-container.cnb-middle-right {
+                right: {$buttonMargin}px !important;
+            }
+            
+            /* Multibutton options positioning - adjust based on margin */
+            /* Maintain 50px gap between main button and options */
+            .cnb-multibutton-container.cnb-bottom-right .cnb-multibutton-options,
+            .cnb-multibutton-container.cnb-bottom-left .cnb-multibutton-options,
+            .cnb-multibutton-container.cnb-bottom-center .cnb-multibutton-options {
+                bottom: {$optionsOffsetBottom}px !important;
+            }
+            .cnb-multibutton-container.cnb-top-right .cnb-multibutton-options,
+            .cnb-multibutton-container.cnb-top-left .cnb-multibutton-options,
+            .cnb-multibutton-container.cnb-top-center .cnb-multibutton-options {
+                top: {$optionsOffsetTop}px !important;
+            }
+            .cnb-multibutton-container.cnb-middle-left .cnb-multibutton-options {
+                left: {$optionsOffsetMiddle}px !important;
+            }
+            .cnb-multibutton-container.cnb-middle-right .cnb-multibutton-options {
+                right: {$optionsOffsetMiddle}px !important;
+            }
+            ";
+            $document->addStyleDeclaration($multibuttonMarginCss);
+            
+            // Tooltip theme CSS for multibutton
+            if ($tooltipTheme === 'light') {
+                $tooltipCss = "
+                .cnb-tooltip,
+                .cnb-title-text {
+                    background: rgba(255, 255, 255, 0.95) !important;
+                    color: #000000 !important;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+                }";
+            } else {
+                // Dark theme (default)
+                $tooltipCss = "
+                .cnb-tooltip,
+                .cnb-title-text {
+                    background: rgba(0, 0, 0, 0.9) !important;
+                    color: #FFFFFF !important;
+                }";
+            }
+            $document->addStyleDeclaration($tooltipCss);
+        }
 
         // Additional typography CSS for Icon + Text
         if ($appearance === 'icontext') {
