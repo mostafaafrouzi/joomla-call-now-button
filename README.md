@@ -2,7 +2,7 @@
 
 [![Joomla](https://img.shields.io/badge/Joomla-5.0%20%7C%206.0-blue.svg)](https://www.joomla.org)
 [![License](https://img.shields.io/badge/License-GPL%20v2+-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![PHP](https://img.shields.io/badge/PHP-8.1%2B-777BB4.svg)](https://www.php.net/)
+[![PHP](https://img.shields.io/badge/PHP-8.1%20%7C%208.2%20%7C%208.3%20%7C%208.4-777BB4.svg)](https://www.php.net/)
 
 Professional floating call-to-action button module for Joomla. A modern, responsive solution for displaying contact buttons (phone, WhatsApp, custom URLs) with extensive customization options.
 
