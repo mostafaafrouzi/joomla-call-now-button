@@ -225,7 +225,7 @@ class Mod_CallnowbuttonInstallerScript extends InstallerScript
 
         // Update site URL - should be updated with your GitHub repository
         // Format: https://raw.githubusercontent.com/{OWNER}/{REPO}/{BRANCH}/updates/updates.xml
-        $updateUrl = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/updates/updates.xml';
+        $updateUrl = 'https://raw.githubusercontent.com/mostafaafrouzi/joomla-call-now-button/main/updates/updates.xml';
 
         // Check if update site already exists
         $query = $db->getQuery(true)

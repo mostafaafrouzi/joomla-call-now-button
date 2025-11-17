@@ -148,7 +148,7 @@ if (Test-Path $updatesXmlPath) {
     try {
         [xml]$updatesXml = Get-Content $updatesXmlPath -Encoding UTF8
         $updatesXml.updates.update.version = $Version
-        $downloadUrl = "https://github.com/YOUR_USERNAME/YOUR_REPO/releases/download/v$Version/mod_callnowbutton-$Version.zip"
+        $downloadUrl = "https://github.com/mostafaafrouzi/joomla-call-now-button/releases/download/v$Version/mod_callnowbutton-$Version.zip"
         $updatesXml.updates.update.downloads.downloadurl = $downloadUrl
         
         $updatesXml.Save($updatesXmlPath)

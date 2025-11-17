@@ -151,7 +151,7 @@ function updateUpdatesXml($version) {
     
     // Update version and download URL
     $xml->update->version = $version;
-    $xml->update->downloads->downloadurl = "https://github.com/YOUR_USERNAME/YOUR_REPO/releases/download/v{$version}/mod_callnowbutton-{$version}.zip";
+    $xml->update->downloads->downloadurl = "https://github.com/mostafaafrouzi/joomla-call-now-button/releases/download/v{$version}/mod_callnowbutton-{$version}.zip";
     
     // Save updated XML
     $dom = new DOMDocument('1.0', 'utf-8');

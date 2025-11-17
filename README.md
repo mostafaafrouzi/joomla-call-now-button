@@ -23,7 +23,7 @@
 
 ### روش 1: دانلود از GitHub
 
-1. به [Releases](https://github.com/YOUR_USERNAME/YOUR_REPO/releases) بروید
+1. به [Releases](https://github.com/mostafaafrouzi/joomla-call-now-button/releases) بروید
 2. آخرین نسخه را دانلود کنید
 3. در Joomla Admin: **Extensions > Manage > Install**
 4. فایل ZIP را آپلود کنید
@@ -32,7 +32,7 @@
 
 از لینک زیر نصب کنید:
 ```
-https://github.com/YOUR_USERNAME/YOUR_REPO/releases/latest/download/mod_callnowbutton-latest.zip
+https://github.com/mostafaafrouzi/joomla-call-now-button/releases/latest/download/mod_callnowbutton-latest.zip
 ```
 
 ## 🔄 بروزرسانی خودکار

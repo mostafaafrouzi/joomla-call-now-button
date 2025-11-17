@@ -510,10 +510,10 @@
         </fields>
     </config>
     
-    <changelogurl>https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/updates/changelog.xml</changelogurl>
+    <changelogurl>https://raw.githubusercontent.com/mostafaafrouzi/joomla-call-now-button/main/updates/changelog.xml</changelogurl>
     
     <updateservers>
-        <server type="extension" name="Call Now Button Updates">https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/updates/updates.xml</server>
+        <server type="extension" name="Call Now Button Updates">https://raw.githubusercontent.com/mostafaafrouzi/joomla-call-now-button/main/updates/updates.xml</server>
     </updateservers>
 </extension>
 
