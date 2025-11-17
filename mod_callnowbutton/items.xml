@@ -28,6 +28,22 @@
     </field>
     
     <field 
+        name="button_url_rel" 
+        type="list" 
+        default="" 
+        label="MOD_CALLNOWBUTTON_BUTTON_URL_REL_LABEL"
+        description="MOD_CALLNOWBUTTON_BUTTON_URL_REL_DESC">
+        <option value="">MOD_CALLNOWBUTTON_REL_NONE</option>
+        <option value="nofollow">MOD_CALLNOWBUTTON_REL_NOFOLLOW</option>
+        <option value="noopener">MOD_CALLNOWBUTTON_REL_NOOPENER</option>
+        <option value="noreferrer">MOD_CALLNOWBUTTON_REL_NOREFERRER</option>
+        <option value="nofollow noopener">MOD_CALLNOWBUTTON_REL_NOFOLLOW_NOOPENER</option>
+        <option value="nofollow noreferrer">MOD_CALLNOWBUTTON_REL_NOFOLLOW_NOREFERRER</option>
+        <option value="noopener noreferrer">MOD_CALLNOWBUTTON_REL_NOOPENER_NOREFERRER</option>
+        <option value="nofollow noopener noreferrer">MOD_CALLNOWBUTTON_REL_NOFOLLOW_NOOPENER_NOREFERRER</option>
+    </field>
+    
+    <field 
         name="button_bgcolor" 
         type="color" 
         default="#4285F4" 

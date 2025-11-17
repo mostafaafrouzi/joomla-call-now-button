@@ -336,6 +336,183 @@
                     customUrlField.classList.add('hidden');
                 }
             }
+            
+            // Show/hide custom_url_target and custom_url_rel fields based on link_type
+            var customUrlTargetElement = form.querySelector('[id*="custom_url_target"]') || 
+                                        form.querySelector('[name*="custom_url_target"]');
+            var customUrlTargetField = null;
+            if (customUrlTargetElement) {
+                var parent = customUrlTargetElement.parentElement;
+                while (parent && parent !== form) {
+                    if (parent.classList && (parent.classList.contains('control-group') || 
+                                             parent.classList.contains('form-group') ||
+                                             parent.classList.contains('control-wrapper'))) {
+                        customUrlTargetField = parent;
+                        break;
+                    }
+                    parent = parent.parentElement;
+                }
+            }
+            
+            var customUrlRelElement = form.querySelector('[id*="custom_url_rel"]') || 
+                                     form.querySelector('[name*="custom_url_rel"]');
+            var customUrlRelField = null;
+            if (customUrlRelElement) {
+                var parent = customUrlRelElement.parentElement;
+                while (parent && parent !== form) {
+                    if (parent.classList && (parent.classList.contains('control-group') || 
+                                             parent.classList.contains('form-group') ||
+                                             parent.classList.contains('control-wrapper'))) {
+                        customUrlRelField = parent;
+                        break;
+                    }
+                    parent = parent.parentElement;
+                }
+            }
+            
+            // Show/hide custom_url_target field
+            if (customUrlTargetField) {
+                if (buttonTypeValue === 'single' && linkTypeValue === 'custom') {
+                    customUrlTargetField.style.display = '';
+                    customUrlTargetField.style.visibility = '';
+                    customUrlTargetField.classList.remove('hidden');
+                    customUrlTargetField.classList.remove('hide');
+                    customUrlTargetField.removeAttribute('hidden');
+                    if (customUrlTargetElement) {
+                        customUrlTargetElement.removeAttribute('hidden');
+                        customUrlTargetElement.removeAttribute('disabled');
+                        customUrlTargetElement.style.display = '';
+                    }
+                } else {
+                    customUrlTargetField.style.display = 'none';
+                    customUrlTargetField.classList.add('hidden');
+                }
+            }
+            
+            // Show/hide custom_url_rel field
+            if (customUrlRelField) {
+                if (buttonTypeValue === 'single' && linkTypeValue === 'custom') {
+                    customUrlRelField.style.display = '';
+                    customUrlRelField.style.visibility = '';
+                    customUrlRelField.classList.remove('hidden');
+                    customUrlRelField.classList.remove('hide');
+                    customUrlRelField.removeAttribute('hidden');
+                    if (customUrlRelElement) {
+                        customUrlRelElement.removeAttribute('hidden');
+                        customUrlRelElement.removeAttribute('disabled');
+                        customUrlRelElement.style.display = '';
+                    }
+                } else {
+                    customUrlRelField.style.display = 'none';
+                    customUrlRelField.classList.add('hidden');
+                }
+            }
+            
+            // Show/hide WhatsApp hint note field
+            // Try multiple selectors to find the note field
+            var whatsappHintField = form.querySelector('[id*="phone_number_whatsapp_hint"]') || 
+                                   form.querySelector('[name*="phone_number_whatsapp_hint"]') ||
+                                   form.querySelector('[id*="jform_params_phone_number_whatsapp_hint"]') ||
+                                   form.querySelector('[name="jform[params][phone_number_whatsapp_hint]"]');
+            
+            // Also try to find by label text
+            if (!whatsappHintField) {
+                var labels = form.querySelectorAll('label');
+                for (var i = 0; i < labels.length; i++) {
+                    if (labels[i].getAttribute('for') && labels[i].getAttribute('for').indexOf('phone_number_whatsapp_hint') !== -1) {
+                        whatsappHintField = document.getElementById(labels[i].getAttribute('for'));
+                        if (whatsappHintField) break;
+                    }
+                }
+            }
+            
+            // Try to find by class or data attribute
+            if (!whatsappHintField) {
+                var allFields = form.querySelectorAll('[class*="note"], [data-field-type="note"], .note, [class*="text-danger"]');
+                for (var j = 0; j < allFields.length; j++) {
+                    var fieldText = allFields[j].textContent || allFields[j].innerText || '';
+                    if (fieldText.indexOf('country code') !== -1 || 
+                        fieldText.indexOf('country code and') !== -1 ||
+                        fieldText.indexOf('989123456789') !== -1 ||
+                        fieldText.indexOf('971501234567') !== -1) {
+                        whatsappHintField = allFields[j];
+                        break;
+                    }
+                }
+            }
+            
+            // Try to find by position - after phone_number field
+            if (!whatsappHintField && phoneNumberField) {
+                var nextSibling = phoneNumberField.nextElementSibling;
+                var checkCount = 0;
+                while (nextSibling && checkCount < 3) {
+                    checkCount++;
+                    var siblingText = nextSibling.textContent || nextSibling.innerText || '';
+                    if (siblingText.indexOf('country code') !== -1 || 
+                        siblingText.indexOf('989123456789') !== -1 ||
+                        (nextSibling.classList && (nextSibling.classList.contains('text-danger') || nextSibling.classList.contains('note')))) {
+                        whatsappHintField = nextSibling;
+                        break;
+                    }
+                    nextSibling = nextSibling.nextElementSibling;
+                }
+            }
+            
+            if (whatsappHintField) {
+                // Find the parent container - try multiple container types
+                var hintContainer = whatsappHintField;
+                var parent = whatsappHintField.parentElement;
+                var maxDepth = 10; // Prevent infinite loops
+                var depth = 0;
+                
+                while (parent && parent !== form && depth < maxDepth) {
+                    depth++;
+                    if (parent.classList) {
+                        if (parent.classList.contains('control-group') || 
+                            parent.classList.contains('form-group') ||
+                            parent.classList.contains('control-wrapper') ||
+                            parent.classList.contains('field-wrapper') ||
+                            parent.classList.contains('note-field')) {
+                            hintContainer = parent;
+                            break;
+                        }
+                    }
+                    // Also check if it's a direct child of a fieldset or div with specific classes
+                    if (parent.tagName === 'FIELDSET' || 
+                        (parent.tagName === 'DIV' && parent.classList && parent.classList.length > 0)) {
+                        hintContainer = parent;
+                        break;
+                    }
+                    parent = parent.parentElement;
+                }
+                
+                // If we couldn't find a container, use the field itself
+                if (hintContainer === whatsappHintField && whatsappHintField.parentElement) {
+                    hintContainer = whatsappHintField.parentElement;
+                }
+                
+                // Show hint only when button_type is 'single' and link_type is 'whatsapp'
+                if (buttonTypeValue === 'single' && linkTypeValue === 'whatsapp') {
+                    hintContainer.style.display = '';
+                    hintContainer.style.visibility = '';
+                    hintContainer.style.opacity = '';
+                    hintContainer.classList.remove('hidden');
+                    hintContainer.classList.remove('hide');
+                    hintContainer.removeAttribute('hidden');
+                    // Also ensure all child elements are visible
+                    var children = hintContainer.querySelectorAll('*');
+                    for (var k = 0; k < children.length; k++) {
+                        children[k].style.display = '';
+                        children[k].style.visibility = '';
+                        children[k].classList.remove('hidden');
+                        children[k].classList.remove('hide');
+                        children[k].removeAttribute('hidden');
+                    }
+                } else {
+                    hintContainer.style.display = 'none';
+                    hintContainer.classList.add('hidden');
+                }
+            }
         }
         
         // Function to ensure proper initialization

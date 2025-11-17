@@ -228,6 +228,7 @@ class CallNowButtonHelper
         $buttonColor = $this->params->get('button_color', '#25D366');
         $iconColor = $this->params->get('icon_color', '#FFFFFF');
         $buttonSize = $this->params->get('button_size', 1);
+        $buttonMargin = (int)$this->params->get('button_margin', 20);
         $zIndex = $this->params->get('z_index', 9999);
         $animation = $this->params->get('animation', 'none');
         $appearance = $this->params->get('appearance', 'single');
@@ -252,6 +253,76 @@ class CallNowButtonHelper
             fill: {$iconColor} !important;
         }
         ";
+        
+        // Apply custom margin to all position classes (including animation variants)
+        if ($appearance === 'single' || $appearance === 'icontext') {
+            $css .= "
+            .cnb-button.cnb-bottom-left,
+            .cnb-button.cnb-bottom-right,
+            .cnb-button.cnb-bottom-center,
+            .cnb-animation-pulse.cnb-bottom-left,
+            .cnb-animation-pulse.cnb-bottom-right,
+            .cnb-animation-pulse.cnb-bottom-center,
+            .cnb-animation-bounce.cnb-bottom-left,
+            .cnb-animation-bounce.cnb-bottom-right,
+            .cnb-animation-bounce.cnb-bottom-center,
+            .cnb-animation-shake.cnb-bottom-left,
+            .cnb-animation-shake.cnb-bottom-right,
+            .cnb-animation-shake.cnb-bottom-center {
+                bottom: {$buttonMargin}px !important;
+            }
+            .cnb-button.cnb-bottom-left,
+            .cnb-animation-pulse.cnb-bottom-left,
+            .cnb-animation-bounce.cnb-bottom-left,
+            .cnb-animation-shake.cnb-bottom-left {
+                left: {$buttonMargin}px !important;
+            }
+            .cnb-button.cnb-bottom-right,
+            .cnb-animation-pulse.cnb-bottom-right,
+            .cnb-animation-bounce.cnb-bottom-right,
+            .cnb-animation-shake.cnb-bottom-right {
+                right: {$buttonMargin}px !important;
+            }
+            .cnb-button.cnb-top-left,
+            .cnb-button.cnb-top-right,
+            .cnb-button.cnb-top-center,
+            .cnb-animation-pulse.cnb-top-left,
+            .cnb-animation-pulse.cnb-top-right,
+            .cnb-animation-pulse.cnb-top-center,
+            .cnb-animation-bounce.cnb-top-left,
+            .cnb-animation-bounce.cnb-top-right,
+            .cnb-animation-bounce.cnb-top-center,
+            .cnb-animation-shake.cnb-top-left,
+            .cnb-animation-shake.cnb-top-right,
+            .cnb-animation-shake.cnb-top-center {
+                top: {$buttonMargin}px !important;
+            }
+            .cnb-button.cnb-top-left,
+            .cnb-animation-pulse.cnb-top-left,
+            .cnb-animation-bounce.cnb-top-left,
+            .cnb-animation-shake.cnb-top-left {
+                left: {$buttonMargin}px !important;
+            }
+            .cnb-button.cnb-top-right,
+            .cnb-animation-pulse.cnb-top-right,
+            .cnb-animation-bounce.cnb-top-right,
+            .cnb-animation-shake.cnb-top-right {
+                right: {$buttonMargin}px !important;
+            }
+            .cnb-button.cnb-middle-left,
+            .cnb-animation-pulse.cnb-middle-left,
+            .cnb-animation-bounce.cnb-middle-left,
+            .cnb-animation-shake.cnb-middle-left {
+                left: {$buttonMargin}px !important;
+            }
+            .cnb-button.cnb-middle-right,
+            .cnb-animation-pulse.cnb-middle-right,
+            .cnb-animation-bounce.cnb-middle-right,
+            .cnb-animation-shake.cnb-middle-right {
+                right: {$buttonMargin}px !important;
+            }
+            ";
+        }
         
         // Pulse animation color - must match button color
         if ($animation === 'pulse') {
@@ -408,9 +479,40 @@ class CallNowButtonHelper
         $ariaLabel = !empty($buttonText) ? '' : 'aria-label="' . 
             htmlspecialchars($lang->_('MOD_CALLNOWBUTTON_CALL_NOW'), ENT_QUOTES, 'UTF-8') . '"';
         
+        // Get target and rel for custom URL
+        $target = '';
+        $rel = '';
+        if ($linkType === 'custom') {
+            $customUrlTarget = $this->params->get('custom_url_target', '0');
+            $target = $customUrlTarget == '1' ? '_blank' : '_self';
+            $customUrlRel = trim($this->params->get('custom_url_rel', ''));
+            if (!empty($customUrlRel)) {
+                $rel = $customUrlRel;
+            }
+        }
+        
+        // Build title attribute from anchor text for SEO
+        $titleText = '';
+        if ($appearance === 'full' || $appearance === 'tfull') {
+            $titleText = !empty($buttonText) ? $buttonText : $lang->_('MOD_CALLNOWBUTTON_CALL_NOW');
+        } elseif ($appearance === 'icontext') {
+            $titleText = !empty($buttonText) ? $buttonText : $lang->_('MOD_CALLNOWBUTTON_CALL_NOW');
+        } elseif (!empty($buttonText)) {
+            $titleText = $buttonText;
+        } else {
+            $titleText = $lang->_('MOD_CALLNOWBUTTON_CALL_NOW');
+        }
+        
         // Build button HTML
         $html = '<a ' . $ariaLabel;
         $html .= ' href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '"';
+        if (!empty($target)) {
+            $html .= ' target="' . htmlspecialchars($target, ENT_QUOTES, 'UTF-8') . '"';
+        }
+        if (!empty($rel)) {
+            $html .= ' rel="' . htmlspecialchars($rel, ENT_QUOTES, 'UTF-8') . '"';
+        }
+        $html .= ' title="' . htmlspecialchars($titleText, ENT_QUOTES, 'UTF-8') . '"';
         $html .= ' id="callnowbutton"';
         $html .= ' class="' . htmlspecialchars(implode(' ', $classes), ENT_QUOTES, 'UTF-8') . '"';
         // Add data-appearance for CSS hooks
@@ -429,10 +531,12 @@ class CallNowButtonHelper
                 htmlspecialchars($displayText, ENT_QUOTES, 'UTF-8') . '</span>';
         } elseif ($appearance === 'icontext') {
             // Icon + Text combo
+            // Get display text first for alt attribute
+            $displayText = !empty($buttonText) ? $buttonText : Factory::getLanguage()->_('MOD_CALLNOWBUTTON_CALL_NOW');
             // Icon first
             if (!empty($buttonIconCustom)) {
                 $iconPath = Uri::root() . ltrim($buttonIconCustom, '/');
-                $html .= '<span class="cnb-icon-circle"><img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="" width="20" height="20" class="cnb-icon" /></span>';
+                $html .= '<span class="cnb-icon-circle"><img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($displayText, ENT_QUOTES, 'UTF-8') . '" width="20" height="20" class="cnb-icon" /></span>';
             } else {
                 $iconSvg = $this->getIcon($buttonIcon, $iconColor);
                 // ensure svg has class for styling
@@ -442,13 +546,12 @@ class CallNowButtonHelper
                 $html .= '<span class="cnb-icon-circle">' . $iconSvg . '</span>';
             }
             // Then text
-            $displayText = !empty($buttonText) ? $buttonText : Factory::getLanguage()->_('MOD_CALLNOWBUTTON_CALL_NOW');
             $html .= '<span class="cnb-button-text">' . htmlspecialchars($displayText, ENT_QUOTES, 'UTF-8') . '</span>';
         } elseif ($appearance === 'single' || empty($buttonText)) {
             // Show icon for single button
             if (!empty($buttonIconCustom)) {
                 $iconPath = Uri::root() . ltrim($buttonIconCustom, '/');
-                $html .= '<img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="" width="24" height="24" />';
+                $html .= '<img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($titleText, ENT_QUOTES, 'UTF-8') . '" width="24" height="24" />';
             } else {
                 $html .= $this->getIcon($buttonIcon, $iconColor);
             }
@@ -656,11 +759,17 @@ class CallNowButtonHelper
         $html .= ' aria-label="' . htmlspecialchars($lang->_('MOD_CALLNOWBUTTON_CALL_NOW'), ENT_QUOTES, 'UTF-8') . '"';
         $html .= ' data-appearance="' . htmlspecialchars($multimainAppearance, ENT_QUOTES, 'UTF-8') . '">';
         
+        // Get main button text first for alt attribute
+        $mainButtonText = trim((string)$this->params->get('main_button_text', ''));
+        if ($mainButtonText === '') {
+            $mainButtonText = $lang->_('MOD_CALLNOWBUTTON_CALL_NOW');
+        }
+        
         // Add main button icon (+ optional text if icontext)
         if ($multimainAppearance === 'icontext') {
             if (!empty($mainButtonIconCustom)) {
                 $iconPath = Uri::root() . ltrim($mainButtonIconCustom, '/');
-                $html .= '<span class="cnb-icon-circle"><img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="" width="20" height="20" class="cnb-icon" /></span>';
+                $html .= '<span class="cnb-icon-circle"><img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($mainButtonText, ENT_QUOTES, 'UTF-8') . '" width="20" height="20" class="cnb-icon" /></span>';
             } else {
                 $iconSvg = $this->getIcon($mainButtonIcon, $iconColor);
                 if (preg_match('/<svg\s+/i', $iconSvg)) {
@@ -668,15 +777,11 @@ class CallNowButtonHelper
                 }
                 $html .= '<span class="cnb-icon-circle">' . $iconSvg . '</span>';
             }
-            $mainButtonText = trim((string)$this->params->get('main_button_text', ''));
-            if ($mainButtonText === '') {
-                $mainButtonText = $lang->_('MOD_CALLNOWBUTTON_CALL_NOW');
-            }
             $html .= '<span class="cnb-button-text">' . htmlspecialchars($mainButtonText, ENT_QUOTES, 'UTF-8') . '</span>';
         } else {
             if (!empty($mainButtonIconCustom)) {
                 $iconPath = Uri::root() . ltrim($mainButtonIconCustom, '/');
-                $html .= '<img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="" width="24" height="24" />';
+                $html .= '<img src="' . htmlspecialchars($iconPath, ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($mainButtonText, ENT_QUOTES, 'UTF-8') . '" width="24" height="24" />';
             } else {
                 $html .= $this->getIcon($mainButtonIcon, $iconColor);
             }
@@ -701,6 +806,7 @@ class CallNowButtonHelper
                         'button_title' => isset($item->button_title) ? $item->button_title : (isset($item->{'button_title'}) ? $item->{'button_title'} : ''),
                         'button_url' => isset($item->button_url) ? $item->button_url : (isset($item->{'button_url'}) ? $item->{'button_url'} : ''),
                         'button_url_target' => isset($item->button_url_target) ? $item->button_url_target : (isset($item->{'button_url_target'}) ? $item->{'button_url_target'} : '0'),
+                        'button_url_rel' => isset($item->button_url_rel) ? $item->button_url_rel : (isset($item->{'button_url_rel'}) ? $item->{'button_url_rel'} : ''),
                         'button_bgcolor' => isset($item->button_bgcolor) ? $item->button_bgcolor : (isset($item->{'button_bgcolor'}) ? $item->{'button_bgcolor'} : '#4285F4'),
                         'button_color' => isset($item->button_color) ? $item->button_color : (isset($item->{'button_color'}) ? $item->{'button_color'} : '#FFFFFF'),
                         'button_icon' => isset($item->button_icon) ? $item->button_icon : (isset($item->{'button_icon'}) ? $item->{'button_icon'} : 'phone'),
@@ -727,6 +833,7 @@ class CallNowButtonHelper
                 $buttonTitle = isset($item['button_title']) && trim($item['button_title']) !== '' ? trim($item['button_title']) : 'Button ' . ($key + 1);
                 $buttonUrl = isset($item['button_url']) && trim($item['button_url']) !== '' ? trim($item['button_url']) : '#';
                 $buttonTarget = isset($item['button_url_target']) && $item['button_url_target'] == '1' ? '_blank' : '_self';
+                $buttonRel = isset($item['button_url_rel']) ? trim($item['button_url_rel']) : '';
                 $buttonBgColor = isset($item['button_bgcolor']) && trim($item['button_bgcolor']) !== '' ? trim($item['button_bgcolor']) : '#4285F4';
                 $buttonColor = isset($item['button_color']) && trim($item['button_color']) !== '' ? trim($item['button_color']) : '#FFFFFF';
                 $buttonIcon = isset($item['button_icon']) && trim($item['button_icon']) !== '' ? trim($item['button_icon']) : 'phone';
@@ -743,6 +850,10 @@ class CallNowButtonHelper
                 $html .= '<li>';
                 $html .= '<a href="' . htmlspecialchars($buttonUrl, ENT_QUOTES, 'UTF-8') . '"';
                 $html .= ' target="' . htmlspecialchars($buttonTarget, ENT_QUOTES, 'UTF-8') . '"';
+                if (!empty($buttonRel)) {
+                    $html .= ' rel="' . htmlspecialchars($buttonRel, ENT_QUOTES, 'UTF-8') . '"';
+                }
+                $html .= ' title="' . htmlspecialchars($buttonTitle, ENT_QUOTES, 'UTF-8') . '"';
                 $html .= ' style="background-color: ' . htmlspecialchars($buttonBgColor, ENT_QUOTES, 'UTF-8') . '; color: ' . htmlspecialchars($buttonColor, ENT_QUOTES, 'UTF-8') . ';"';
                 $html .= ' aria-label="' . htmlspecialchars($buttonTitle, ENT_QUOTES, 'UTF-8') . '"';
                 $html .= ' class="cnb-multibutton-item' . ($titleDisplay === 'always' ? ' cnb-title-always' : ($titleDisplay === 'hover' ? ' cnb-title-hover' : '')) . '"';

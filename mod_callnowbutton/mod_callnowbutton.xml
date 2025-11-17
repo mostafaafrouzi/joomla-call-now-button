@@ -90,6 +90,14 @@
                     hint="989123456789"
                     showon="button_type:single;link_type:whatsapp,phone"
                 />
+                <field
+                    name="phone_number_whatsapp_hint"
+                    type="note"
+                    label="MOD_CALLNOWBUTTON_PHONE_NUMBER_WHATSAPP_HINT"
+                    class="text-danger small"
+                    filter="raw"
+                    showon="button_type:single;link_type:whatsapp"
+                />
                 
                 <field
                     name="custom_url"
@@ -100,6 +108,32 @@
                     hint="https://example.com or tel:+1234567890"
                     showon="button_type:single;link_type:custom"
                 />
+                
+                <field
+                    name="custom_url_target"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_CUSTOM_URL_TARGET_LABEL"
+                    description="MOD_CALLNOWBUTTON_CUSTOM_URL_TARGET_DESC"
+                    default="0">
+                    <option value="0">MOD_CALLNOWBUTTON_TARGET_SAME</option>
+                    <option value="1">MOD_CALLNOWBUTTON_TARGET_BLANK</option>
+                </field>
+                
+                <field
+                    name="custom_url_rel"
+                    type="list"
+                    label="MOD_CALLNOWBUTTON_CUSTOM_URL_REL_LABEL"
+                    description="MOD_CALLNOWBUTTON_CUSTOM_URL_REL_DESC"
+                    default="">
+                    <option value="">MOD_CALLNOWBUTTON_REL_NONE</option>
+                    <option value="nofollow">MOD_CALLNOWBUTTON_REL_NOFOLLOW</option>
+                    <option value="noopener">MOD_CALLNOWBUTTON_REL_NOOPENER</option>
+                    <option value="noreferrer">MOD_CALLNOWBUTTON_REL_NOREFERRER</option>
+                    <option value="nofollow noopener">MOD_CALLNOWBUTTON_REL_NOFOLLOW_NOOPENER</option>
+                    <option value="nofollow noreferrer">MOD_CALLNOWBUTTON_REL_NOFOLLOW_NOREFERRER</option>
+                    <option value="noopener noreferrer">MOD_CALLNOWBUTTON_REL_NOOPENER_NOREFERRER</option>
+                    <option value="nofollow noopener noreferrer">MOD_CALLNOWBUTTON_REL_NOFOLLOW_NOOPENER_NOREFERRER</option>
+                </field>
                 
                 <field
                     name="button_icon"
@@ -252,6 +286,19 @@
                     min="0.85"
                     max="1.25"
                     step="0.05"
+                    showon="appearance:single,icontext"
+                />
+                
+                <field
+                    name="button_margin"
+                    type="number"
+                    label="MOD_CALLNOWBUTTON_BUTTON_MARGIN_LABEL"
+                    description="MOD_CALLNOWBUTTON_BUTTON_MARGIN_DESC"
+                    default="20"
+                    min="0"
+                    max="200"
+                    step="1"
+                    unit="px"
                     showon="appearance:single,icontext"
                 />
                 
