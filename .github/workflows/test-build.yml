@@ -1,0 +1,75 @@
+name: Test Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Verify manifest structure
+        run: |
+          # Check if manifest file exists
+          if [ ! -f "mod_callnowbutton/mod_callnowbutton.xml" ]; then
+            echo "Error: Manifest file not found!"
+            exit 1
+          fi
+          
+          # Verify XML is valid
+          xmllint --noout mod_callnowbutton/mod_callnowbutton.xml || exit 1
+          
+          echo "✅ Manifest XML is valid"
+          
+      - name: Verify update files
+        run: |
+          # Check updates.xml
+          if [ ! -f "updates/updates.xml" ]; then
+            echo "Error: updates.xml not found!"
+            exit 1
+          fi
+          xmllint --noout updates/updates.xml || exit 1
+          
+          # Check changelog.xml
+          if [ ! -f "updates/changelog.xml" ]; then
+            echo "Error: changelog.xml not found!"
+            exit 1
+          fi
+          xmllint --noout updates/changelog.xml || exit 1
+          
+          echo "✅ Update files are valid"
+          
+      - name: Test ZIP creation
+        run: |
+          cd mod_callnowbutton
+          zip -r ../test-build.zip . -x "*.git*" "*.DS_Store" "*Thumbs.db"
+          cd ..
+          
+          # Check ZIP was created
+          if [ ! -f "test-build.zip" ]; then
+            echo "Error: ZIP file not created!"
+            exit 1
+          fi
+          
+          # Get file size
+          SIZE=$(ls -lh test-build.zip | awk '{print $5}')
+          echo "✅ ZIP created successfully"
+          echo "Size: $SIZE"
+          
+      - name: Build summary
+        run: |
+          VERSION=$(grep -oP '(?<=<version>)[^<]+' mod_callnowbutton/mod_callnowbutton.xml)
+          echo "## ✅ Test Build Passed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version**: $VERSION" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: All checks passed" >> $GITHUB_STEP_SUMMARY
+

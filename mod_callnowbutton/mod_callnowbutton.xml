@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="5.0" method="upgrade" client="site">
-    <name>MOD_CALLNOWBUTTON</name>
-    <author>Call Now Button</author>
-    <creationDate>2024-01-01</creationDate>
-    <copyright>Copyright (C) 2024 Call Now Button. All rights reserved.</copyright>
+<extension type="module" method="upgrade" client="site">
+    <name>Call Now Button</name>
+    <author>Mostafa Afrouzi</author>
+    <creationDate>2025-11-20</creationDate>
+    <copyright>Copyright (C) 2025 Mostafa Afrouzi. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later</license>
-    <authorEmail>support@callnowbutton.com</authorEmail>
-    <authorUrl>https://callnowbutton.com</authorUrl>
+    <authorEmail>mostafa.afrouzi@gmail.com</authorEmail>
+    <authorUrl>https://afrouzi.ir</authorUrl>
     <version>1.0.0</version>
-    <description>MOD_CALLNOWBUTTON_XML_DESCRIPTION</description>
+    <description><![CDATA[Professional floating call-to-action button module for Joomla. Supports phone calls, WhatsApp, custom URLs with extensive customization options. Developed by Mostafa Afrouzi - afrouzi.ir]]></description>
     
     <namespace path="src">Joomla\Module\CallNowButton</namespace>
     
@@ -22,6 +22,7 @@
         <filename>helper.php</filename>
         <filename>services/provider.php</filename>
         <filename>items.xml</filename>
+        <filename>script.php</filename>
     </files>
     
     <languages folder="language">
@@ -478,9 +479,41 @@
                 />
             </fieldset>
             
+            <fieldset name="about" label="MOD_CALLNOWBUTTON_ABOUT_FIELDSET_LABEL">
+                <field
+                    name="about_developer"
+                    type="note"
+                    label="MOD_CALLNOWBUTTON_ABOUT_DEVELOPER_LABEL"
+                    description="MOD_CALLNOWBUTTON_ABOUT_DEVELOPER_DESC"
+                    class="text-center"
+                />
+                
+                <field
+                    name="about_services"
+                    type="note"
+                    label="MOD_CALLNOWBUTTON_ABOUT_SERVICES_LABEL"
+                    description="MOD_CALLNOWBUTTON_ABOUT_SERVICES_DESC"
+                    class="text-center"
+                />
+                
+                <field
+                    name="about_contact"
+                    type="note"
+                    label="MOD_CALLNOWBUTTON_ABOUT_CONTACT_LABEL"
+                    description="MOD_CALLNOWBUTTON_ABOUT_CONTACT_DESC"
+                    class="text-center"
+                />
+            </fieldset>
+            
             <!-- Visibility fieldset removed -->
             
         </fields>
     </config>
+    
+    <changelogurl>https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/updates/changelog.xml</changelogurl>
+    
+    <updateservers>
+        <server type="extension" name="Call Now Button Updates">https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/updates/updates.xml</server>
+    </updateservers>
 </extension>
 

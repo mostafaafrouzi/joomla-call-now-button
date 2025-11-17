@@ -2,7 +2,7 @@
 /**
  * @package     Call Now Button
  * @subpackage  mod_callnowbutton
- * @copyright   Copyright (C) 2024 Call Now Button. All rights reserved.
+ * @copyright   Copyright (C) 2024 Mostafa Afrouzi. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 

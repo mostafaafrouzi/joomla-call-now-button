@@ -1,0 +1,28 @@
+# Build files
+build/releases/*.zip
+!build/releases/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Node modules
+node_modules/
+
+# Logs
+*.log
+
+# Test files
+test-build.zip

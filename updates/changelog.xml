@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelogs>
+    <changelog>
+        <element>mod_callnowbutton</element>
+        <type>module</type>
+        <version>1.0.0</version>
+        <addition>
+            <item><![CDATA[Initial release of Call Now Button module for Joomla 5 and 6]]></item>
+            <item><![CDATA[Single button and multibutton (expanding) support]]></item>
+            <item><![CDATA[Multiple link types: Phone, WhatsApp, Custom URL]]></item>
+            <item><![CDATA[Two appearance styles: Circular icon and Icon with Text (pill-shaped)]]></item>
+            <item><![CDATA[8 position options + Full Width positions]]></item>
+            <item><![CDATA[18 built-in icons: Phone, WhatsApp, Telegram, Instagram, Facebook, and more]]></item>
+            <item><![CDATA[Custom icon upload support]]></item>
+            <item><![CDATA[Full color customization for button and icon]]></item>
+            <item><![CDATA[Custom animations: Pulse, Bounce, Shake]]></item>
+            <item><![CDATA[Responsive design with device-specific size controls]]></item>
+            <item><![CDATA[Typography controls: Font size, color, and weight for text buttons]]></item>
+            <item><![CDATA[Custom margins control for button positioning]]></item>
+            <item><![CDATA[Tooltip themes (Light/Dark) for multibutton]]></item>
+            <item><![CDATA[SEO optimized: Proper rel, target, and title attributes]]></item>
+            <item><![CDATA[Accessibility features: ARIA labels and alt text]]></item>
+            <item><![CDATA[Multilingual support: English and Persian (Farsi)]]></item>
+            <item><![CDATA[Visual icon selector for easy icon picking]]></item>
+        </addition>
+        <note>
+            <item><![CDATA[Developed by Mostafa Afrouzi - Web Designer & Developer]]></item>
+            <item><![CDATA[Website: <a href="https://afrouzi.ir" target="_blank">afrouzi.ir</a>]]></item>
+            <item><![CDATA[Email: mostafa.afrouzi@gmail.com]]></item>
+            <item><![CDATA[Professional Joomla services available: Custom extensions, templates, migration, SEO]]></item>
+        </note>
+    </changelog>
+</changelogs>
+

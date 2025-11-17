@@ -1,0 +1,138 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Get version from tag
+        id: get_version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          
+      - name: Verify version in manifest
+        run: |
+          MANIFEST_VERSION=$(grep -oP '(?<=<version>)[^<]+' mod_callnowbutton/mod_callnowbutton.xml)
+          if [ "$MANIFEST_VERSION" != "${{ steps.get_version.outputs.VERSION }}" ]; then
+            echo "Error: Version mismatch!"
+            echo "Tag version: ${{ steps.get_version.outputs.VERSION }}"
+            echo "Manifest version: $MANIFEST_VERSION"
+            exit 1
+          fi
+          echo "Version verified: $MANIFEST_VERSION"
+          
+      - name: Create ZIP archive
+        run: |
+          cd mod_callnowbutton
+          zip -r ../mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip . \
+            -x "*.git*" "*.DS_Store" "*Thumbs.db" "*.idea*" "*node_modules*" "*.vscode*" "*.bak" "*.tmp"
+          cd ..
+          
+      - name: Generate checksums
+        id: checksums
+        run: |
+          ZIP_FILE="mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip"
+          MD5=$(md5sum $ZIP_FILE | awk '{print $1}')
+          SHA256=$(sha256sum $ZIP_FILE | awk '{print $1}')
+          SHA512=$(sha512sum $ZIP_FILE | awk '{print $1}')
+          SIZE=$(ls -lh $ZIP_FILE | awk '{print $5}')
+          
+          echo "MD5=$MD5" >> $GITHUB_OUTPUT
+          echo "SHA256=$SHA256" >> $GITHUB_OUTPUT
+          echo "SHA512=$SHA512" >> $GITHUB_OUTPUT
+          echo "SIZE=$SIZE" >> $GITHUB_OUTPUT
+          
+          echo "### Checksums" >> $GITHUB_STEP_SUMMARY
+          echo "- **MD5**: \`$MD5\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **SHA256**: \`$SHA256\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **SHA512**: \`$SHA512\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Size**: $SIZE" >> $GITHUB_STEP_SUMMARY
+          
+      - name: Extract changelog for this version
+        id: changelog
+        run: |
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          
+          # Extract changelog from changelog.xml for this version
+          CHANGELOG=$(cat updates/changelog.xml | sed -n "/<version>$VERSION<\/version>/,/<\/changelog>/p" | \
+            grep -oP '(?<=<item><!\[CDATA\[)[^\]]+(?=\]\]><\/item>)' | \
+            sed 's/^/- /' || echo "- Initial release")
+          
+          # Create formatted changelog
+          cat > changelog_temp.md << 'EOF'
+          ## What's New in v${{ steps.get_version.outputs.VERSION }}
+          
+          EOF
+          
+          # Append extracted changelog
+          echo "$CHANGELOG" >> changelog_temp.md
+          
+          # Add footer
+          cat >> changelog_temp.md << 'EOF'
+          
+          ---
+          
+          ### Installation
+          Download the ZIP file and install via Joomla Extension Manager.
+          
+          ### Update
+          Use **System > Update > Extensions** in Joomla Admin.
+          
+          ### Developer
+          **Mostafa Afrouzi** - [afrouzi.ir](https://afrouzi.ir)
+          EOF
+          
+          cat changelog_temp.md
+          
+      - name: Update updates.xml
+        run: |
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          REPO="${{ github.repository }}"
+          
+          # Update version and download URL in updates.xml
+          sed -i "s|<version>.*</version>|<version>$VERSION</version>|" updates/updates.xml
+          sed -i "s|releases/download/v[^/]*/|releases/download/v$VERSION/|" updates/updates.xml
+          sed -i "s|mod_callnowbutton-[0-9.]*\.zip|mod_callnowbutton-$VERSION.zip|" updates/updates.xml
+          
+          # Commit and push changes
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add updates/updates.xml
+          git commit -m "Update updates.xml for version $VERSION" || echo "No changes to commit"
+          git push origin HEAD:main || echo "Nothing to push"
+          
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Call Now Button v${{ steps.get_version.outputs.VERSION }}
+          body_path: changelog_temp.md
+          files: mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Build Summary
+        run: |
+          echo "## ✅ Build Completed Successfully!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version**: ${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "**File**: mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip" >> $GITHUB_STEP_SUMMARY
+          echo "**Size**: ${{ steps.checksums.outputs.SIZE }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Release**: https://github.com/${{ github.repository }}/releases/tag/${{ steps.get_version.outputs.TAG }}" >> $GITHUB_STEP_SUMMARY
+
