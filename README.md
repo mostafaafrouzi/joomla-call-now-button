@@ -4,135 +4,157 @@
 [![License](https://img.shields.io/badge/License-GPL%20v2+-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![PHP](https://img.shields.io/badge/PHP-8.1%2B-777BB4.svg)](https://www.php.net/)
 
-یک ماژول حرفه‌ای و پیشرفته برای افزودن دکمه تماس شناور به سایت Joomla شما. این ماژول راه‌حلی مدرن و ریسپانسیو برای نمایش دکمه‌های تماس (تلفن، واتساپ، لینک سفارشی) با امکانات سفارشی‌سازی گسترده ارائه می‌دهد.
+Professional floating call-to-action button module for Joomla. A modern, responsive solution for displaying contact buttons (phone, WhatsApp, custom URLs) with extensive customization options.
 
-## ✨ ویژگی‌های کلیدی
+## ✨ Key Features
 
-- 🎯 **دو نوع دکمه**: تک دکمه یا چند دکمه (Expanding)
-- 📱 **انواع لینک**: تلفن، واتساپ، URL سفارشی
-- 🎨 **دو استایل**: دکمه دایره‌ای یا آیکون با متن (pill-shaped)
-- 📍 **8 موقعیت** + حالت تمام عرض
-- 📱 **Responsive** با کنترل سایز برای هر دستگاه
-- ✨ **انیمیشن**: Pulse، Bounce، Shake
-- 🎨 **18 آیکون داخلی** + امکان آپلود آیکون سفارشی
-- 🌐 **چندزبانه**: انگلیسی و فارسی
-- ♿ **دسترسی‌پذیر**: ARIA labels و alt text
-- 🔍 **بهینه SEO**: rel، target، title attributes
+### Button Types
+- **Single Button**: One-click call/contact button
+- **Multibutton (Expanding)**: Multiple action buttons in a floating menu
 
-## 📦 نصب
+### Link Types
+- **Phone**: Direct dial links (`tel:`)
+- **WhatsApp**: WhatsApp chat links with country code support
+- **Custom URL**: Any custom link with full control over `rel` and `target` attributes
 
-### روش 1: دانلود از GitHub
+### Appearance Options
+- **Circular Icon**: Classic floating button with icon only
+- **Icon with Text**: Pill-shaped button with icon and text label
 
-1. به [Releases](https://github.com/mostafaafrouzi/joomla-call-now-button/releases) بروید
-2. آخرین نسخه را دانلود کنید
-3. در Joomla Admin: **Extensions > Manage > Install**
-4. فایل ZIP را آپلود کنید
+### Positioning & Display
+- **8 Position Options**: Bottom/Top (Left, Center, Right), Middle (Left, Right)
+- **Full Width**: Full-width display at top or bottom (Icon with Text only)
+- **Custom Margins**: Manual control over button distance from screen edges
+- **Responsive Sizes**: Device-specific size controls (Desktop, Tablet, Mobile)
 
-### روش 2: نصب مستقیم
+### Customization
+- **18 Built-in Icons**: Phone, WhatsApp, Telegram, Instagram, Facebook, Twitter, LinkedIn, YouTube, and more
+- **Custom Icon Upload**: Upload your own icon image
+- **Color Controls**: Full control over button and icon colors
+- **Typography**: Font size, color, and weight controls for text buttons
+- **Animations**: Pulse, Bounce, Shake (with pill-shaped support)
+- **Z-Index Control**: Customizable stacking order
 
-از لینک زیر نصب کنید:
+### Multibutton Features
+- **Tooltip Themes**: Light/Dark tooltip backgrounds
+- **Title Display**: Show titles on hover, always, or never
+- **Individual Item Styling**: Custom colors and icons per item
+- **Smooth Animations**: Staggered slide animations for expanding menu
+
+### SEO & Standards Compliance
+- **SEO Optimized**: Proper `rel` attributes (nofollow, noopener, noreferrer)
+- **Link Attributes**: `target` control for new window/tab
+- **Title Attributes**: Anchor text used as `title` for better SEO
+- **Alt Text**: Proper `alt` attributes for custom image icons
+- **ARIA Labels**: Accessibility support for screen readers
+- **Joomla Standards**: Follows Joomla 5.x and 6.x coding standards
+- **Namespace Support**: Proper Joomla namespace implementation
+
+### Technical Features
+- **Responsive Design**: Mobile-first approach with breakpoint controls
+- **Display Modes**: All devices, mobile only, or desktop only
+- **Multilingual**: English and Persian (Farsi) language support
+- **Auto Updates**: Built-in Joomla update system via GitHub Releases
+- **Changelog Integration**: Release notes displayed in Joomla admin
+
+## 📦 Installation
+
+### Method 1: Download from GitHub
+
+1. Go to [Releases](https://github.com/mostafaafrouzi/joomla-call-now-button/releases)
+2. Download the latest version
+3. In Joomla Admin: **Extensions > Manage > Install**
+4. Upload the ZIP file
+
+### Method 2: Direct Install
+
+Install directly from:
 ```
 https://github.com/mostafaafrouzi/joomla-call-now-button/releases/latest/download/mod_callnowbutton-latest.zip
 ```
 
-## 🔄 بروزرسانی خودکار
+## 🔄 Automatic Updates
 
-ماژول از سیستم بروزرسانی خودکار Joomla پشتیبانی می‌کند:
+The module supports Joomla's automatic update system:
 
-1. در Joomla Admin: **System > Update > Extensions**
-2. روی **Check for Updates** کلیک کنید
-3. بروزرسانی‌های موجود نمایش داده می‌شوند
-4. روی **Update** کلیک کنید
+1. In Joomla Admin: **System > Update > Extensions**
+2. Click **Check for Updates**
+3. Available updates will be displayed
+4. Click **Update**
 
-### نمایش Changelog
+### Viewing Changelog
 
-- **در Manage Extensions**: روی شماره نسخه کلیک کنید
-- **در Update Extensions**: دکمه Changelog برای مشاهده تغییرات
+- **In Manage Extensions**: Click on the version number
+- **In Update Extensions**: Click the Changelog button to view changes
 
-## 📖 مستندات کامل
+## 🛠️ Development
 
-مستندات کامل در فایل [mod_callnowbutton/README.md](mod_callnowbutton/README.md) موجود است.
-
-## 🛠️ توسعه
-
-### ساختار Repository
+### Repository Structure
 
 ```
 joomla-call-now-button/
-├── mod_callnowbutton/      # کد ماژول
-├── updates/                # فایل‌های بروزرسانی
+├── mod_callnowbutton/      # Module code
+├── updates/                # Update files
 │   ├── updates.xml
 │   └── changelog.xml
-├── build/                  # اسکریپت‌های build
-└── .github/workflows/      # GitHub Actions (خودکار)
+├── build/                  # Build scripts
+└── .github/workflows/      # GitHub Actions (automated)
 ```
 
-### Release خودکار با GitHub Actions
+### Automated Release with GitHub Actions
+
+1. Update version in `mod_callnowbutton.xml`
+2. Update `changelog.xml` with new changes
+3. Commit and push:
+   ```bash
+   git add .
+   git commit -m "Release v1.0.1"
+   git push origin main
+   ```
+4. Create and push tag:
+   ```bash
+   git tag v1.0.1
+   git push --tags
+   ```
+5. GitHub Actions automatically:
+   - Builds ZIP file
+   - Creates GitHub Release
+   - Updates `updates.xml`
+   - Generates checksums (MD5, SHA256, SHA512)
+
+### Local Build (Optional)
 
 ```bash
-# 1. به‌روزرسانی نسخه در mod_callnowbutton.xml
-# 2. به‌روزرسانی changelog.xml
-# 3. Commit و push
-
-git add .
-git commit -m "Release v1.0.1"
-git push origin main
-
-# 4. ایجاد tag
-git tag v1.0.1
-git push --tags
-
-# 5. GitHub Actions به صورت خودکار:
-#    - ZIP می‌سازد
-#    - Release ایجاد می‌کند
-#    - updates.xml را به‌روزرسانی می‌کند
-```
-
-### Build محلی (اختیاری)
-
-```batch
-build\build.bat        # Windows
+build/build.bat        # Windows
 build/build.sh         # Linux/Mac
+build/build.php        # Cross-platform
 ```
 
-## 👨‍💻 توسعه‌دهنده
+## 📋 Requirements
+
+- **Joomla**: 5.0.0 or higher (compatible with Joomla 6.x)
+- **PHP**: 8.1.0 or higher (8.1, 8.2, 8.3, 8.4)
+- **Browser**: Modern browsers with CSS3 and JavaScript support
+
+## 👨‍💻 Developer
 
 **Mostafa Afrouzi**  
 *Web Designer & Developer, SEO & Digital Marketing Specialist*
 
-- 🌐 **Website**: [afrouzi.ir](https://afrouzi.ir)
-- 📧 **Email**: [mostafa.afrouzi@gmail.com](mailto:mostafa.afrouzi@gmail.com)
-- 📱 **Phone**: [+98 917 626 2858](tel:+989176262858)
-- 💼 **LinkedIn**: [linkedin.com/in/mostafaafrouzi](https://www.linkedin.com/in/mostafaafrouzi/)
-- 🐙 **GitHub**: [github.com/mostafaafrouzi](https://github.com/mostafaafrouzi)
-- 💬 **WhatsApp**: [Send Message](https://wa.me/989176262858)
-- 📮 **Telegram**: [@mostafaafrouzi](https://t.me/mostafaafrouzi)
+- 🌐 **Website**: [afrouzi.ir/en](https://afrouzi.ir/en)
 
-### خدمات حرفه‌ای
+## 📄 License
 
-- طراحی و توسعه وب/فروشگاه (Joomla، WordPress، Laravel، Vue.js)
-- تولید افزونه، ماژول، پلاگین و کامپوننت سفارشی Joomla
-- طراحی قالب اختصاصی Joomla
-- مهاجرت جوملا از نسخه قبلی به آخرین نسخه
-- سئو تکنیکال و بهینه‌سازی موتورهای جستجو
-- تبلیغات گوگل و PPC
-- اتوماسیون بازاریابی
-- توسعه اپلیکیشن موبایل
+This module is released under the GNU General Public License version 2 or later.
 
-**مشاوره رایگان** — برای دریافت قیمت دقیق تماس بگیرید.
+## 🙏 Support
 
-## 📄 مجوز
-
-این ماژول تحت مجوز GNU General Public License version 2 or later منتشر شده است.
-
-## 🙏 حمایت
-
-اگر این ماژول برای شما مفید بود:
-- ⭐ به repository ستاره بدهید
-- 🐛 باگ‌ها را گزارش دهید
-- 💡 پیشنهادات خود را ارائه دهید
-- 🔄 به دیگران معرفی کنید
+If you find this module useful:
+- ⭐ Star the repository
+- 🐛 Report bugs
+- 💡 Suggest improvements
+- 🔄 Share with others
 
 ---
 
-**ساخته شده با ❤️ برای جامعه Joomla**
+**Made with ❤️ for the Joomla community**
