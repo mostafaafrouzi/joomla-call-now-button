@@ -174,12 +174,20 @@ jobs:
           echo "✅ ZIP file verified: $ZIP_FILE"
           ls -lh "$ZIP_FILE"
           
+      - name: Create fixed-name ZIP for latest download
+        run: |
+          # Create a copy with fixed name for /latest/download/ URL
+          cp mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip mod_callnowbutton.zip
+          echo "✅ Created fixed-name ZIP: mod_callnowbutton.zip"
+          
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           name: Call Now Button v${{ steps.get_version.outputs.VERSION }}
           body_path: changelog_temp.md
-          files: mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip
+          files: |
+            mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip
+            mod_callnowbutton.zip
           draft: false
           prerelease: false
           generate_release_notes: false

@@ -70,10 +70,12 @@ Professional floating call-to-action button module for Joomla. A modern, respons
 
 Download the latest release ZIP file directly:
 ```
-https://github.com/mostafaafrouzi/joomla-call-now-button/releases/download/v1.0.0/mod_callnowbutton-1.0.0.zip
+https://github.com/mostafaafrouzi/joomla-call-now-button/releases/latest/download/mod_callnowbutton.zip
 ```
 
-Or visit the [Releases page](https://github.com/mostafaafrouzi/joomla-call-now-button/releases) to download any version.
+**Note:** This link always downloads the latest version. The filename in the download will include the version number (e.g., `mod_callnowbutton-1.0.0.zip`).
+
+Or visit the [Releases page](https://github.com/mostafaafrouzi/joomla-call-now-button/releases) to download a specific version.
 
 ## 🔄 Automatic Updates
 
@@ -105,6 +107,12 @@ joomla-call-now-button/
 
 ### Automated Release with GitHub Actions
 
+**⚠️ Important:** The release workflow **ONLY** runs when you push a tag with pattern `v*` (e.g., `v1.0.0`).
+
+**Regular commits (like updating README) do NOT trigger the release workflow.**
+
+#### Steps to Create a New Release:
+
 1. Update version in `mod_callnowbutton.xml`
 2. Update `changelog.xml` with new changes
 3. Commit and push:
@@ -113,16 +121,22 @@ joomla-call-now-button/
    git commit -m "Release v1.0.0"
    git push origin main
    ```
-4. Create and push tag:
+4. **Create and push tag (this triggers the workflow):**
    ```bash
    git tag v1.0.0
    git push origin v1.0.0
    ```
 5. GitHub Actions automatically:
-   - Builds ZIP file
+   - Builds ZIP file (with version in filename)
+   - Creates a fixed-name ZIP (`mod_callnowbutton.zip`) for `/latest/download/` URL
    - Creates GitHub Release
    - Updates `updates.xml`
    - Generates checksums (MD5, SHA256, SHA512)
+
+#### When Does the Workflow Run?
+
+- ✅ **Runs:** When you push a tag starting with `v` (e.g., `v1.0.0`, `v1.0.1`)
+- ❌ **Does NOT run:** Regular commits, README updates, code changes without tags
 
 ### Local Build (Optional)
 
