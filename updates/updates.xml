@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0.1" encoding="utf-8"?>
 <updates>
     <update>
         <name>Call Now Button</name>
         <description><![CDATA[Adds a click-to-call button to your website. Perfect for mobile visitors who want to call you with one touch.]]></description>
         <element>mod_callnowbutton</element>
         <type>module</type>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <downloads>
             <downloadurl type="full" format="zip">https://github.com/mostafaafrouzi/joomla-call-now-button/releases/download/v1.0.0/mod_callnowbutton-1.0.0.zip</downloadurl>
         </downloads>
