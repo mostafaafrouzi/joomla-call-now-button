@@ -175,19 +175,6 @@
     transform-origin: right center;
 }
 
-.cnb-middle-left {
-    top: 50%;
-    left: 20px;
-    transform: translateY(-50%);
-    transform-origin: left center;
-}
-
-.cnb-middle-right {
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-    transform-origin: right center;
-}
 
 /* Position classes with animation - preserve position */
 .cnb-animation-pulse.cnb-bottom-left,
@@ -195,9 +182,7 @@
 .cnb-animation-pulse.cnb-bottom-right,
 .cnb-animation-pulse.cnb-top-left,
 .cnb-animation-pulse.cnb-top-center,
-.cnb-animation-pulse.cnb-top-right,
-.cnb-animation-pulse.cnb-middle-left,
-.cnb-animation-pulse.cnb-middle-right {
+.cnb-animation-pulse.cnb-top-right {
     position: fixed;
 }
 
@@ -237,17 +222,6 @@
     transform: scale(var(--cnb-scale, 1));
 }
 
-.cnb-animation-pulse.cnb-middle-left {
-    top: 50%;
-    left: 20px;
-    transform: translateY(-50%) scale(var(--cnb-scale, 1));
-}
-
-.cnb-animation-pulse.cnb-middle-right {
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%) scale(var(--cnb-scale, 1));
-}
 
 /* Bounce and Shake animations with position */
 .cnb-animation-bounce.cnb-bottom-left,
@@ -255,9 +229,7 @@
 .cnb-animation-bounce.cnb-bottom-right,
 .cnb-animation-bounce.cnb-top-left,
 .cnb-animation-bounce.cnb-top-center,
-.cnb-animation-bounce.cnb-top-right,
-.cnb-animation-bounce.cnb-middle-left,
-.cnb-animation-bounce.cnb-middle-right {
+.cnb-animation-bounce.cnb-top-right {
     position: fixed;
 }
 
@@ -271,9 +243,7 @@
 .cnb-animation-shake.cnb-bottom-right,
 .cnb-animation-shake.cnb-top-left,
 .cnb-animation-shake.cnb-top-center,
-.cnb-animation-shake.cnb-top-right,
-.cnb-animation-shake.cnb-middle-left,
-.cnb-animation-shake.cnb-middle-right {
+.cnb-animation-shake.cnb-top-right {
     position: fixed;
 }
 
@@ -364,8 +334,7 @@
         top: 15px;
     }
     
-    .cnb-middle-left,
-    .cnb-middle-right {
+    /* Middle positions removed */
         display: none; /* Hide middle positions on mobile */
     }
 }
@@ -528,31 +497,6 @@
     }
 }
 
-.cnb-animation-bounce.cnb-middle-left {
-    animation: cnb-bounce-middle-left 1s ease-in-out infinite;
-}
-
-@keyframes cnb-bounce-middle-left {
-    0%, 100% {
-        transform: translateY(-50%) translateX(0) scale(var(--cnb-scale, 1));
-    }
-    50% {
-        transform: translateY(-50%) translateX(-10px) scale(var(--cnb-scale, 1));
-    }
-}
-
-.cnb-animation-bounce.cnb-middle-right {
-    animation: cnb-bounce-middle-right 1s ease-in-out infinite;
-}
-
-@keyframes cnb-bounce-middle-right {
-    0%, 100% {
-        transform: translateY(-50%) translateX(0) scale(var(--cnb-scale, 1));
-    }
-    50% {
-        transform: translateY(-50%) translateX(10px) scale(var(--cnb-scale, 1));
-    }
-}
 
 .cnb-animation-bounce.cnb-bottom-left,
 .cnb-animation-bounce.cnb-bottom-right,
@@ -632,37 +576,6 @@
     }
 }
 
-.cnb-animation-shake.cnb-middle-left {
-    animation: cnb-shake-middle-left 0.6s ease-in-out infinite;
-}
-
-@keyframes cnb-shake-middle-left {
-    0%, 100% {
-        transform: translateY(-50%) translateX(0) rotate(0deg) scale(var(--cnb-scale, 1));
-    }
-    10%, 30%, 50%, 70%, 90% {
-        transform: translateY(calc(-50% - 1px)) translateX(-2px) rotate(-1deg) scale(var(--cnb-scale, 1));
-    }
-    20%, 40%, 60%, 80% {
-        transform: translateY(calc(-50% + 1px)) translateX(2px) rotate(1deg) scale(var(--cnb-scale, 1));
-    }
-}
-
-.cnb-animation-shake.cnb-middle-right {
-    animation: cnb-shake-middle-right 0.6s ease-in-out infinite;
-}
-
-@keyframes cnb-shake-middle-right {
-    0%, 100% {
-        transform: translateY(-50%) translateX(0) rotate(0deg) scale(var(--cnb-scale, 1));
-    }
-    10%, 30%, 50%, 70%, 90% {
-        transform: translateY(calc(-50% - 1px)) translateX(-2px) rotate(-1deg) scale(var(--cnb-scale, 1));
-    }
-    20%, 40%, 60%, 80% {
-        transform: translateY(calc(-50% + 1px)) translateX(2px) rotate(1deg) scale(var(--cnb-scale, 1));
-    }
-}
 
 .cnb-animation-shake.cnb-bottom-left,
 .cnb-animation-shake.cnb-bottom-right,
@@ -976,33 +889,6 @@
     align-items: flex-start;
 }
 
-.cnb-multibutton-container.cnb-middle-left .cnb-multibutton-options {
-    left: 70px;
-    top: 50%;
-    transform: translateY(-50%);
-    flex-direction: row;
-}
-
-.cnb-multibutton-container.cnb-middle-right .cnb-multibutton-options {
-    right: 70px;
-    top: 50%;
-    transform: translateY(-50%);
-    flex-direction: row-reverse;
-}
-
-.cnb-multibutton-container.cnb-middle-left .cnb-multibutton-options li,
-.cnb-multibutton-container.cnb-middle-right .cnb-multibutton-options li {
-    margin-bottom: 0;
-    margin-right: 15px;
-    margin-left: 15px;
-    gap: 12px;
-}
-
-.cnb-multibutton-container.cnb-middle-left .cnb-multibutton-options li:last-child,
-.cnb-multibutton-container.cnb-middle-right .cnb-multibutton-options li:last-child {
-    margin-right: 0;
-    margin-left: 0;
-}
 
 /* Animation for multibutton items - smooth slide up */
 @keyframes cnb-slide-up {
@@ -1064,13 +950,6 @@
     animation: cnb-slide-down 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-.cnb-multibutton-container.cnb-middle-left .cnb-multibutton-options.active li {
-    animation: cnb-slide-right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.cnb-multibutton-container.cnb-middle-right .cnb-multibutton-options.active li {
-    animation: cnb-slide-left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
 
 /* Staggered animation delays for smooth cascade effect */
 .cnb-multibutton-options.active li:nth-child(1) { animation-delay: 0.06s; }

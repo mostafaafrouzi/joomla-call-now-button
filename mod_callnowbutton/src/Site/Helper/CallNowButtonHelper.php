@@ -310,18 +310,6 @@ class CallNowButtonHelper
             .cnb-animation-shake.cnb-top-right {
                 right: {$buttonMargin}px !important;
             }
-            .cnb-button.cnb-middle-left,
-            .cnb-animation-pulse.cnb-middle-left,
-            .cnb-animation-bounce.cnb-middle-left,
-            .cnb-animation-shake.cnb-middle-left {
-                left: {$buttonMargin}px !important;
-            }
-            .cnb-button.cnb-middle-right,
-            .cnb-animation-pulse.cnb-middle-right,
-            .cnb-animation-bounce.cnb-middle-right,
-            .cnb-animation-shake.cnb-middle-right {
-                right: {$buttonMargin}px !important;
-            }
             ";
         }
         
@@ -434,12 +422,6 @@ class CallNowButtonHelper
             .cnb-multibutton-container.cnb-top-right {
                 right: {$buttonMargin}px !important;
             }
-            .cnb-multibutton-container.cnb-middle-left {
-                left: {$buttonMargin}px !important;
-            }
-            .cnb-multibutton-container.cnb-middle-right {
-                right: {$buttonMargin}px !important;
-            }
             
             /* Multibutton options positioning - adjust based on margin */
             /* Maintain 50px gap between main button and options */
@@ -452,12 +434,6 @@ class CallNowButtonHelper
             .cnb-multibutton-container.cnb-top-left .cnb-multibutton-options,
             .cnb-multibutton-container.cnb-top-center .cnb-multibutton-options {
                 top: {$optionsOffsetTop}px !important;
-            }
-            .cnb-multibutton-container.cnb-middle-left .cnb-multibutton-options {
-                left: {$optionsOffsetMiddle}px !important;
-            }
-            .cnb-multibutton-container.cnb-middle-right .cnb-multibutton-options {
-                right: {$optionsOffsetMiddle}px !important;
             }
             ";
             $document->addStyleDeclaration($multibuttonMarginCss);
