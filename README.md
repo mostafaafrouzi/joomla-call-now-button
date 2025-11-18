@@ -68,10 +68,12 @@ Professional floating call-to-action button module for Joomla. A modern, respons
 
 ### Method 2: Direct Install
 
-Install directly from:
+Download the latest release ZIP file directly:
 ```
-https://github.com/mostafaafrouzi/joomla-call-now-button/releases/latest/download/mod_callnowbutton-latest.zip
+https://github.com/mostafaafrouzi/joomla-call-now-button/releases/download/v1.0.0/mod_callnowbutton-1.0.0.zip
 ```
+
+Or visit the [Releases page](https://github.com/mostafaafrouzi/joomla-call-now-button/releases) to download any version.
 
 ## 🔄 Automatic Updates
 
