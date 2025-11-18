@@ -37,10 +37,31 @@ jobs:
           
       - name: Create ZIP archive
         run: |
+          # Create ZIP with only mod_callnowbutton contents (not the folder itself)
           cd mod_callnowbutton
           zip -r ../mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip . \
-            -x "*.git*" "*.DS_Store" "*Thumbs.db" "*.idea*" "*node_modules*" "*.vscode*" "*.bak" "*.tmp"
+            -x "*.git*" "*.DS_Store" "*Thumbs.db" "*.idea*" "*node_modules*" "*.vscode*" "*.bak" "*.tmp" \
+            -x ".git/*" ".gitignore" ".DS_Store" "Thumbs.db"
           cd ..
+          
+          # Verify ZIP structure (should start with mod_callnowbutton.xml, not mod_callnowbutton/)
+          echo "Verifying ZIP structure..."
+          echo "First 10 files in ZIP:"
+          unzip -l mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip | head -15
+          
+          # Check that mod_callnowbutton.xml is at root
+          if ! unzip -l mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip | grep -q "mod_callnowbutton.xml"; then
+            echo "ERROR: mod_callnowbutton.xml not found in ZIP root!"
+            exit 1
+          fi
+          
+          # Check that ZIP doesn't contain mod_callnowbutton/ folder
+          if unzip -l mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip | grep -q "^.*mod_callnowbutton/"; then
+            echo "ERROR: ZIP contains mod_callnowbutton/ folder structure!"
+            exit 1
+          fi
+          
+          echo "✅ ZIP structure verified correctly"
           
       - name: Generate checksums
         id: checksums
