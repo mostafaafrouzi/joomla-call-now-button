@@ -273,8 +273,6 @@
                     <option value="top-left">MOD_CALLNOWBUTTON_POSITION_TOP_LEFT</option>
                     <option value="top-center">MOD_CALLNOWBUTTON_POSITION_TOP_CENTER</option>
                     <option value="top-right">MOD_CALLNOWBUTTON_POSITION_TOP_RIGHT</option>
-                    <option value="middle-left">MOD_CALLNOWBUTTON_POSITION_MIDDLE_LEFT</option>
-                    <option value="middle-right">MOD_CALLNOWBUTTON_POSITION_MIDDLE_RIGHT</option>
                     <!-- Full width positions available when using Icon with Text -->
                     <option value="full-bottom">MOD_CALLNOWBUTTON_POSITION_FULL_BOTTOM</option>
                     <option value="full-top">MOD_CALLNOWBUTTON_POSITION_FULL_TOP</option>
