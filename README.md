@@ -108,13 +108,13 @@ joomla-call-now-button/
 3. Commit and push:
    ```bash
    git add .
-   git commit -m "Release v1.0.1"
+   git commit -m "Release v1.0.0"
    git push origin main
    ```
 4. Create and push tag:
    ```bash
-   git tag v1.0.1
-   git push --tags
+   git tag v1.0.0
+   git push origin v1.0.0
    ```
 5. GitHub Actions automatically:
    - Builds ZIP file

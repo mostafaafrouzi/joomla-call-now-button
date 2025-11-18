@@ -7,7 +7,7 @@
     <license>GNU General Public License version 2 or later</license>
     <authorEmail>mostafa.afrouzi@gmail.com</authorEmail>
     <authorUrl>https://afrouzi.ir</authorUrl>
-    <version>1.0.1</version>
+    <version>1.0.0</version>
     <description><![CDATA[Professional floating call-to-action button module for Joomla. Supports phone calls, WhatsApp, custom URLs with extensive customization options. Developed by Mostafa Afrouzi - afrouzi.ir]]></description>
     
     <namespace path="src">Joomla\Module\CallNowButton</namespace>
