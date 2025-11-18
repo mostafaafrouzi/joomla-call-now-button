@@ -240,7 +240,7 @@
                     type="radio"
                     label="MOD_CALLNOWBUTTON_DISPLAY_MODE_LABEL"
                     description="MOD_CALLNOWBUTTON_DISPLAY_MODE_DESC"
-                    default="mobile_only"
+                    default="all"
                     class="btn-group">
                     <option value="all">MOD_CALLNOWBUTTON_DISPLAY_MODE_ALL</option>
                     <option value="mobile_only">MOD_CALLNOWBUTTON_DISPLAY_MODE_MOBILE_ONLY</option>
