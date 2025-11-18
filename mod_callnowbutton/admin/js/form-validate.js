@@ -457,10 +457,6 @@
                                form.querySelector('[id*="position"]');
             
             if (!appearanceField || !positionField) {
-                console.log('toggleFullWidthOptions: Fields not found', {
-                    appearance: !!appearanceField,
-                    position: !!positionField
-                });
                 return;
             }
             
