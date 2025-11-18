@@ -16,6 +16,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Get version from tag
         id: get_version
@@ -37,6 +40,8 @@ jobs:
           
       - name: Create ZIP archive
         run: |
+          echo "Creating ZIP archive for version ${{ steps.get_version.outputs.VERSION }}"
+          
           # Create ZIP with only mod_callnowbutton contents (not the folder itself)
           cd mod_callnowbutton
           zip -r ../mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip . \
@@ -44,9 +49,18 @@ jobs:
             -x ".git/*" ".gitignore" ".DS_Store" "Thumbs.db"
           cd ..
           
+          # Check if ZIP file was created
+          if [ ! -f "mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip" ]; then
+            echo "ERROR: ZIP file was not created!"
+            exit 1
+          fi
+          
+          ZIP_SIZE=$(ls -lh mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip | awk '{print $5}')
+          echo "✅ ZIP file created successfully: mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip ($ZIP_SIZE)"
+          
           # Verify ZIP structure (should start with mod_callnowbutton.xml, not mod_callnowbutton/)
           echo "Verifying ZIP structure..."
-          echo "First 10 files in ZIP:"
+          echo "First 15 files in ZIP:"
           unzip -l mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip | head -15
           
           # Check that mod_callnowbutton.xml is at root
@@ -124,17 +138,40 @@ jobs:
           VERSION="${{ steps.get_version.outputs.VERSION }}"
           REPO="${{ github.repository }}"
           
+          # Configure git
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # Fetch all branches and tags
+          git fetch origin
+          
+          # Checkout main branch
+          git checkout -B main origin/main || git checkout -b main
+          
           # Update version and download URL in updates.xml
           sed -i "s|<version>.*</version>|<version>$VERSION</version>|" updates/updates.xml
           sed -i "s|releases/download/v[^/]*/|releases/download/v$VERSION/|" updates/updates.xml
           sed -i "s|mod_callnowbutton-[0-9.]*\.zip|mod_callnowbutton-$VERSION.zip|" updates/updates.xml
           
-          # Commit and push changes
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          # Check if there are changes to commit
           git add updates/updates.xml
-          git commit -m "Update updates.xml for version $VERSION" || echo "No changes to commit"
-          git push origin HEAD:main || echo "Nothing to push"
+          if ! git diff --staged --quiet; then
+            git commit -m "Update updates.xml for version $VERSION [skip ci]"
+            git push origin main
+            echo "✅ Successfully updated updates.xml and pushed to main branch"
+          else
+            echo "No changes to commit in updates.xml"
+          fi
+          
+      - name: Verify ZIP file exists before release
+        run: |
+          ZIP_FILE="mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip"
+          if [ ! -f "$ZIP_FILE" ]; then
+            echo "ERROR: ZIP file $ZIP_FILE not found!"
+            exit 1
+          fi
+          echo "✅ ZIP file verified: $ZIP_FILE"
+          ls -lh "$ZIP_FILE"
           
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -144,6 +181,8 @@ jobs:
           files: mod_callnowbutton-${{ steps.get_version.outputs.VERSION }}.zip
           draft: false
           prerelease: false
+          generate_release_notes: false
+          tag_name: v${{ steps.get_version.outputs.VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
