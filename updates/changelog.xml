@@ -3,7 +3,7 @@
     <changelog>
         <element>mod_callnowbutton</element>
         <type>module</type>
-        <version>1.0.1</version>
+        <version>1.0.0</version>
         <addition>
             <item><![CDATA[Initial release of Call Now Button module for Joomla 5 and 6]]></item>
             <item><![CDATA[Single button and multibutton (expanding) support]]></item>
@@ -28,6 +28,17 @@
             <item><![CDATA[Website: <a href="https://afrouzi.ir" target="_blank">afrouzi.ir</a>]]></item>
             <item><![CDATA[Email: mostafa.afrouzi@gmail.com]]></item>
             <item><![CDATA[Professional Joomla services available: Custom extensions, templates, migration, SEO]]></item>
+        </note>
+    </changelog>
+    <changelog>
+        <element>mod_callnowbutton</element>
+        <type>module</type>
+        <version>1.0.1</version>
+        <addition>
+            <item><![CDATA[Changed default Display Mode from "Mobile only" to "All devices" for better user experience]]></item>
+        </addition>
+        <note>
+            <item><![CDATA[This update improves the default behavior - the button will now be visible on all devices by default]]></item>
         </note>
     </changelog>
 </changelogs>
