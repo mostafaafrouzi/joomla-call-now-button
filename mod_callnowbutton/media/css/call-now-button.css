@@ -799,35 +799,6 @@
     transform: translateY(-50%);
 }
 
-/* Positioning for middle positions - tooltip/title to the side */
-.cnb-multibutton-container.cnb-middle-left .cnb-tooltip {
-    left: 100%;
-    margin-left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.cnb-multibutton-container.cnb-middle-right .cnb-tooltip {
-    right: 100%;
-    margin-right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-/* Title text for middle positions - already positioned correctly */
-.cnb-multibutton-container.cnb-middle-left .cnb-title-text {
-    left: calc(100% + 12px);
-    margin-left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.cnb-multibutton-container.cnb-middle-right .cnb-title-text {
-    right: calc(100% + 12px);
-    margin-right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-}
 
 /* Show tooltip on hover */
 .cnb-multibutton-options li a.cnb-title-hover:hover .cnb-tooltip {
