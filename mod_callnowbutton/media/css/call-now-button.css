@@ -333,10 +333,6 @@
     .cnb-top-center {
         top: 15px;
     }
-    
-    /* Middle positions removed */
-        display: none; /* Hide middle positions on mobile */
-    }
 }
 
 /* Hide on print */
