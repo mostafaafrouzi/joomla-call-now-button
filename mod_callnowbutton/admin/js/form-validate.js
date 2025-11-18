@@ -449,21 +449,35 @@
         function toggleFullWidthOptions() {
             var appearanceField = form.querySelector('[name="jform[params][appearance]"]') || 
                                 form.querySelector('[name="params[appearance]"]') ||
+                                form.querySelector('input[name*="appearance"]:checked') ||
                                 form.querySelector('[id*="appearance"]');
             var positionField = form.querySelector('[name="jform[params][position]"]') || 
                                form.querySelector('[name="params[position]"]') ||
+                               form.querySelector('select[id*="position"]') ||
                                form.querySelector('[id*="position"]');
             
             if (!appearanceField || !positionField) {
+                console.log('toggleFullWidthOptions: Fields not found', {
+                    appearance: !!appearanceField,
+                    position: !!positionField
+                });
                 return;
             }
             
+            // Get appearance value - handle both radio buttons and selects
             var appearanceValue = appearanceField.value;
+            if (appearanceField.type === 'radio') {
+                var checkedRadio = form.querySelector('input[name*="appearance"]:checked');
+                if (checkedRadio) {
+                    appearanceValue = checkedRadio.value;
+                }
+            }
+            
             var fullBottomOption = null;
             var fullTopOption = null;
             
             // Find full-bottom and full-top options
-            if (positionField.options) {
+            if (positionField.options && positionField.tagName === 'SELECT') {
                 for (var i = 0; i < positionField.options.length; i++) {
                     if (positionField.options[i].value === 'full-bottom') {
                         fullBottomOption = positionField.options[i];
@@ -480,16 +494,19 @@
                 if (fullBottomOption) {
                     fullBottomOption.style.display = '';
                     fullBottomOption.removeAttribute('disabled');
+                    fullBottomOption.removeAttribute('hidden');
                 }
                 if (fullTopOption) {
                     fullTopOption.style.display = '';
                     fullTopOption.removeAttribute('disabled');
+                    fullTopOption.removeAttribute('hidden');
                 }
             } else {
                 // Hide full width options
                 if (fullBottomOption) {
                     fullBottomOption.style.display = 'none';
                     fullBottomOption.setAttribute('disabled', 'disabled');
+                    fullBottomOption.setAttribute('hidden', 'hidden');
                     // If current selection is full-bottom, reset to default
                     if (positionField.value === 'full-bottom') {
                         positionField.value = 'bottom-right';
@@ -498,6 +515,7 @@
                 if (fullTopOption) {
                     fullTopOption.style.display = 'none';
                     fullTopOption.setAttribute('disabled', 'disabled');
+                    fullTopOption.setAttribute('hidden', 'hidden');
                     // If current selection is full-top, reset to default
                     if (positionField.value === 'full-top') {
                         positionField.value = 'bottom-right';
@@ -685,13 +703,27 @@
                     if (currentValue !== jqPrevAppearance) {
                         jqPrevAppearance = currentValue;
                         
+                        // Multiple timeouts to ensure DOM is ready
                         setTimeout(function() {
                             toggleFullWidthOptions();
-                        }, 100);
+                        }, 50);
+                        setTimeout(function() {
+                            toggleFullWidthOptions();
+                        }, 150);
                         setTimeout(function() {
                             toggleFullWidthOptions();
                         }, 300);
+                        setTimeout(function() {
+                            toggleFullWidthOptions();
+                        }, 500);
                     }
+                });
+                
+                // Also listen for click on radio buttons
+                jQuery(form).on('click', 'input[name*="appearance"]', function() {
+                    setTimeout(function() {
+                        toggleFullWidthOptions();
+                    }, 100);
                 });
                 
                 // Also listen for Joomla's showon events if available
