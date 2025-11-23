@@ -777,20 +777,8 @@ class CallNowButtonHelper
         // Replace with valid items
         $multibuttonItems = $validItems;
         
-        // If no valid items, return empty but log for debugging
+        // If no valid items, return empty
         if (empty($multibuttonItems)) {
-            // Debug: Log original items to help troubleshoot
-            $originalItems = $this->params->get('multibutton_items', []);
-            if (defined('JDEBUG') && JDEBUG) {
-                error_log('CallNowButton renderMultibutton: No valid items found.');
-                error_log('Original items type: ' . gettype($originalItems));
-                if (is_array($originalItems)) {
-                    error_log('Original items count: ' . count($originalItems));
-                } elseif (is_string($originalItems)) {
-                    error_log('Original items string length: ' . strlen($originalItems));
-                    error_log('Original items preview: ' . substr($originalItems, 0, 200));
-                }
-            }
             return '';
         }
         
@@ -854,7 +842,7 @@ class CallNowButtonHelper
         
         // Render items from subform
         if (!empty($multibuttonItems) && is_array($multibuttonItems)) {
-            $user = Factory::getUser();
+            $user = Factory::getApplication()->getIdentity();
             $levels = $user->getAuthorisedViewLevels();
             
             foreach ($multibuttonItems as $key => $item) {

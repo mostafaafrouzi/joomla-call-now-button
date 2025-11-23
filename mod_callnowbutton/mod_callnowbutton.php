@@ -118,19 +118,6 @@ $helper->loadAssets();
 // Get button HTML
 $buttonHtml = $helper->renderButton();
 
-// Debug: Log if multibutton is empty
-if ($buttonType === 'multibutton' && empty($buttonHtml)) {
-    // If multibutton but no HTML, try to debug
-    $multibuttonItemsDebug = $params->get('multibutton_items', []);
-    error_log('CallNowButton Debug - multibutton_items type: ' . gettype($multibuttonItemsDebug));
-    if (is_string($multibuttonItemsDebug)) {
-        error_log('CallNowButton Debug - multibutton_items string length: ' . strlen($multibuttonItemsDebug));
-        error_log('CallNowButton Debug - multibutton_items string: ' . substr($multibuttonItemsDebug, 0, 200));
-    }
-    if (is_array($multibuttonItemsDebug)) {
-        error_log('CallNowButton Debug - multibutton_items array count: ' . count($multibuttonItemsDebug));
-    }
-}
 
 // Include the template
 require ModuleHelper::getLayoutPath('mod_callnowbutton', $params->get('layout', 'default'));
