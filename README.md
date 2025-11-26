@@ -5,6 +5,7 @@
 [![PHP](https://img.shields.io/badge/PHP-8.1%20%7C%208.2%20%7C%208.3%20%7C%208.4-777BB4.svg)](https://www.php.net/)
 
 Professional floating call-to-action button module for Joomla. A modern, responsive solution for displaying contact buttons (phone, WhatsApp, custom URLs) with extensive customization options.
+![Joomla Call Now Button Preview](https://raw.githubusercontent.com/mostafaafrouzi/joomla-call-now-button/main/Joomla%20Call%20Now%20Bottom.png)
 
 ## ✨ Key Features
 
