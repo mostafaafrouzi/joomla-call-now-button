@@ -5,10 +5,10 @@
         <description><![CDATA[Adds a click-to-call button to your website. Perfect for mobile visitors who want to call you with one touch.]]></description>
         <element>mod_callnowbutton</element>
         <type>module</type>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/mostafaafrouzi/joomla-call-now-button/releases/download/v1.1.1/mod_callnowbutton-1.1.1.zip</downloadurl>
-            <sha512>ce875b6b07368f8ef7db9cbbd2796fbdff33597aa73f825c371c09a014d450dfdb4ab948a8476743ba4632c4f13913ed66b352a7b48c8292e06e7de2ca0f8216</sha512>
+            <downloadurl type="full" format="zip">https://github.com/mostafaafrouzi/joomla-call-now-button/releases/download/v1.1.2/mod_callnowbutton-1.1.2.zip</downloadurl>
+            <sha512></sha512>
         </downloads>
         <tags>
             <tag>stable</tag>

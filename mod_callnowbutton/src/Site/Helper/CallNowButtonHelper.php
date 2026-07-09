@@ -14,7 +14,6 @@ require_once __DIR__ . '/IconRepository.php';
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
 
@@ -257,16 +256,55 @@ class CallNowButtonHelper
     public function getDisplayModeClass()
     {
         $displayMode = $this->params->get('display_mode', 'all');
+        $classes = [];
 
         if ($displayMode === 'mobile_only') {
-            return 'cnb-display-mobile-only';
+            $classes[] = 'cnb-display-mobile-only';
+        } elseif ($displayMode === 'desktop_only') {
+            $classes[] = 'cnb-display-desktop-only';
+        } else {
+            $classes[] = 'cnb-display-all';
         }
 
-        if ($displayMode === 'desktop_only') {
-            return 'cnb-display-desktop-only';
+        if ($this->isDocumentRtl()) {
+            $classes[] = 'cnb-rtl';
         }
 
-        return 'cnb-display-all';
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Whether the active site language is RTL
+     *
+     * @return  boolean
+     *
+     * @since   1.1.2
+     */
+    protected function isDocumentRtl()
+    {
+        return Factory::getLanguage()->isRTL();
+    }
+
+    /**
+     * Build a versioned media asset URL
+     *
+     * @param   string  $relativeMediaPath  Path relative to /media/
+     *
+     * @return  string
+     *
+     * @since   1.1.2
+     */
+    protected function getMediaAssetUrl($relativeMediaPath)
+    {
+        $relativePath = 'media/' . ltrim($relativeMediaPath, '/');
+        $absolutePath = JPATH_ROOT . '/' . $relativePath;
+        $url = Uri::root(true) . '/' . $relativePath;
+
+        if (is_file($absolutePath)) {
+            $url .= '?' . dechex(filemtime($absolutePath));
+        }
+
+        return $url;
     }
 
     /**
@@ -485,26 +523,12 @@ class CallNowButtonHelper
         if (!self::$sharedAssetsEmitted) {
             self::$sharedAssetsEmitted = true;
 
-            $cssUrl = HTMLHelper::_(
-                'stylesheet',
-                'mod_callnowbutton/call-now-button.css',
-                ['relative' => true, 'version' => 'auto', 'pathOnly' => true]
-            );
-
-            if ($cssUrl) {
-                $html .= '<link rel="stylesheet" href="' . htmlspecialchars($cssUrl, ENT_QUOTES, 'UTF-8') . '">';
-            }
+            $cssUrl = $this->getMediaAssetUrl('mod_callnowbutton/css/call-now-button.css');
+            $html .= '<link rel="stylesheet" href="' . htmlspecialchars($cssUrl, ENT_QUOTES, 'UTF-8') . '">';
 
             if ($this->params->get('button_type', 'single') === 'multibutton') {
-                $jsUrl = HTMLHelper::_(
-                    'script',
-                    'mod_callnowbutton/multibutton.js',
-                    ['relative' => true, 'version' => 'auto', 'pathOnly' => true]
-                );
-
-                if ($jsUrl) {
-                    $html .= '<script src="' . htmlspecialchars($jsUrl, ENT_QUOTES, 'UTF-8') . '" defer></script>';
-                }
+                $jsUrl = $this->getMediaAssetUrl('mod_callnowbutton/js/multibutton.js');
+                $html .= '<script src="' . htmlspecialchars($jsUrl, ENT_QUOTES, 'UTF-8') . '" defer></script>';
             }
         }
 
@@ -1097,6 +1121,11 @@ class CallNowButtonHelper
 
             $html .= ' aria-label="' . htmlspecialchars($buttonTitle, ENT_QUOTES, 'UTF-8') . '"';
             $html .= ' class="' . htmlspecialchars(implode(' ', $itemClasses), ENT_QUOTES, 'UTF-8') . '"';
+
+            if ($clickableLabel && $showTitle && $this->isDocumentRtl()) {
+                $html .= ' dir="rtl"';
+            }
+
             $html .= ' style="background-color: ' . htmlspecialchars($buttonBgColor, ENT_QUOTES, 'UTF-8')
                 . '; color: ' . htmlspecialchars($buttonColor, ENT_QUOTES, 'UTF-8') . ';"';
             $html .= '>';

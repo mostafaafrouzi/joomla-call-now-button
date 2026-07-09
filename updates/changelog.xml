@@ -3,6 +3,23 @@
     <changelog>
         <element>mod_callnowbutton</element>
         <type>module</type>
+        <version>1.1.2</version>
+        <fix>
+            <item><![CDATA[Fixed body fallback CSS link not being generated (HTMLHelper pathOnly bug) so stylesheet was missing on footer-position modules]]></item>
+            <item><![CDATA[Fixed RTL Persian text rendering and icon alignment in multibutton pill items and icontext main trigger]]></item>
+            <item><![CDATA[Fixed multibutton option stack overlap by using flex gap instead of margin on animated items]]></item>
+        </fix>
+        <change>
+            <item><![CDATA[Added cnb-rtl wrapper class and dir="rtl" on clickable multibutton links for Persian/RTL sites]]></item>
+            <item><![CDATA[Media asset URLs now use Uri::root with filemtime cache busting]]></item>
+        </change>
+        <note>
+            <item><![CDATA[Clear Joomla and JCH Optimize cache after updating]]></item>
+        </note>
+    </changelog>
+    <changelog>
+        <element>mod_callnowbutton</element>
+        <type>module</type>
         <version>1.1.1</version>
         <fix>
             <item><![CDATA[Fixed CSS/JS not loading when the module is published in footer positions that render after the template head (JCH Optimize / Helix layouts)]]></item>
