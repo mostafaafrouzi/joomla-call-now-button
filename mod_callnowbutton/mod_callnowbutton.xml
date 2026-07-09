@@ -6,8 +6,8 @@
     <copyright>Copyright (C) 2025 Mostafa Afrouzi. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later</license>
     <authorEmail>mostafa.afrouzi@gmail.com</authorEmail>
-    <authorUrl>https://afrouzi.ir</authorUrl>
-    <version>1.0.0</version>
+    <authorUrl>https://afrouzi.ir/en?utm_source=github&amp;utm_medium=extension_manifest&amp;utm_campaign=call_now_button</authorUrl>
+    <version>1.1.0</version>
     <description><![CDATA[Professional floating call-to-action button module for Joomla. Supports phone calls, WhatsApp, custom URLs with extensive customization options. Developed by Mostafa Afrouzi - afrouzi.ir]]></description>
     
     <namespace path="src">Joomla\Module\CallNowButton</namespace>
@@ -19,7 +19,6 @@
         <folder>language</folder>
         <folder>admin</folder>
         <filename module="mod_callnowbutton">mod_callnowbutton.php</filename>
-        <filename>helper.php</filename>
         <filename>services/provider.php</filename>
         <filename>items.xml</filename>
         <filename>script.php</filename>
@@ -212,6 +211,18 @@
                     <option value="light">MOD_CALLNOWBUTTON_TOOLTIP_THEME_LIGHT</option>
                     <option value="dark">MOD_CALLNOWBUTTON_TOOLTIP_THEME_DARK</option>
                 </field>
+
+                <field
+                    name="multibutton_clickable_label"
+                    type="radio"
+                    label="MOD_CALLNOWBUTTON_MULTIBUTTON_CLICKABLE_LABEL_LABEL"
+                    description="MOD_CALLNOWBUTTON_MULTIBUTTON_CLICKABLE_LABEL_DESC"
+                    default="1"
+                    class="btn-group"
+                    showon="button_type:multibutton">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
                 
                 <field
                     name="multibutton_items"
@@ -283,6 +294,24 @@
                     label="MOD_CALLNOWBUTTON_ICON_COLOR_LABEL"
                     description="MOD_CALLNOWBUTTON_ICON_COLOR_DESC"
                     default="#FFFFFF"
+                />
+
+                <field
+                    name="button_color_css"
+                    type="text"
+                    label="MOD_CALLNOWBUTTON_BUTTON_COLOR_CSS_LABEL"
+                    description="MOD_CALLNOWBUTTON_BUTTON_COLOR_CSS_DESC"
+                    default=""
+                    hint="var(--primary, #25D366)"
+                />
+
+                <field
+                    name="icon_color_css"
+                    type="text"
+                    label="MOD_CALLNOWBUTTON_ICON_COLOR_CSS_LABEL"
+                    description="MOD_CALLNOWBUTTON_ICON_COLOR_CSS_DESC"
+                    default=""
+                    hint="var(--icon-color, #FFFFFF)"
                 />
                 
                 <field
@@ -465,6 +494,18 @@
                     default="9999"
                     min="1"
                     max="99999"
+                />
+
+                <field
+                    name="custom_css"
+                    type="textarea"
+                    label="MOD_CALLNOWBUTTON_CUSTOM_CSS_LABEL"
+                    description="MOD_CALLNOWBUTTON_CUSTOM_CSS_DESC"
+                    default=""
+                    rows="10"
+                    cols="60"
+                    filter="raw"
+                    class="span12"
                 />
             </fieldset>
             

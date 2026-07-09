@@ -354,11 +354,11 @@
 @keyframes cnb-fade-in {
     from {
         opacity: 0;
-        transform: scale(0.8);
+        transform: scale(calc(var(--cnb-scale, 1) * 0.8));
     }
     to {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(var(--cnb-scale, 1));
     }
 }
 
@@ -621,6 +621,15 @@
 
 .cnb-multibutton-main {
     position: fixed;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+    margin: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    text-decoration: none;
+    box-sizing: border-box;
 }
 
 .cnb-multibutton-options {
@@ -655,6 +664,50 @@
 
 .cnb-multibutton-options li:last-child {
     margin-bottom: 0;
+}
+
+.cnb-multibutton-options li a.cnb-row-link {
+    width: auto;
+    min-width: 50px;
+    height: 50px;
+    border-radius: 999px;
+    padding: 0 14px 0 13px;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.cnb-multibutton-options li a.cnb-row-link .cnb-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.cnb-multibutton-options li a.cnb-row-link .cnb-item-label {
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    line-height: 1.2;
+}
+
+.cnb-multibutton-options li a.cnb-row-link.cnb-title-always .cnb-item-label {
+    max-width: 240px;
+    opacity: 1;
+}
+
+.cnb-multibutton-options li a.cnb-row-link.cnb-title-hover .cnb-item-label {
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-width 0.25s ease, opacity 0.2s ease;
+}
+
+.cnb-multibutton-options li a.cnb-row-link.cnb-title-hover:hover .cnb-item-label,
+.cnb-multibutton-options li a.cnb-row-link.cnb-title-hover:focus-visible .cnb-item-label {
+    max-width: 240px;
+    opacity: 1;
 }
 
 .cnb-multibutton-options li a {
@@ -928,3 +981,17 @@
 .cnb-multibutton-options.active li:nth-child(7) { animation-delay: 0.42s; }
 .cnb-multibutton-options.active li:nth-child(8) { animation-delay: 0.48s; }
 
+/* Display mode — cache-safe visibility via CSS media queries */
+@media (min-width: 768px) {
+    .cnb-wrapper.cnb-display-mobile-only .cnb-button,
+    .cnb-wrapper.cnb-display-mobile-only .cnb-multibutton-container {
+        display: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .cnb-wrapper.cnb-display-desktop-only .cnb-button,
+    .cnb-wrapper.cnb-display-desktop-only .cnb-multibutton-container {
+        display: none !important;
+    }
+}

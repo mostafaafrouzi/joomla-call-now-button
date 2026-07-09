@@ -1,8 +1,10 @@
 # Call Now Button Module for Joomla
 
+**English** | [فارسی (Persian)](README.fa.md)
+
 [![Joomla](https://img.shields.io/badge/Joomla-5.0%20%7C%206.0-blue.svg)](https://www.joomla.org)
 [![License](https://img.shields.io/badge/License-GPL%20v2+-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![PHP](https://img.shields.io/badge/PHP-8.1%20%7C%208.2%20%7C%208.3%20%7C%208.4-777BB4.svg)](https://www.php.net/)
+[![PHP](https://img.shields.io/badge/PHP-8.1%20%7C%208.2%20%7C%208.3%20%7C%208.4%20%7C%208.5-777BB4.svg)](https://www.php.net/)
 
 Professional floating call-to-action button module for Joomla. A modern, responsive solution for displaying contact buttons (phone, WhatsApp, custom URLs) with extensive customization options.
 ![Joomla Call Now Button Preview](https://raw.githubusercontent.com/mostafaafrouzi/joomla-call-now-button/main/Joomla%20Call%20Now%20Bottom.png)
@@ -31,7 +33,8 @@ Professional floating call-to-action button module for Joomla. A modern, respons
 ### Customization
 - **18 Built-in Icons**: Phone, WhatsApp, Telegram, Instagram, Facebook, Twitter, LinkedIn, YouTube, and more
 - **Custom Icon Upload**: Upload your own icon image
-- **Color Controls**: Full control over button and icon colors
+- **Custom CSS**: Add your own front-end CSS rules (with security filtering)
+- **CSS Color Overrides**: Use `var(--theme-color)` values for button and icon colors
 - **Typography**: Font size, color, and weight controls for text buttons
 - **Animations**: Pulse, Bounce, Shake (with pill-shaped support)
 - **Z-Index Control**: Customizable stacking order
@@ -53,10 +56,19 @@ Professional floating call-to-action button module for Joomla. A modern, respons
 
 ### Technical Features
 - **Responsive Design**: Mobile-first approach with breakpoint controls
-- **Display Modes**: All devices, mobile only, or desktop only
+- **Display Modes**: Cache-safe CSS media queries (768px breakpoint since v1.1.0)
+- **Per-Instance Scoping**: Unique wrapper `#cnb-mod-{moduleId}` for multiple instances
 - **Multilingual**: English and Persian (Farsi) language support
 - **Auto Updates**: Built-in Joomla update system via GitHub Releases
 - **Changelog Integration**: Release notes displayed in Joomla admin
+
+## 🆕 What's New in v1.1.0
+
+See the full [v1.1.0 release notes](https://github.com/mostafaafrouzi/joomla-call-now-button/releases/tag/v1.1.0) for details. Highlights:
+
+- **Bug fixes**: Multibutton display mode, icon selector in new subform rows, duplicate IDs, FOUC on button size, clickable multibutton labels, `IconRepository` autoload on front-end
+- **New**: Custom CSS field, CSS color overrides (`var()`), external icon selector assets, `IconRepository` for shared SVG icons
+- **Improved**: Multibutton keyboard support (`aria-expanded`, Escape key), per-instance CSS scoping, PHP 8.1–8.5 CI lint matrix
 
 ## 📦 Installation
 
@@ -74,7 +86,7 @@ Download the latest release ZIP file directly:
 https://github.com/mostafaafrouzi/joomla-call-now-button/releases/latest/download/mod_callnowbutton.zip
 ```
 
-**Note:** This link always downloads the latest version. The filename in the download will include the version number (e.g., `mod_callnowbutton-1.0.0.zip`).
+**Note:** This link always downloads the latest version. The filename in the download will include the version number (e.g., `mod_callnowbutton-1.1.0.zip`).
 
 Or visit the [Releases page](https://github.com/mostafaafrouzi/joomla-call-now-button/releases) to download a specific version.
 
@@ -119,13 +131,13 @@ joomla-call-now-button/
 3. Commit and push:
    ```bash
    git add .
-   git commit -m "Release v1.0.0"
+   git commit -m "Release v1.1.0"
    git push origin main
    ```
 4. **Create and push tag (this triggers the workflow):**
    ```bash
-   git tag v1.0.0
-   git push origin v1.0.0
+   git tag v1.1.0
+   git push origin v1.1.0
    ```
 5. GitHub Actions automatically:
    - Builds ZIP file (with version in filename)
@@ -150,15 +162,48 @@ build/build.php        # Cross-platform
 ## 📋 Requirements
 
 - **Joomla**: 5.0.0 or higher (compatible with Joomla 6.x)
-- **PHP**: 8.1.0 or higher (8.1, 8.2, 8.3, 8.4)
+- **PHP**: 8.1.0 or higher (8.1 through 8.5)
 - **Browser**: Modern browsers with CSS3 and JavaScript support
+
+## 🔧 Troubleshooting
+
+### Button or icon looks misaligned
+
+Some templates wrap module output in extra markup that affects layout. In the module's **Advanced** tab, set **Module Style** to **None** (or a template override without extra padding).
+
+### Targeting a specific module instance in CSS
+
+Each published instance gets a unique wrapper id: `#cnb-mod-{moduleId}`. Generated colors and sizes are scoped automatically; **Custom CSS** is not scoped — include the wrapper id yourself when needed.
+
+Example:
+
+```css
+#cnb-mod-42 .cnb-button {
+    bottom: 30px !important;
+}
+```
+
+### Custom CSS field
+
+- Applied on the front-end only (admin users are trusted site administrators)
+- Characters `<` and `>` are stripped to prevent `</style>` breakout attacks
+- `@import`, `javascript:`, and similar patterns are blocked
+
+### Display mode (Mobile Only / Desktop Only)
+
+Since v1.1.0, visibility uses **CSS media queries** on the wrapper, so it works correctly with Joomla page cache and CDN. Breakpoint: **768px**.
+
+### Upgrading from v1.0.0
+
+- If you used `#callnowbutton` in custom CSS, update selectors to `#cnb-mod-{moduleId}`
+- Multibutton `display_mode` now works as configured (previously ignored for multibutton)
 
 ## 👨‍💻 Developer
 
 **Mostafa Afrouzi**  
 *Web Designer & Developer, SEO & Digital Marketing Specialist*
 
-- 🌐 **Website**: [afrouzi.ir/en](https://afrouzi.ir/en)
+- 🌐 **Website**: [afrouzi.ir/en](https://afrouzi.ir/en?utm_source=github&utm_medium=readme&utm_campaign=call_now_button)
 
 ## 📄 License
 

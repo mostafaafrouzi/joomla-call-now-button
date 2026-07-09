@@ -3,6 +3,41 @@
     <changelog>
         <element>mod_callnowbutton</element>
         <type>module</type>
+        <version>1.1.0</version>
+        <fix>
+            <item><![CDATA[Fixed display_mode not applying to multibutton mode (behavior change for sites that relied on the previous bug)]]></item>
+            <item><![CDATA[Fixed icon selector not working after adding a new multibutton subform row]]></item>
+            <item><![CDATA[Fixed button size animation ending at scale(1) instead of the configured size (FOUC)]]></item>
+            <item><![CDATA[Fixed duplicate module IDs when multiple instances are published on the same page]]></item>
+            <item><![CDATA[Fixed multibutton label text not being clickable]]></item>
+            <item><![CDATA[Fixed inline generated CSS overriding between multiple module instances]]></item>
+            <item><![CDATA[Fixed IconRepository class not loading when helper is required directly on the front-end]]></item>
+        </fix>
+        <change>
+            <item><![CDATA[Multibutton main trigger is now a button element with aria-expanded and keyboard Escape support]]></item>
+            <item><![CDATA[Per-instance CSS scoping via wrapper id cnb-mod-{moduleId}]]></item>
+            <item><![CDATA[Removed @unserialize fallback for multibutton subform data]]></item>
+            <item><![CDATA[Unified multibutton JavaScript (removed duplicate inline script)]]></item>
+            <item><![CDATA[Removed legacy helper.php wrapper class (unused with Joomla 5 Dispatcher)]]></item>
+            <item><![CDATA[Install and update messages now include UTM-tracked developer links]]></item>
+        </change>
+        <addition>
+            <item><![CDATA[Display mode now uses CSS media queries (cache/CDN safe)]]></item>
+            <item><![CDATA[Optional CSS color overrides for button and icon (var() support)]]></item>
+            <item><![CDATA[Custom CSS field with security filtering]]></item>
+            <item><![CDATA[External admin icon selector assets with subform-row-add event delegation]]></item>
+            <item><![CDATA[IconRepository centralizes icon SVG definitions for admin selector and front-end rendering]]></item>
+            <item><![CDATA[CI PHP syntax lint matrix for PHP 8.1 through 8.5]]></item>
+        </addition>
+        <note>
+            <item><![CDATA[If you referenced #callnowbutton in custom CSS, update selectors to #cnb-mod-{moduleId}]]></item>
+            <item><![CDATA[Developed by Mostafa Afrouzi - Web Designer & Developer]]></item>
+            <item><![CDATA[Website: <a href="https://afrouzi.ir/en?utm_source=github&amp;utm_medium=changelog&amp;utm_campaign=call_now_button" target="_blank">afrouzi.ir</a>]]></item>
+        </note>
+    </changelog>
+    <changelog>
+        <element>mod_callnowbutton</element>
+        <type>module</type>
         <version>1.0.0</version>
         <addition>
             <item><![CDATA[Initial release of Call Now Button module for Joomla 5 and 6]]></item>

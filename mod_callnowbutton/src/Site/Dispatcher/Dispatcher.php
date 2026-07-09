@@ -14,11 +14,16 @@ use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
-// Load helper class if not already loaded
+// Load helper classes if not already loaded
 if (!class_exists('Joomla\Module\CallNowButton\Site\Helper\CallNowButtonHelper')) {
-    $helperPath = __DIR__ . '/../Helper/CallNowButtonHelper.php';
-    if (file_exists($helperPath)) {
-        require_once $helperPath;
+    $helperDir = __DIR__ . '/../Helper';
+
+    if (is_file($helperDir . '/IconRepository.php')) {
+        require_once $helperDir . '/IconRepository.php';
+    }
+
+    if (is_file($helperDir . '/CallNowButtonHelper.php')) {
+        require_once $helperDir . '/CallNowButtonHelper.php';
     }
 }
 
@@ -43,7 +48,10 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
         $data = parent::getLayoutData();
 
         // Get helper instance
-        $helper = $this->getHelperFactory()->getHelper('CallNowButtonHelper', ['params' => $this->module->params]);
+        $helper = $this->getHelperFactory()->getHelper('CallNowButtonHelper', [
+            'params' => $this->module->params,
+            'module' => $this->module,
+        ]);
         
         // Check if button should render
         if (!$helper->shouldRender()) {
@@ -56,6 +64,8 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
         
         // Get button HTML
         $data['buttonHtml'] = $helper->renderButton();
+        $data['wrapperId'] = $helper->getWrapperId();
+        $data['wrapperClass'] = $helper->getDisplayModeClass();
 
         return $data;
     }

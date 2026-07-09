@@ -1,0 +1,52 @@
+.cnb-icon-selector {
+    margin: 10px 0;
+}
+
+.cnb-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.cnb-icon-item {
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.cnb-icon-item:hover {
+    border-color: #0073aa;
+    background: #f0f8ff;
+}
+
+.cnb-icon-item.selected {
+    border-color: #0073aa;
+    background: #0073aa;
+    color: #fff;
+}
+
+.cnb-icon-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.cnb-icon-preview svg {
+    width: 32px;
+    height: 32px;
+}
+
+.cnb-icon-item.selected .cnb-icon-preview svg {
+    fill: #fff;
+}
+
+.cnb-icon-label {
+    font-size: 12px;
+    font-weight: 500;
+}

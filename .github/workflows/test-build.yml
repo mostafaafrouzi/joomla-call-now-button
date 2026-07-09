@@ -16,6 +16,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: PHP syntax lint
+        run: |
+          for version in 8.1 8.2 8.3 8.4 8.5; do
+            echo "Linting with PHP ${version}..."
+            docker run --rm -v "$PWD:/app" -w /app php:${version}-cli \
+              find mod_callnowbutton -name '*.php' -print0 | \
+              xargs -0 -n1 php -l
+          done
+          echo "✅ PHP syntax lint passed (8.1–8.5)"
       
       - name: Install XML tools
         run: |

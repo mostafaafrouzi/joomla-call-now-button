@@ -21,6 +21,16 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
         
+      - name: PHP syntax lint
+        run: |
+          for version in 8.1 8.2 8.3 8.4 8.5; do
+            echo "Linting with PHP ${version}..."
+            docker run --rm -v "$PWD:/app" -w /app php:${version}-cli \
+              find mod_callnowbutton -name '*.php' -print0 | \
+              xargs -0 -n1 php -l
+          done
+          echo "✅ PHP syntax lint passed (8.1–8.5)"
+
       - name: Get version from tag
         id: get_version
         run: |
@@ -129,7 +139,7 @@ jobs:
           Use **System > Update > Extensions** in Joomla Admin.
           
           ### Developer
-          **Mostafa Afrouzi** - [afrouzi.ir](https://afrouzi.ir)
+          **Mostafa Afrouzi** - [afrouzi.ir](https://afrouzi.ir/en?utm_source=github&utm_medium=release_notes&utm_campaign=call_now_button)
           EOF
           
           cat changelog_temp.md

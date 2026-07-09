@@ -32,6 +32,23 @@ class Mod_CallnowbuttonInstallerScript extends InstallerScript
     }
 
     /**
+     * Build developer website URL with UTM parameters
+     *
+     * @param   string  $medium  utm_medium value
+     *
+     * @return  string
+     *
+     * @since   1.1.0
+     */
+    protected function getDeveloperUrl($medium)
+    {
+        $lang = Factory::getLanguage();
+        $base = str_starts_with($lang->getTag(), 'fa') ? 'https://afrouzi.ir' : 'https://afrouzi.ir/en';
+
+        return $base . '?utm_source=github&utm_medium=' . rawurlencode($medium) . '&utm_campaign=call_now_button';
+    }
+
+    /**
      * Method to run before an install/update/uninstall method
      *
      * @param   string            $type    The type of change (install, update or discover_install)
@@ -89,6 +106,7 @@ class Mod_CallnowbuttonInstallerScript extends InstallerScript
         $lang->load('mod_callnowbutton', JPATH_ADMINISTRATOR . '/modules/mod_callnowbutton', null, true);
         
         $app = Factory::getApplication();
+        $developerUrl = $this->getDeveloperUrl('install_message');
         
         $message = '<div style="padding: 20px; background: #f0f8ff; border-left: 4px solid #25D366; margin: 20px 0;">';
         $message .= '<h2 style="color: #25D366; margin-top: 0;">✅ Call Now Button Module Installed Successfully!</h2>';
@@ -98,7 +116,7 @@ class Mod_CallnowbuttonInstallerScript extends InstallerScript
         $message .= '<h3 style="color: #333; margin-top: 20px;">👨‍💻 Developer Information</h3>';
         $message .= '<p><strong>Mostafa Afrouzi</strong><br>';
         $message .= 'Web Designer & Developer, SEO & Digital Marketing Specialist</p>';
-        $message .= '<p><strong>Website:</strong> <a href="https://afrouzi.ir" target="_blank" rel="noopener noreferrer">afrouzi.ir</a><br>';
+        $message .= '<p><strong>Website:</strong> <a href="' . htmlspecialchars($developerUrl, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">afrouzi.ir</a><br>';
         $message .= '<strong>Email:</strong> <a href="mailto:mostafa.afrouzi@gmail.com">mostafa.afrouzi@gmail.com</a><br>';
         $message .= '<strong>Phone:</strong> <a href="tel:+989176262858">+98 917 626 2858</a></p>';
         $message .= '<hr style="border: none; border-top: 1px solid #ddd; margin: 15px 0;">';
@@ -146,6 +164,7 @@ class Mod_CallnowbuttonInstallerScript extends InstallerScript
         $lang->load('mod_callnowbutton', JPATH_ADMINISTRATOR . '/modules/mod_callnowbutton', null, true);
         
         $app = Factory::getApplication();
+        $developerUrl = $this->getDeveloperUrl('update_message');
         
         $message = '<div style="padding: 20px; background: #fff8e1; border-left: 4px solid #ff9800; margin: 20px 0;">';
         $message .= '<h2 style="color: #ff9800; margin-top: 0;">🔄 Call Now Button Module Updated Successfully!</h2>';
@@ -155,7 +174,7 @@ class Mod_CallnowbuttonInstallerScript extends InstallerScript
         $message .= '<h3 style="color: #333; margin-top: 20px;">👨‍💻 Developer Information</h3>';
         $message .= '<p><strong>Mostafa Afrouzi</strong><br>';
         $message .= 'Web Designer & Developer, SEO & Digital Marketing Specialist</p>';
-        $message .= '<p><strong>Website:</strong> <a href="https://afrouzi.ir" target="_blank" rel="noopener noreferrer">afrouzi.ir</a><br>';
+        $message .= '<p><strong>Website:</strong> <a href="' . htmlspecialchars($developerUrl, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">afrouzi.ir</a><br>';
         $message .= '<strong>Email:</strong> <a href="mailto:mostafa.afrouzi@gmail.com">mostafa.afrouzi@gmail.com</a><br>';
         $message .= '<strong>Phone:</strong> <a href="tel:+989176262858">+98 917 626 2858</a></p>';
         $message .= '<hr style="border: none; border-top: 1px solid #ddd; margin: 15px 0;">';

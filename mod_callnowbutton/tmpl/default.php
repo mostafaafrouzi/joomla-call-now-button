@@ -12,7 +12,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <!-- Call Now Button Module -->
-<div class="cnb-wrapper">
+<div class="cnb-wrapper <?php echo htmlspecialchars($wrapperClass ?? 'cnb-display-all', ENT_QUOTES, 'UTF-8'); ?>"<?php echo !empty($wrapperId) ? ' id="' . htmlspecialchars($wrapperId, ENT_QUOTES, 'UTF-8') . '"' : ''; ?>>
     <?php echo $buttonHtml; ?>
 </div>
 
