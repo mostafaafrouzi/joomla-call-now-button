@@ -8,7 +8,7 @@
         <version>1.1.2</version>
         <downloads>
             <downloadurl type="full" format="zip">https://github.com/mostafaafrouzi/joomla-call-now-button/releases/download/v1.1.2/mod_callnowbutton-1.1.2.zip</downloadurl>
-            <sha512></sha512>
+            <sha512>810a0cb364895750d4c742ba83224cad571b31e70199a2b3bba4f994bce084add33ba93c2375b898fd9ee45d9ac644eda222ff8e7d363bd1b4bbeb22b8f6a13c</sha512>
         </downloads>
         <tags>
             <tag>stable</tag>
