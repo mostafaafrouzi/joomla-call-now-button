@@ -66,6 +66,7 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
         $data['buttonHtml'] = $helper->renderButton();
         $data['wrapperId'] = $helper->getWrapperId();
         $data['wrapperClass'] = $helper->getDisplayModeClass();
+        $data['assetMarkup'] = $helper->getFrontendAssetMarkup();
 
         return $data;
     }

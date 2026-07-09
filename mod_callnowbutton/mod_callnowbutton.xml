@@ -7,7 +7,7 @@
     <license>GNU General Public License version 2 or later</license>
     <authorEmail>mostafa.afrouzi@gmail.com</authorEmail>
     <authorUrl>https://afrouzi.ir/en?utm_source=github&amp;utm_medium=extension_manifest&amp;utm_campaign=call_now_button</authorUrl>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <description><![CDATA[Professional floating call-to-action button module for Joomla. Supports phone calls, WhatsApp, custom URLs with extensive customization options. Developed by Mostafa Afrouzi - afrouzi.ir]]></description>
     
     <namespace path="src">Joomla\Module\CallNowButton</namespace>
@@ -34,6 +34,7 @@
     <media destination="mod_callnowbutton" folder="media">
         <folder>css</folder>
         <folder>js</folder>
+        <filename>joomla.asset.json</filename>
     </media>
     
     <config>

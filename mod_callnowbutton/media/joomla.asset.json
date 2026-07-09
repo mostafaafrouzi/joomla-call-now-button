@@ -1,0 +1,23 @@
+{
+    "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+    "name": "mod_callnowbutton",
+    "version": "1.1.1",
+    "description": "Call Now Button module front-end assets",
+    "license": "GPL-2.0-or-later",
+    "assets": [
+        {
+            "name": "mod_callnowbutton.style",
+            "type": "style",
+            "uri": "mod_callnowbutton/call-now-button.css"
+        },
+        {
+            "name": "mod_callnowbutton.multibutton",
+            "type": "script",
+            "uri": "mod_callnowbutton/multibutton.js",
+            "dependencies": ["core"],
+            "attributes": {
+                "defer": true
+            }
+        }
+    ]
+}

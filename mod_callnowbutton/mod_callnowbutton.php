@@ -39,5 +39,6 @@ $helper->loadAssets();
 $buttonHtml = $helper->renderButton();
 $wrapperId = $helper->getWrapperId();
 $wrapperClass = $helper->getDisplayModeClass();
+$assetMarkup = $helper->getFrontendAssetMarkup();
 
 require ModuleHelper::getLayoutPath('mod_callnowbutton', $module->params->get('layout', 'default'));

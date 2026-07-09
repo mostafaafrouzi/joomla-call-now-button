@@ -614,13 +614,77 @@
 }
 
 /* Multibutton Styles */
+.cnb-wrapper {
+    unicode-bidi: isolate;
+}
+
 .cnb-multibutton-container {
     position: fixed;
     z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.cnb-multibutton-container.cnb-bottom-left,
+.cnb-multibutton-container.cnb-bottom-right,
+.cnb-multibutton-container.cnb-bottom-center {
+    bottom: 20px;
+    top: auto;
+}
+
+.cnb-multibutton-container.cnb-bottom-left {
+    left: 20px;
+    right: auto;
+    align-items: flex-start;
+}
+
+.cnb-multibutton-container.cnb-bottom-right {
+    right: 20px;
+    left: auto;
+    align-items: flex-end;
+}
+
+.cnb-multibutton-container.cnb-bottom-center {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    align-items: center;
+}
+
+.cnb-multibutton-container.cnb-top-left,
+.cnb-multibutton-container.cnb-top-right,
+.cnb-multibutton-container.cnb-top-center {
+    top: 20px;
+    bottom: auto;
+    flex-direction: column-reverse;
+}
+
+.cnb-multibutton-container.cnb-top-left {
+    left: 20px;
+    right: auto;
+    align-items: flex-start;
+}
+
+.cnb-multibutton-container.cnb-top-right {
+    right: 20px;
+    left: auto;
+    align-items: flex-end;
+}
+
+.cnb-multibutton-container.cnb-top-center {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    align-items: center;
 }
 
 .cnb-multibutton-main {
-    position: fixed;
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
     border: none;
     cursor: pointer;
     font: inherit;
@@ -630,6 +694,18 @@
     -webkit-appearance: none;
     text-decoration: none;
     box-sizing: border-box;
+    transform: scale(var(--cnb-scale, 1));
+    transform-origin: center center;
+}
+
+.cnb-multibutton-container .cnb-multibutton-main.cnb-animation-pulse,
+.cnb-multibutton-container .cnb-multibutton-main.cnb-animation-bounce,
+.cnb-multibutton-container .cnb-multibutton-main.cnb-animation-shake {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
 }
 
 .cnb-multibutton-options {
@@ -642,15 +718,18 @@
     transition: opacity 0.3s ease, display 0s 0.3s;
     z-index: 10000;
     flex-direction: column;
-    align-items: center;
+    align-items: inherit;
     justify-content: flex-end;
-    width: auto;
+    width: max-content;
+    max-width: min(320px, calc(100vw - 40px));
+    pointer-events: none;
 }
 
 .cnb-multibutton-options.active {
     display: flex !important;
     opacity: 1;
     transition: opacity 0.3s ease;
+    pointer-events: auto;
 }
 
 .cnb-multibutton-options li {
@@ -658,8 +737,8 @@
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 12px;
+    justify-content: flex-end;
+    width: 100%;
 }
 
 .cnb-multibutton-options li:last-child {
@@ -669,11 +748,13 @@
 .cnb-multibutton-options li a.cnb-row-link {
     width: auto;
     min-width: 50px;
+    max-width: 100%;
     height: 50px;
     border-radius: 999px;
-    padding: 0 14px 0 13px;
+    padding-inline: 13px 14px;
     justify-content: flex-start;
     gap: 10px;
+    box-sizing: border-box;
 }
 
 .cnb-multibutton-options li a.cnb-row-link .cnb-item-icon {
@@ -690,6 +771,8 @@
     font-weight: 500;
     white-space: nowrap;
     line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .cnb-multibutton-options li a.cnb-row-link.cnb-title-always .cnb-item-label {
@@ -860,53 +943,51 @@
     display: inline-block !important;
 }
 
-/* Multibutton positions - icons should be stacked vertically above/below main button */
+/* Multibutton positions - stack options relative to the main trigger */
 .cnb-multibutton-container.cnb-bottom-right .cnb-multibutton-options,
 .cnb-multibutton-container.cnb-bottom-left .cnb-multibutton-options,
 .cnb-multibutton-container.cnb-bottom-center .cnb-multibutton-options {
-    bottom: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    flex-direction: column-reverse;
-    align-items: center;
-}
-
-.cnb-multibutton-container.cnb-bottom-right .cnb-multibutton-options {
+    bottom: calc(100% + 10px);
+    top: auto;
     left: auto;
     right: 0;
     transform: none;
-    align-items: flex-end;
+    flex-direction: column-reverse;
+    align-items: inherit;
 }
 
 .cnb-multibutton-container.cnb-bottom-left .cnb-multibutton-options {
     left: 0;
     right: auto;
-    transform: none;
-    align-items: flex-start;
+}
+
+.cnb-multibutton-container.cnb-bottom-center .cnb-multibutton-options {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
 }
 
 .cnb-multibutton-container.cnb-top-right .cnb-multibutton-options,
 .cnb-multibutton-container.cnb-top-left .cnb-multibutton-options,
 .cnb-multibutton-container.cnb-top-center .cnb-multibutton-options {
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    flex-direction: column;
-    align-items: center;
-}
-
-.cnb-multibutton-container.cnb-top-right .cnb-multibutton-options {
+    top: calc(100% + 10px);
+    bottom: auto;
     left: auto;
     right: 0;
     transform: none;
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: inherit;
 }
 
 .cnb-multibutton-container.cnb-top-left .cnb-multibutton-options {
     left: 0;
     right: auto;
-    transform: none;
-    align-items: flex-start;
+}
+
+.cnb-multibutton-container.cnb-top-center .cnb-multibutton-options {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
 }
 
 
@@ -956,30 +1037,29 @@
     }
 }
 
-/* Apply animations based on position */
-.cnb-multibutton-container.cnb-bottom-right .cnb-multibutton-options.active li,
-.cnb-multibutton-container.cnb-bottom-left .cnb-multibutton-options.active li,
-.cnb-multibutton-container.cnb-bottom-center .cnb-multibutton-options.active li {
+/* Apply animations based on position (on links to avoid breaking stack layout) */
+.cnb-multibutton-container.cnb-bottom-right .cnb-multibutton-options.active li a,
+.cnb-multibutton-container.cnb-bottom-left .cnb-multibutton-options.active li a,
+.cnb-multibutton-container.cnb-bottom-center .cnb-multibutton-options.active li a {
     animation: cnb-slide-up 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    margin-bottom: 10px;
 }
 
-.cnb-multibutton-container.cnb-top-right .cnb-multibutton-options.active li,
-.cnb-multibutton-container.cnb-top-left .cnb-multibutton-options.active li,
-.cnb-multibutton-container.cnb-top-center .cnb-multibutton-options.active li {
+.cnb-multibutton-container.cnb-top-right .cnb-multibutton-options.active li a,
+.cnb-multibutton-container.cnb-top-left .cnb-multibutton-options.active li a,
+.cnb-multibutton-container.cnb-top-center .cnb-multibutton-options.active li a {
     animation: cnb-slide-down 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 
 /* Staggered animation delays for smooth cascade effect */
-.cnb-multibutton-options.active li:nth-child(1) { animation-delay: 0.06s; }
-.cnb-multibutton-options.active li:nth-child(2) { animation-delay: 0.12s; }
-.cnb-multibutton-options.active li:nth-child(3) { animation-delay: 0.18s; }
-.cnb-multibutton-options.active li:nth-child(4) { animation-delay: 0.24s; }
-.cnb-multibutton-options.active li:nth-child(5) { animation-delay: 0.30s; }
-.cnb-multibutton-options.active li:nth-child(6) { animation-delay: 0.36s; }
-.cnb-multibutton-options.active li:nth-child(7) { animation-delay: 0.42s; }
-.cnb-multibutton-options.active li:nth-child(8) { animation-delay: 0.48s; }
+.cnb-multibutton-options.active li:nth-child(1) a { animation-delay: 0.06s; }
+.cnb-multibutton-options.active li:nth-child(2) a { animation-delay: 0.12s; }
+.cnb-multibutton-options.active li:nth-child(3) a { animation-delay: 0.18s; }
+.cnb-multibutton-options.active li:nth-child(4) a { animation-delay: 0.24s; }
+.cnb-multibutton-options.active li:nth-child(5) a { animation-delay: 0.30s; }
+.cnb-multibutton-options.active li:nth-child(6) a { animation-delay: 0.36s; }
+.cnb-multibutton-options.active li:nth-child(7) a { animation-delay: 0.42s; }
+.cnb-multibutton-options.active li:nth-child(8) a { animation-delay: 0.48s; }
 
 /* Display mode — cache-safe visibility via CSS media queries */
 @media (min-width: 768px) {

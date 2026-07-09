@@ -50,6 +50,22 @@ class CallNowButtonHelper
     protected $app;
 
     /**
+     * Per-instance scoped inline CSS blocks rendered with the module markup
+     *
+     * @var    array<int, string>
+     * @since  1.1.1
+     */
+    protected $inlineCssBlocks = [];
+
+    /**
+     * Whether shared CSS/JS tags were already emitted in the page body
+     *
+     * @var    boolean
+     * @since  1.1.1
+     */
+    protected static $sharedAssetsEmitted = false;
+
+    /**
      * Constructor
      *
      * @param   Registry|array  $params  Module parameters (Registry object or array with 'params' key)
@@ -427,26 +443,98 @@ class CallNowButtonHelper
      */
     public function loadAssets()
     {
-        $document = Factory::getDocument();
-        
-        // Load CSS
-        HTMLHelper::_('stylesheet', 
-            'mod_callnowbutton/call-now-button.css', 
-            ['relative' => true, 'version' => 'auto']
-        );
-        
-        // Load JavaScript for multibutton
-        $buttonType = $this->params->get('button_type', 'single');
-
-        if ($buttonType === 'multibutton') {
-            HTMLHelper::_('script',
-                'mod_callnowbutton/multibutton.js',
-                ['relative' => true, 'version' => 'auto', 'defer' => true]
-            );
-        }
-        
-        // Load custom CSS for button styling
+        $this->registerWebAssets();
         $this->addCustomStyles();
+    }
+
+    /**
+     * Register front-end assets via Joomla Web Asset Manager
+     *
+     * @return  void
+     *
+     * @since   1.1.1
+     */
+    protected function registerWebAssets()
+    {
+        $document = Factory::getDocument();
+
+        if (!method_exists($document, 'getWebAssetManager')) {
+            return;
+        }
+
+        $wa = $document->getWebAssetManager();
+        $wa->getRegistry()->addExtensionRegistryFile('mod_callnowbutton');
+        $wa->useStyle('mod_callnowbutton.style');
+
+        if ($this->params->get('button_type', 'single') === 'multibutton') {
+            $wa->useScript('mod_callnowbutton.multibutton');
+        }
+    }
+
+    /**
+     * Emit CSS/JS tags next to the module when the template position renders after head
+     *
+     * @return  string
+     *
+     * @since   1.1.1
+     */
+    public function getFrontendAssetMarkup()
+    {
+        $html = '';
+
+        if (!self::$sharedAssetsEmitted) {
+            self::$sharedAssetsEmitted = true;
+
+            $cssUrl = HTMLHelper::_(
+                'stylesheet',
+                'mod_callnowbutton/call-now-button.css',
+                ['relative' => true, 'version' => 'auto', 'pathOnly' => true]
+            );
+
+            if ($cssUrl) {
+                $html .= '<link rel="stylesheet" href="' . htmlspecialchars($cssUrl, ENT_QUOTES, 'UTF-8') . '">';
+            }
+
+            if ($this->params->get('button_type', 'single') === 'multibutton') {
+                $jsUrl = HTMLHelper::_(
+                    'script',
+                    'mod_callnowbutton/multibutton.js',
+                    ['relative' => true, 'version' => 'auto', 'pathOnly' => true]
+                );
+
+                if ($jsUrl) {
+                    $html .= '<script src="' . htmlspecialchars($jsUrl, ENT_QUOTES, 'UTF-8') . '" defer></script>';
+                }
+            }
+        }
+
+        if (!empty($this->inlineCssBlocks)) {
+            $html .= '<style>' . implode("\n", $this->inlineCssBlocks) . '</style>';
+        }
+
+        return $html;
+    }
+
+    /**
+     * Store scoped inline CSS for this module instance
+     *
+     * @param   string  $css  Raw CSS rules
+     *
+     * @return  void
+     *
+     * @since   1.1.1
+     */
+    protected function addInlineCssBlock($css)
+    {
+        $css = trim($css);
+
+        if ($css === '') {
+            return;
+        }
+
+        $scopedCss = $this->scopeInlineCss($css);
+        $this->inlineCssBlocks[] = $scopedCss;
+        Factory::getDocument()->addStyleDeclaration($scopedCss);
     }
 
     /**
@@ -458,8 +546,6 @@ class CallNowButtonHelper
      */
     protected function addCustomStyles()
     {
-        $document = Factory::getDocument();
-        
         $buttonColor = $this->resolveThemeColor('button_color', 'button_color_css', '#25D366');
         $iconColor = $this->resolveThemeColor('icon_color', 'icon_color_css', '#FFFFFF');
         $buttonSize = $this->params->get('button_size', 1);
@@ -479,7 +565,8 @@ class CallNowButtonHelper
         $iconTextIconSize = (int)$this->params->get('icontext_icon_size', 20);
         $iconTextIconCircle = (int)$this->params->get('icontext_icon_circle', 26);
         $tooltipTheme = $this->params->get('multibutton_tooltip_theme', 'dark');
-        
+        $buttonType = $this->params->get('button_type', 'single');
+
         $css = "
         .cnb-button {
             background-color: {$buttonColor} !important;
@@ -559,12 +646,20 @@ class CallNowButtonHelper
             ";
         }
         
-        // Apply scale to button for single and icontext appearances
+        // Apply scale to button for single, icontext, and multibutton main trigger
         // Use CSS variable for scale so it can be combined with animation transforms
         if ($appearance === 'single' || $appearance === 'icontext') {
             $css .= "
             .cnb-button.cnb-single,
             .cnb-button.cnb-icontext {
+                --cnb-scale: {$buttonSize};
+            }
+            ";
+        }
+
+        if ($buttonType === 'multibutton') {
+            $css .= "
+            .cnb-multibutton-main {
                 --cnb-scale: {$buttonSize};
             }
             ";
@@ -601,20 +696,11 @@ class CallNowButtonHelper
             ";
         }
 
-        $document->addStyleDeclaration($this->scopeInlineCss($css));
-        
-        // Apply margin to multibutton container and options
-        $buttonType = $this->params->get('button_type', 'single');
+        $this->addInlineCssBlock($css);
+
+        // Apply margin to multibutton container
         if ($buttonType === 'multibutton') {
-            // Calculate options offset based on margin
-            // In default CSS: main button bottom: 20px, options bottom: 70px (50px gap)
-            // So options should be: margin + 50px to maintain the same gap
-            $optionsOffsetBottom = $buttonMargin + 50; // 50px gap from main button
-            $optionsOffsetTop = $buttonMargin + 50; // Same gap for top positions
-            $optionsOffsetMiddle = $buttonMargin + 50; // Same gap for middle positions
-            
             $multibuttonMarginCss = "
-            /* Multibutton main button margins */
             .cnb-multibutton-container.cnb-bottom-left,
             .cnb-multibutton-container.cnb-bottom-right,
             .cnb-multibutton-container.cnb-bottom-center {
@@ -637,21 +723,8 @@ class CallNowButtonHelper
             .cnb-multibutton-container.cnb-top-right {
                 right: {$buttonMargin}px !important;
             }
-            
-            /* Multibutton options positioning - adjust based on margin */
-            /* Maintain 50px gap between main button and options */
-            .cnb-multibutton-container.cnb-bottom-right .cnb-multibutton-options,
-            .cnb-multibutton-container.cnb-bottom-left .cnb-multibutton-options,
-            .cnb-multibutton-container.cnb-bottom-center .cnb-multibutton-options {
-                bottom: {$optionsOffsetBottom}px !important;
-            }
-            .cnb-multibutton-container.cnb-top-right .cnb-multibutton-options,
-            .cnb-multibutton-container.cnb-top-left .cnb-multibutton-options,
-            .cnb-multibutton-container.cnb-top-center .cnb-multibutton-options {
-                top: {$optionsOffsetTop}px !important;
-            }
             ";
-            $document->addStyleDeclaration($this->scopeInlineCss($multibuttonMarginCss));
+            $this->addInlineCssBlock($multibuttonMarginCss);
             
             // Tooltip theme CSS for multibutton
             if ($tooltipTheme === 'light') {
@@ -671,7 +744,7 @@ class CallNowButtonHelper
                     color: #FFFFFF !important;
                 }";
             }
-            $document->addStyleDeclaration($this->scopeInlineCss($tooltipCss));
+            $this->addInlineCssBlock($tooltipCss);
         }
 
         // Additional typography CSS for Icon + Text
@@ -690,13 +763,13 @@ class CallNowButtonHelper
                 width: {$iconTextIconCircle}px !important;
                 height: {$iconTextIconCircle}px !important;
             }";
-            $document->addStyleDeclaration($this->scopeInlineCss($typoCss));
+            $this->addInlineCssBlock($typoCss);
         }
 
         $customCss = $this->sanitizeCustomCss($this->params->get('custom_css', ''));
 
         if ($customCss !== '') {
-            $document->addStyleDeclaration($customCss);
+            $this->addInlineCssBlock($customCss);
         }
     }
 
@@ -939,7 +1012,7 @@ class CallNowButtonHelper
 
         $globalAppearance = $this->params->get('appearance', 'single');
         $multimainAppearance = ($globalAppearance === 'icontext') ? 'icontext' : 'single';
-        $classes = ['cnb-button', 'cnb-' . $multimainAppearance, 'cnb-' . $position, 'cnb-multibutton-main'];
+        $classes = ['cnb-button', 'cnb-' . $multimainAppearance, 'cnb-multibutton-main'];
         $animation = $this->params->get('animation', 'none');
 
         if ($animation !== 'none') {

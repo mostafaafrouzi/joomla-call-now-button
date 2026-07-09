@@ -3,6 +3,26 @@
     <changelog>
         <element>mod_callnowbutton</element>
         <type>module</type>
+        <version>1.1.1</version>
+        <fix>
+            <item><![CDATA[Fixed CSS/JS not loading when the module is published in footer positions that render after the template head (JCH Optimize / Helix layouts)]]></item>
+            <item><![CDATA[Fixed multibutton layout overlap caused by double fixed positioning on the main trigger and options list]]></item>
+            <item><![CDATA[Fixed multibutton pill buttons in RTL (Persian) sites using logical padding and container-relative stacking]]></item>
+            <item><![CDATA[Added SHA512 checksum to updates.xml for Joomla Update Manager integrity validation]]></item>
+        </fix>
+        <change>
+            <item><![CDATA[Front-end assets now register via Joomla Web Asset Manager (joomla.asset.json) with a body fallback for late module positions]]></item>
+            <item><![CDATA[Per-instance inline styles are emitted next to the module markup for reliable scoping]]></item>
+        </change>
+        <note>
+            <item><![CDATA[After updating, clear Joomla cache and JCH Optimize cache if styles still look stale]]></item>
+            <item><![CDATA[Developed by Mostafa Afrouzi - Web Designer & Developer]]></item>
+            <item><![CDATA[Website: <a href="https://afrouzi.ir/en?utm_source=github&amp;utm_medium=changelog&amp;utm_campaign=call_now_button" target="_blank">afrouzi.ir</a>]]></item>
+        </note>
+    </changelog>
+    <changelog>
+        <element>mod_callnowbutton</element>
+        <type>module</type>
         <version>1.1.0</version>
         <fix>
             <item><![CDATA[Fixed display_mode not applying to multibutton mode (behavior change for sites that relied on the previous bug)]]></item>

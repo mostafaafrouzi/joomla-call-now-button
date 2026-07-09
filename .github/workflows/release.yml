@@ -148,6 +148,7 @@ jobs:
         run: |
           VERSION="${{ steps.get_version.outputs.VERSION }}"
           REPO="${{ github.repository }}"
+          SHA512="${{ steps.checksums.outputs.SHA512 }}"
           
           # Configure git
           git config user.name "GitHub Actions"
@@ -163,6 +164,12 @@ jobs:
           sed -i "s|<version>.*</version>|<version>$VERSION</version>|" updates/updates.xml
           sed -i "s|releases/download/v[^/]*/|releases/download/v$VERSION/|" updates/updates.xml
           sed -i "s|mod_callnowbutton-[0-9.]*\.zip|mod_callnowbutton-$VERSION.zip|" updates/updates.xml
+          
+          if grep -q '<sha512>' updates/updates.xml; then
+            sed -i "s|<sha512>.*</sha512>|<sha512>$SHA512</sha512>|" updates/updates.xml
+          else
+            sed -i "s|</downloadurl>|</downloadurl>\n            <sha512>$SHA512</sha512>|" updates/updates.xml
+          fi
           
           # Check if there are changes to commit
           git add updates/updates.xml
