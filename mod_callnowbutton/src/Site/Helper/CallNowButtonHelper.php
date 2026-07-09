@@ -256,33 +256,16 @@ class CallNowButtonHelper
     public function getDisplayModeClass()
     {
         $displayMode = $this->params->get('display_mode', 'all');
-        $classes = [];
 
         if ($displayMode === 'mobile_only') {
-            $classes[] = 'cnb-display-mobile-only';
-        } elseif ($displayMode === 'desktop_only') {
-            $classes[] = 'cnb-display-desktop-only';
-        } else {
-            $classes[] = 'cnb-display-all';
+            return 'cnb-display-mobile-only';
         }
 
-        if ($this->isDocumentRtl()) {
-            $classes[] = 'cnb-rtl';
+        if ($displayMode === 'desktop_only') {
+            return 'cnb-display-desktop-only';
         }
 
-        return implode(' ', $classes);
-    }
-
-    /**
-     * Whether the active site language is RTL
-     *
-     * @return  boolean
-     *
-     * @since   1.1.2
-     */
-    protected function isDocumentRtl()
-    {
-        return Factory::getLanguage()->isRTL();
+        return 'cnb-display-all';
     }
 
     /**
@@ -1121,11 +1104,6 @@ class CallNowButtonHelper
 
             $html .= ' aria-label="' . htmlspecialchars($buttonTitle, ENT_QUOTES, 'UTF-8') . '"';
             $html .= ' class="' . htmlspecialchars(implode(' ', $itemClasses), ENT_QUOTES, 'UTF-8') . '"';
-
-            if ($clickableLabel && $showTitle && $this->isDocumentRtl()) {
-                $html .= ' dir="rtl"';
-            }
-
             $html .= ' style="background-color: ' . htmlspecialchars($buttonBgColor, ENT_QUOTES, 'UTF-8')
                 . '; color: ' . htmlspecialchars($buttonColor, ENT_QUOTES, 'UTF-8') . ';"';
             $html .= '>';
